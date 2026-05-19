@@ -1,5 +1,5 @@
 /* ──────────────────────────────────────────────────────────────────────
-   Wayfinder · Data
+   WhereToGo · Data
    Origins, Europe outline, presets, and the async loader that hydrates
    WF.CITIES + WF.MONTHLY from destinations_all_months.json.
 

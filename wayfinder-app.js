@@ -1,5 +1,5 @@
 /* ──────────────────────────────────────────────────────────────────────
-   Wayfinder · App
+   WhereToGo · App
    Entry screen → radial cartographic engine → right-side ranking panel.
    ────────────────────────────────────────────────────────────────────── */
 
@@ -9,8 +9,8 @@ const { ORIGINS, CITIES, PRESETS, EUROPE } = window.WF;
 
 /* ────────── STATE ────────── */
 const STATE = {
-  originKey:  "DRS",
-  month:      null,        // 0..11
+  originKey:  "VIE",
+  month:      7,        // 0..11
   presetId:   "balanced",
   weights:    { time:.25, cost:.25, co2:.25, pop:.25 },
   popInvert:  false,
@@ -1350,7 +1350,7 @@ async function boot(){
       await WF.loadDestinations();
     }
   } catch (err) {
-    console.warn("[Wayfinder] Could not load destinations_all_months.json — running with static fallbacks.", err);
+    console.warn("[WhereToGo] Could not load destinations_all_months.json — running with static fallbacks.", err);
   }
   drawEntry();
   // If the user wants to skip the entry (e.g. dev), they can call WF.skipEntry()
