@@ -7,7 +7,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="wayfinder-styles.css">
 
 <script>
@@ -235,11 +235,11 @@ window.__WF_TWEAKS = /*EDITMODE-BEGIN*/{
 
       <!-- Floating headline (top-left) -->
       <div class="wf-headline wf-fade-in">
-        <div class="wf-headline-eyebrow" id="match-eyebrow">Best match · composite score</div>
+        <div class="wf-headline-eyebrow">Best match · Composite score</div>
         <h2 class="wf-headline-name" id="match-name">—</h2>
         <div class="wf-headline-match">
-          <div class="wf-headline-match-num"><span id="match-pct">—</span><span class="wf-headline-match-pct">%</span></div>
-          <div class="wf-headline-match-unit">composite<br>match</div>
+          <div class="wf-headline-match-num" id="match-pct">—</div>
+          <div class="wf-headline-match-unit">Match</div>
         </div>
         <p class="wf-insight" id="insight-line">—</p>
         <div class="wf-headline-sub" id="match-sub">—</div>
@@ -275,79 +275,45 @@ window.__WF_TWEAKS = /*EDITMODE-BEGIN*/{
         </svg>
       </div>
 
-      <!-- Legend Panel — single "Map layers" block, collapsible. -->
-      <div id="wf-legend" class="wf-legend" aria-label="Map legend">
-        <div class="wf-legend-head">
-          <div class="wf-legend-head-title">Map layers</div>
-          <button class="wf-legend-toggle-btn" id="legend-toggle" type="button" title="Hide legend" aria-label="Hide legend">
-            <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><polyline points="4 6 8 10 12 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
+      <!-- Legend Panel -->
+      <div id="wf-legend" class="wf-legend">
+        <!-- DESTINATIONS — always on, not toggleable -->
+        <div class="wf-legend-section">
+          <div class="wf-legend-section-head">Destinations</div>
+          <div class="wf-legend-row">
+            <div class="wf-legend-dot-swatch"></div>
+            <span class="wf-legend-label">Destination</span>
+          </div>
         </div>
-        <div class="wf-legend-body">
-          <div class="wf-legend-row wf-legend-static" title="Every dot on the map is a destination">
-            <span class="wf-legend-sym">
-              <svg viewBox="0 0 18 18" width="18" height="18">
-                <circle cx="9" cy="9" r="3.5" fill="var(--wf-ink)"/>
-              </svg>
-            </span>
-            <span class="wf-legend-layer-label">Destinations</span>
-            <span class="wf-legend-hint">size = match</span>
-          </div>
-          <div class="wf-legend-toggle-row" id="legend-transport" role="button" aria-pressed="false" tabindex="0" title="Show transport mode on dots">
-            <span class="wf-legend-sym">
-              <svg viewBox="0 0 18 18" width="18" height="18">
-                <rect x="4.5" y="4.5" width="9" height="9" rx="2" fill="var(--wf-ink)"/>
-                <circle cx="9" cy="9" r="6.6" fill="none" stroke="rgba(125,211,192,.55)" stroke-width="1"/>
-              </svg>
-            </span>
-            <span class="wf-legend-layer-label">Train mode</span>
-            <span class="wf-legend-switch" aria-hidden="true"><span class="wf-legend-switch-dot"></span></span>
-          </div>
-          <div class="wf-legend-toggle-row" id="legend-co2" role="button" aria-pressed="false" tabindex="0" title="Colour dots by CO₂ emission level">
-            <span class="wf-legend-sym">
-              <svg viewBox="0 0 18 18" width="18" height="18">
-                <circle cx="5" cy="9" r="2.5" fill="rgba(80,190,158,.95)"/>
-                <circle cx="9" cy="9" r="2.5" fill="rgba(210,165,75,.95)"/>
-                <circle cx="13" cy="9" r="2.5" fill="rgba(195,90,90,.95)"/>
-              </svg>
-            </span>
-            <span class="wf-legend-layer-label">CO₂ emissions</span>
-            <span class="wf-legend-switch" aria-hidden="true"><span class="wf-legend-switch-dot"></span></span>
-          </div>
-          <div class="wf-legend-co2-strip" id="legend-co2-strip" aria-hidden="true">
-            <span class="wf-legend-co2-scale">
-              <span class="wf-legend-co2-grad"></span>
-            </span>
-            <span class="wf-legend-co2-labels"><b>Low</b><span>kg / traveller</span><b>High</b></span>
-          </div>
+        <hr class="wf-legend-divider">
+        <!-- TRANSPORT MODE toggle -->
+        <div class="wf-legend-toggle-row" id="legend-transport" role="button" aria-pressed="false" tabindex="0" title="Show transport mode on dots">
+          <div class="wf-legend-indicator" id="legend-ind-transport"></div>
+          <span class="wf-legend-layer-label">Transport mode</span>
+        </div>
+        <!-- CO₂ EMISSIONS toggle -->
+        <div class="wf-legend-toggle-row" id="legend-co2" role="button" aria-pressed="false" tabindex="0" title="Colour dots by CO₂ emission level">
+          <div class="wf-legend-indicator" id="legend-ind-co2"></div>
+          <span class="wf-legend-layer-label">CO₂ emissions</span>
+        </div>
+        <!-- CO₂ colour key (shown when CO₂ layer is on) -->
+        <div class="wf-legend-co2-strip" id="legend-co2-strip">
+          <span class="wf-legend-co2-pip" style="background:rgba(80,190,158,.85)"></span>
+          <span class="wf-legend-co2-label">Low</span>
+          <span class="wf-legend-co2-pip" style="background:rgba(210,165,75,.85); margin-left:4px"></span>
+          <span class="wf-legend-co2-label">Med</span>
+          <span class="wf-legend-co2-pip" style="background:rgba(195,90,90,.85); margin-left:4px"></span>
+          <span class="wf-legend-co2-label">High</span>
         </div>
       </div>
-      <!-- Re-open button shown when the legend is collapsed -->
-      <button class="wf-legend-reopen" id="legend-reopen" type="button" title="Show map layers" aria-label="Show map layers" hidden>
-        <svg viewBox="0 0 18 18" width="14" height="14" aria-hidden="true">
-          <rect x="3" y="4" width="12" height="2" rx=".6" fill="currentColor"/>
-          <rect x="3" y="8" width="12" height="2" rx=".6" fill="currentColor"/>
-          <rect x="3" y="12" width="12" height="2" rx=".6" fill="currentColor"/>
-        </svg>
-        <span>Layers</span>
-      </button>
 
-      <!-- Zoom controls (top-right of map) + scroll hint -->
+      <!-- Zoom hint + controls -->
+      <div class="wf-zoom-hint" id="zoom-hint">Scroll to zoom</div>
       <div class="wf-zoom" id="zoom-ctrl" aria-label="Map zoom">
-        <button id="zoom-in"  title="Zoom in" aria-label="Zoom in">
-          <svg viewBox="0 0 16 16" width="14" height="14"><line x1="8" y1="3" x2="8" y2="13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="3" y1="8" x2="13" y2="8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-        </button>
-        <button id="zoom-out" title="Zoom out" aria-label="Zoom out">
-          <svg viewBox="0 0 16 16" width="14" height="14"><line x1="3" y1="8" x2="13" y2="8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-        </button>
+        <button id="zoom-in"  title="Zoom in (wheel)">+</button>
+        <button id="zoom-out" title="Zoom out (wheel)">−</button>
         <div class="wf-zoom-level" id="zoom-level">100%</div>
-        <button id="zoom-reset" title="Reset view" aria-label="Reset view">
-          <svg viewBox="0 0 16 16" width="13" height="13"><path d="M3 8a5 5 0 1 1 1.5 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><polyline points="3 5 3 8 6 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-      </div>
-      <div class="wf-zoom-hint" id="zoom-hint">
-        <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><circle cx="8" cy="8" r="5" fill="none" stroke="currentColor" stroke-width="1.3"/><line x1="8" y1="5.5" x2="8" y2="10.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-        Scroll · pinch to zoom
+        <button id="zoom-reset" title="Reset zoom" style="font-size:12px;letter-spacing:.06em;">⟲</button>
       </div>
 
       <!-- Tooltip -->
@@ -489,7 +455,53 @@ window.__WF_TWEAKS = /*EDITMODE-BEGIN*/{
   </div>
 </div>
 
-<!-- ─── Card reformat / month bridge ─── -->
+<!-- ───── MONTH BRIDGE ───── -->
+<script>
+(function(){
+  /* Reformat rank cards: show "City, Country" on one line, hide bearing */
+  function reformatCards(){
+    document.querySelectorAll('.wf-rank-card').forEach(function(card){
+      var nameEl = card.querySelector('.wf-rank-name');
+      var subEl  = card.querySelector('.wf-rank-sub');
+      if(!nameEl || !subEl) return;
+      if(nameEl.dataset.reformatted) return; // already done
+
+      // Extract text nodes from sub: first is country, next sep, then bearing
+      var subText = subEl.textContent || '';
+      // Grab country from first span or text portion before '·'
+      var parts = subText.split('·');
+      var country = parts[0] ? parts[0].trim() : '';
+
+      if(country){
+        // Append country inline to city name
+        var existing = nameEl.querySelector('.rank-country');
+        if(!existing){
+          var cSpan = document.createElement('span');
+          cSpan.className = 'rank-country';
+          cSpan.textContent = ', ' + country;
+          nameEl.appendChild(cSpan);
+        }
+        // Hide the country text + bearing in sub, keep only metric info
+        // Remove the country + sep spans, keep only the remainder (bearing hidden via CSS)
+        var spans = subEl.querySelectorAll('span.sep, span:not([class])');
+        // Simpler: just hide the whole sub row if it only has country+bearing
+        // (metrics are in .wf-rank-metrics, not sub)
+        subEl.style.display = 'none';
+      }
+      nameEl.dataset.reformatted = '1';
+    });
+  }
+
+  // Run after app renders cards
+  var rankList = document.getElementById('rank-list');
+  if(rankList){
+    new MutationObserver(reformatCards).observe(rankList, {childList:true, subtree:true});
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    setTimeout(reformatCards, 300);
+  });
+})();
+</script>
 <script>
 (function(){
   /* app.js populates #entry-months with .wf-month buttons (0-based index).

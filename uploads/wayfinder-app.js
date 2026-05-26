@@ -1,5 +1,5 @@
 /* ──────────────────────────────────────────────────────────────────────
-   Wayfinder · App
+   WhereToGo · App
    Entry screen → radial cartographic engine → right-side ranking panel.
    ────────────────────────────────────────────────────────────────────── */
 
@@ -9,8 +9,8 @@ const { ORIGINS, CITIES, PRESETS, EUROPE } = window.WF;
 
 /* ────────── STATE ────────── */
 const STATE = {
-  originKey:  "DRS",
-  month:      null,        // 0..11
+  originKey:  "VIE",
+  month:      7,        // 0..11
   presetId:   "balanced",
   weights:    { time:.25, cost:.25, co2:.25, pop:.25 },
   popInvert:  false,
@@ -18,6 +18,12 @@ const STATE = {
   hovered:    null,
   density:    "rich",
   entryDone:  false,
+};
+
+/* Legend layer toggles — both OFF by default (dots only, no glyph/CO₂ colour) */
+const LEGEND = {
+  transport: false,
+  co2:       false,
 };
 
 const MONTHS = [
@@ -120,6 +126,32 @@ function currentMonthKey(){
   return WF.MONTHS_LIST.find(m => m.endsWith("-" + mm)) || null;
 }
 
+/* ────────── TRANSPORT MODE SELECTION ──────────
+   Compares train vs flight using the same WLC logic as the main ranking:
+   normalise time, cost and co2 *between the two options*, apply user weights,
+   pick the lower (better) score. Returns true when train is preferred.
+   Gracefully handles missing modes. ─────────── */
+function pickBestMode(train, flight, weights){
+  if(!train)  return false;   // only flight available
+  if(!flight) return true;    // only train available
+
+  const tTime = train.time,  fTime = flight.time;
+  const tCost = train.cost,  fCost = flight.cost;
+  const tCo2  = train.co2  ?? 9999, fCo2 = flight.co2 ?? 9999;
+
+  const timeRange = Math.abs(fTime - tTime) || 1;
+  const costRange = Math.abs(fCost - tCost) || 1;
+  const co2Range  = Math.abs(fCo2  - tCo2 ) || 1;
+
+  // Lower score = better (lower time / cost / co2)
+  const scoreOf = (t, c, e) =>
+    weights.time * (t - Math.min(tTime, fTime)) / timeRange +
+    weights.cost * (c - Math.min(tCost, fCost)) / costRange +
+    weights.co2  * (e - Math.min(tCo2,  fCo2 )) / co2Range;
+
+  return scoreOf(tTime, tCost, tCo2) <= scoreOf(fTime, fCost, fCo2);
+}
+
 /* ────────── COMPUTE ────────── */
 function compute(){
   const O = ORIGINS[STATE.originKey];
@@ -128,10 +160,6 @@ function compute(){
   const mk      = currentMonthKey();
   const monthly = (WF.MONTHLY && mk) ? (WF.MONTHLY[STATE.originKey] || null) : null;
 
-  // CO2 weight threshold above which train is preferred when both modes exist.
-  // 0.35 means: if the user gives ≥35% weight to emissions → take the train.
-  const CO2_TRAIN_THRESHOLD = 0.35;
-
   const data = CITIES
     .filter(c => c.name !== O.name)
     .map(c => {
@@ -139,10 +167,7 @@ function compute(){
 
       // If the JSON has real data for this (origin, dest, month):
       if (cell && cell.available) {
-        const preferTrain = cell.train && (
-          !cell.flight ||                              // only train exists
-          STATE.weights.co2 >= CO2_TRAIN_THRESHOLD    // user prioritises CO₂
-        );
+        const preferTrain = pickBestMode(cell.train, cell.flight, STATE.weights);
         const chosen = preferTrain ? cell.train : cell.flight;
 
         return {
@@ -229,9 +254,13 @@ function drawRings(){
   RING_BANDS.forEach((band, i) => {
     const r = R_MIN + band.t * (R_MAX - R_MIN);
     const isOuter = i === RING_BANDS.length-1;
+    const isInner = i === 0;
+    const cls = isOuter ? "wf-ring wf-ring-outer"
+              : isInner ? "wf-ring wf-ring-emph"
+              : "wf-ring";
     g.appendChild(svgEl("circle",{
       cx:CX, cy:CY, r,
-      class: isOuter ? "wf-ring wf-ring-outer" : "wf-ring",
+      class: cls,
     }));
     // band label, placed at top edge of each ring
     if(band.label){
@@ -262,30 +291,155 @@ function drawBearings(){
 function drawCardinal(){
   const g = gLayer.cardinal;
   g.innerHTML = "";
-  const cardinals  = [["N",0],["E",90],["S",180],["W",270]];
-  const intercards = [["NE",45],["SE",135],["SW",225],["NW",315]];
-  cardinals.forEach(([l,a])=>{
+
+  const R_BEZEL          = 470;   // main compass ring
+  const R_MAJOR_INNER    = 462;   // major tick inner end
+  const R_MAJOR_OUTER    = 476;   // major tick outer end
+  const R_MINOR_INNER    = 465;   // minor tick inner end
+  const R_MINOR_OUTER    = 472;   // minor tick outer end
+  const R_LABEL          = 490;   // label radius
+  const R_DECO_1         = 458;
+  const R_DECO_2         = 454;
+
+  // Main bezel circle
+  g.appendChild(svgEl("circle",{
+    cx:CX, cy:CY, r:R_BEZEL,
+    stroke:"rgba(255,255,255,0.07)", "stroke-width":1.5, fill:"none"
+  }));
+
+  // Two decorative inner rings
+  [R_DECO_1, R_DECO_2].forEach(r=>{
+    g.appendChild(svgEl("circle",{
+      cx:CX, cy:CY, r,
+      stroke:"rgba(255,255,255,0.04)", "stroke-width":0.8, fill:"none"
+    }));
+  });
+
+  // 16 tick marks: major at every 45° (8 positions), minor at every 22.5° (intermediate 8)
+  for(let i=0;i<16;i++){
+    const a = i*22.5;
     const θ = toRad(a-90);
-    const r = R_MAX + 38;
+    const isMajor = (i%2===0);
+    const r1 = isMajor ? R_MAJOR_INNER : R_MINOR_INNER;
+    const r2 = isMajor ? R_MAJOR_OUTER : R_MINOR_OUTER;
+    g.appendChild(svgEl("line",{
+      x1: CX+r1*Math.cos(θ), y1: CY+r1*Math.sin(θ),
+      x2: CX+r2*Math.cos(θ), y2: CY+r2*Math.sin(θ),
+      stroke: isMajor ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.15)",
+      "stroke-width": isMajor ? 1.5 : 1,
+    }));
+  }
+
+  // North triangle: filled accent triangle at N, pointing inward toward centre
+  // N is at bearing 0° → angle θ = toRad(0-90) = -π/2 → (CX, CY-r)
+  const triH = 8;
+  const triW = triH * 2 / Math.sqrt(3); // equilateral base
+  const triTipY  = CY - R_MAJOR_INNER;        // tip points inward (down from bezel)
+  const triBaseY = CY - R_MAJOR_OUTER;        // base sits at outer tick end
+  g.appendChild(svgEl("polygon",{
+    points:`${CX},${triTipY} ${CX-triW/2},${triBaseY} ${CX+triW/2},${triBaseY}`,
+    fill:"var(--wf-accent)"
+  }));
+
+  // Cardinal labels N/S/E/W — larger, primary colour
+  [["N",0],["E",90],["S",180],["W",270]].forEach(([l,a])=>{
+    const θ = toRad(a-90);
     const t = svgEl("text",{
-      x: CX + r*Math.cos(θ),
-      y: CY + r*Math.sin(θ),
+      x: CX+R_LABEL*Math.cos(θ),
+      y: CY+R_LABEL*Math.sin(θ),
       class:"wf-cardinal","text-anchor":"middle","dominant-baseline":"middle",
     });
     t.textContent = l;
     g.appendChild(t);
   });
-  intercards.forEach(([l,a])=>{
+
+  // Intercardinal labels NE/SE/SW/NW — smaller, tertiary colour
+  [["NE",45],["SE",135],["SW",225],["NW",315]].forEach(([l,a])=>{
     const θ = toRad(a-90);
-    const r = R_MAX + 32;
     const t = svgEl("text",{
-      x: CX + r*Math.cos(θ),
-      y: CY + r*Math.sin(θ),
+      x: CX+R_LABEL*Math.cos(θ),
+      y: CY+R_LABEL*Math.sin(θ),
       class:"wf-intercardinal","text-anchor":"middle","dominant-baseline":"middle",
     });
     t.textContent = l;
     g.appendChild(t);
   });
+}
+
+/* ────────── DRAW: BASEMAP ──────────
+   Azimuthal-equidistant projection of European coastlines, centred on the
+   current origin. Distance from centre is real great-circle distance scaled
+   to ~5000 km → R_MAX*1.4 (so even Iceland and the Aegean fit on screen).
+   Bearing matches the polar plot exactly — that's the whole point. */
+const EARTH_KM_PER_RAD = 6371;
+const BASEMAP_KM_REACH = 5200;
+const BASEMAP_PX_REACH = R_MAX * 1.45;
+
+function azProject(lat, lon, oLat, oLon){
+  if (Math.abs(lat - oLat) < 1e-6 && Math.abs(lon - oLon) < 1e-6) return [CX, CY];
+  const φ1 = toRad(oLat), φ2 = toRad(lat);
+  const Δλ = toRad(lon - oLon);
+  const cosC = Math.sin(φ1)*Math.sin(φ2) + Math.cos(φ1)*Math.cos(φ2)*Math.cos(Δλ);
+  const c = Math.acos(Math.max(-1, Math.min(1, cosC)));   // angular distance
+  const distKm = c * EARTH_KM_PER_RAD;
+  const r = (distKm / BASEMAP_KM_REACH) * BASEMAP_PX_REACH;
+  const θ = toRad(bearing(oLat, oLon, lat, lon) - 90);
+  return [CX + r*Math.cos(θ), CY + r*Math.sin(θ)];
+}
+function azPolygonPath(latLonArr, oLat, oLon){
+  return latLonArr.map(([la,lo], i)=>{
+    const [x,y] = azProject(la, lo, oLat, oLon);
+    return (i===0?"M":"L") + x.toFixed(1) + "," + y.toFixed(1);
+  }).join(" ") + " Z";
+}
+function drawBasemap(){
+  const g = document.getElementById("g-basemap");
+  if(!g) return;
+  g.innerHTML = "";
+  const O = ORIGINS[STATE.originKey];
+
+  // Faint distance graticule: 1000, 2000, 3000, 4000 km circles
+  [1000, 2000, 3000, 4000].forEach(km => {
+    const r = (km / BASEMAP_KM_REACH) * BASEMAP_PX_REACH;
+    g.appendChild(svgEl("circle", {
+      cx: CX, cy: CY, r,
+      class: "wf-basemap-graticule",
+    }));
+  });
+
+  // Coastline polygons removed — the bearing lines and rings carry enough structure.
+}
+
+/* ────────── DRAW: COMPASS ROSE ──────────
+   Subtle 8-petal rose behind the origin marker. Pure decoration but it
+   makes the centre feel like a cartographic anchor, not a void. */
+function drawRose(){
+  const g = document.getElementById("g-rose");
+  if(!g) return;
+  g.innerHTML = "";
+  const R1 = 22, R2 = 42, R3 = 58;
+  // Outer guide ring
+  g.appendChild(svgEl("circle", { cx:CX, cy:CY, r:R3, class:"wf-rose-ring" }));
+  g.appendChild(svgEl("circle", { cx:CX, cy:CY, r:R1, class:"wf-rose-ring" }));
+  // 8 petals
+  for(let i=0;i<8;i++){
+    const a   = toRad(i*45 - 90);
+    const ap  = toRad(i*45 - 45 - 90);
+    const an  = toRad(i*45 + 45 - 90);
+    const longR = (i % 2 === 0) ? R3 : R2;     // cardinals reach farther
+    const tipX = CX + longR*Math.cos(a),  tipY = CY + longR*Math.sin(a);
+    const lX  = CX + R1*Math.cos(ap),     lY  = CY + R1*Math.sin(ap);
+    const rX  = CX + R1*Math.cos(an),     rY  = CY + R1*Math.sin(an);
+    const d = `M${CX} ${CY} L${lX} ${lY} L${tipX} ${tipY} L${rX} ${rY} Z`;
+    g.appendChild(svgEl("path", { d, class:"wf-rose-petal" }));
+  }
+  // Tiny radial tick marks every 22.5° for a navigator's feel
+  for(let i=0;i<16;i++){
+    const a = toRad(i*22.5 - 90);
+    const x1 = CX + R3*Math.cos(a),  y1 = CY + R3*Math.sin(a);
+    const x2 = CX + (R3+4)*Math.cos(a), y2 = CY + (R3+4)*Math.sin(a);
+    g.appendChild(svgEl("line", { x1, y1, x2, y2, class:"wf-rose-tick" }));
+  }
 }
 
 /* ────────── DRAW: ORIGIN ────────── */
@@ -340,6 +494,13 @@ function updateByName(g, items, makeFn, updateFn){
   });
 }
 
+function _co2Color(co2){
+  if(co2 == null) return null;
+  if(co2 < 15)  return "rgba(80,190,158,.85)";   // muted green
+  if(co2 < 60)  return "rgba(210,165,75,.85)";   // muted amber
+  return          "rgba(195,90,90,.85)";          // muted red
+}
+
 function drawDots(data){
   // Halos for top tier
   const topData = data.filter(d => d.rank <= 5);
@@ -352,46 +513,126 @@ function drawDots(data){
       el.setAttribute("r", 15);
     }
   );
-  // Dots
+
+  // Dots — <g> containing: hit target, shape (circle=flight / rect=train), optional train ring.
   updateByName(
     gLayer.dots, data,
     (d) => {
-      const c = svgEl("circle", { class:"wf-dot" });
-      // Bind interactions once — name is captured from creation closure.
+      const g = svgEl("g", { class:"wf-dot-g" });
+      const hit = svgEl("circle", { class:"wf-dot-hit" });
+      g.appendChild(hit);
       const name = d.name;
-      c.addEventListener("mouseenter", () => onHover(name));
-      c.addEventListener("mouseleave", () => onHover(null));
-      c.addEventListener("click",      () => onSelect(name));
-      return c;
+      g.addEventListener("mouseenter", () => onHover(name));
+      g.addEventListener("mouseleave", () => onHover(null));
+      g.addEventListener("click",      () => onSelect(name));
+      return g;
     },
     (el, d) => {
-      const tier = d.rank<=5 ? "top" : d.rank<=12 ? "mid" : "low";
-      const r = tier==="top" ? 6.0 : tier==="mid" ? 4.5 : 3.4;
-      el.setAttribute("cx", d.x);
-      el.setAttribute("cy", d.y);
-      el.setAttribute("r", r);
+      const tier    = d.rank<=5 ? "top" : d.rank<=12 ? "mid" : "low";
+      const r       = tier==="top" ? 6.0 : tier==="mid" ? 4.5 : 3.4;
+      const isTrain = d.transport === "train";
       const focusName = STATE.active || STATE.hovered;
-      const isFocus = focusName === d.name;
-      el.setAttribute("class", `wf-dot wf-dot-${tier}${isFocus ? " is-focus" : ""}`);
+      const isFocus   = focusName === d.name;
+      const co2Color  = _co2Color(d.co2);
+
+      // Legend gate: only show train glyph when transport layer is ON
+      const showAsTrain = LEGEND.transport && isTrain;
+
+      // Hit target
+      const hit = el.querySelector(".wf-dot-hit");
+      hit.setAttribute("cx", d.x);
+      hit.setAttribute("cy", d.y);
+      hit.setAttribute("r", 14);
+
+      // Shape — replace element if glyph type changed (circle ↔ rect)
+      let shape = el.querySelector(".wf-dot-shape");
+      const needsRect = showAsTrain;
+      const hasRect   = shape && shape.tagName.toLowerCase() === "rect";
+      if(!shape || needsRect !== hasRect){
+        if(shape) shape.remove();
+        shape = svgEl(showAsTrain ? "rect" : "circle", { class:"wf-dot-shape wf-dot" });
+        const ring = el.querySelector(".wf-dot-mode-ring");
+        ring ? el.insertBefore(shape, ring) : el.appendChild(shape);
+      }
+
+      if(showAsTrain){
+        const s = r * 1.75;
+        shape.setAttribute("x",      d.x - s / 2);
+        shape.setAttribute("y",      d.y - s / 2);
+        shape.setAttribute("width",  s);
+        shape.setAttribute("height", s);
+        shape.setAttribute("rx",     s * 0.28);
+        shape.setAttribute("ry",     s * 0.28);
+      } else {
+        shape.setAttribute("cx", d.x);
+        shape.setAttribute("cy", d.y);
+        shape.setAttribute("r",  r);
+      }
+
+      shape.setAttribute("class", `wf-dot-shape wf-dot wf-dot-${tier}${isFocus ? " is-focus" : ""}`);
+      // CO₂ colour: only when legend CO₂ layer is ON; focus accent overrides anyway
+      shape.style.fill = (LEGEND.co2 && co2Color && !isFocus) ? co2Color : "";
+
+      // Mode ring (outer cyan ring): only when transport layer is ON and train is available
+      let modeRing = el.querySelector(".wf-dot-mode-ring");
+      if(LEGEND.transport && d.hasTrain){
+        if(!modeRing){
+          modeRing = svgEl("circle", { class:"wf-dot-mode-ring" });
+          el.appendChild(modeRing);
+        }
+        modeRing.setAttribute("cx", d.x);
+        modeRing.setAttribute("cy", d.y);
+        modeRing.setAttribute("r",  r + 3.5);
+      } else if(modeRing){
+        modeRing.remove();
+      }
     }
   );
-  // Has-focus state on group
+
   gLayer.dots.classList.toggle("has-focus", !!(STATE.active || STATE.hovered));
 }
 function drawLabels(data){
   const g = gLayer.labels;
-  const limit = STATE.density==="rich" ? 14 : 7;
+  // semantic zoom: at higher zoom show more labels, at lower zoom fewer.
+  const baseLimit = STATE.density==="rich" ? 14 : 7;
+  const limit = Math.min(
+    data.length,
+    Math.max(4, Math.round(baseLimit + (ZOOM.scale - 1) * 6))
+  );
   const top = data.slice(0, limit);
+  const focusName = STATE.active || STATE.hovered;
+
+  // Greedy de-overlap: keep estimated bounding boxes of already-placed labels
+  // and push new ones outward if they'd collide. Labels are sorted by rank,
+  // so the most important always wins.
+  const placed = [];
+  const approxCharW = 7.5;
+  const approxH = 18;
+
   updateByName(
     g, top,
     (d) => svgEl("text", { class:"wf-label", "data-name": d.name }),
     (el, d) => {
       const θ = toRad(d.bearingDeg-90);
-      const offset = 16;
-      const lx = d.x + offset*Math.cos(θ);
-      const ly = d.y + offset*Math.sin(θ);
-      const anchor = Math.cos(θ) > 0.25 ? "start" : Math.cos(θ) < -0.25 ? "end" : "middle";
-      // recompute class from current index in `top`
+      let offset = 16;
+      let lx, ly, bx, by, w, anchor;
+      // try a few offsets to avoid collisions
+      for(let tries=0; tries<6; tries++){
+        lx = d.x + offset*Math.cos(θ);
+        ly = d.y + offset*Math.sin(θ);
+        anchor = Math.cos(θ) > 0.25 ? "start" : Math.cos(θ) < -0.25 ? "end" : "middle";
+        w = (d.name.length) * approxCharW;
+        bx = anchor==="start" ? lx : anchor==="end" ? lx - w : lx - w/2;
+        by = ly - approxH/2;
+        const hit = placed.some(p =>
+          bx < p.bx + p.w && bx + w > p.bx &&
+          by < p.by + p.h && by + p.h > p.by
+        );
+        if(!hit) break;
+        offset += 14;
+      }
+      placed.push({ bx, by, w, h: approxH });
+
       const i = top.indexOf(d);
       const cls = i<3 ? "wf-label wf-label-major" : (i<7 ? "wf-label" : "wf-label wf-label-dim");
       el.setAttribute("class", cls);
@@ -400,6 +641,10 @@ function drawLabels(data){
       el.setAttribute("text-anchor", anchor);
       el.setAttribute("dominant-baseline", "middle");
       el.textContent = d.name;
+
+      // Hide this label if it's the focused city — the overlay
+      // group renders an accent-styled label for the focus.
+      el.style.display = (focusName && focusName === d.name) ? "none" : "";
     }
   );
 }
@@ -430,14 +675,14 @@ function drawOverlay(data){
 }
 
 /* ────────── MINI EUROPE MAP (real coastline) ────────── */
-const MINI = { W: 200, H: 180, latMin: 34, latMax: 71, lonMin: -25, lonMax: 32 };
+const MINI = { W: 240, H: 216, latMin: 34, latMax: 71, lonMin: -25, lonMax: 32 };
 function miniProject(lat, lon){
   const x = (lon - MINI.lonMin) / (MINI.lonMax - MINI.lonMin) * MINI.W;
-  // mild equirectangular squish: keep linear in lat but multiply by cos(latMid)
-  const latMid = (MINI.latMin + MINI.latMax) / 2;
-  const yScale = Math.cos(toRad(latMid));
-  // back to linear lat (don't actually mercator; keep things simple)
-  const y = (1 - (lat - MINI.latMin) / (MINI.latMax - MINI.latMin)) * MINI.H;
+  // Mercator projection — gives Europe its familiar realistic proportions
+  const merc = l => Math.log(Math.tan(Math.PI / 4 + toRad(l) / 2));
+  const yMin = merc(MINI.latMin);
+  const yMax = merc(MINI.latMax);
+  const y = (1 - (merc(lat) - yMin) / (yMax - yMin)) * MINI.H;
   return [x, y];
 }
 function polygonPath(latLonArr){
@@ -461,10 +706,12 @@ function drawMiniLand(){
     const [x2] = miniProject(MINI.latMax, lo);
     miniGratEl.appendChild(svgEl("line",{x1,y1:0,x2,y2:MINI.H,class:"wf-mini-grat"}));
   }
-  // landmasses
-  ["mainland","scandinavia","britain","ireland","iceland"].forEach(k=>{
+  // landmasses (italy added for the recognisable boot shape)
+  ["mainland","italy","scandinavia","britain","ireland","iceland"].forEach(k=>{
+    const poly = EUROPE[k];
+    if(!poly) return;
     const path = svgEl("path",{
-      d: polygonPath(EUROPE[k]),
+      d: polygonPath(poly),
       class: "wf-mini-land",
     });
     miniLandEl.appendChild(path);
@@ -497,10 +744,31 @@ function drawMini(data){
       const tier = d.rank<=5 ? "top" : d.rank<=12 ? "mid" : "low";
       el.setAttribute("cx", x);
       el.setAttribute("cy", y);
-      el.setAttribute("r", tier==="top" ? 2.4 : 1.6);
+      el.setAttribute("r", tier==="top" ? 3 : 2);
       el.setAttribute("class", `wf-mini-dot wf-mini-${tier}`);
     }
   );
+
+  // Hit targets — generous transparent circles for hover/click on the mini-map
+  const hitsG = document.getElementById("mini-hits");
+  if(hitsG){
+    updateByName(
+      hitsG, data,
+      (d) => {
+        const c = svgEl("circle", { class:"wf-mini-hit", r: 8 });
+        const name = d.name;
+        c.addEventListener("mouseenter", () => onHover(name));
+        c.addEventListener("mouseleave", () => onHover(null));
+        c.addEventListener("click",      () => onSelect(name));
+        return c;
+      },
+      (el, d) => {
+        const [x,y] = miniProject(d.lat, d.lon);
+        el.setAttribute("cx", x);
+        el.setAttribute("cy", y);
+      }
+    );
+  }
 
   // Focus ring — stable single element
   let focusEl = g.querySelector(".wf-mini-focus");
@@ -520,6 +788,12 @@ function drawMini(data){
 }
 
 /* ────────── RIGHT-SIDE RANKING ────────── */
+const MEDAL = {
+  1: { icon: "🏆", label: "Best match"   },
+  2: { icon: "🥈", label: "Silver pick"  },
+  3: { icon: "🥉", label: "Bronze pick"  },
+};
+
 function drawRanking(data){
   if(!listEl) return;
   const top = data.slice(0, 10);
@@ -537,53 +811,52 @@ function drawRanking(data){
   listEl.innerHTML = "";
   top.forEach((d, i)=>{
     const el = document.createElement("button");
-    el.className = "wf-rank-card" + (i===0 ? " is-top" : "");
+    const rankCls = d.rank <= 3 ? ` is-rank-${d.rank}` : "";
+    el.className = "wf-rank-card" + (i===0 ? " is-top" : "") + rankCls;
     el.setAttribute("data-name", d.name);
     if(STATE.active === d.name) el.classList.add("is-active");
     if(STATE.hovered === d.name) el.classList.add("is-hover");
 
     const url = photoURL(d.photoId, 240);
-    const photoStyle = url ? `background-image:url(${url})` : "";
+    const imgTag = url
+      ? `<img class="wf-rank-photo-img" src="${url}" alt="" loading="lazy" onerror="this.style.display='none'">`
+      : "";
 
-    const ordStr = ord(d.rank);
-    const ordNum = ordStr.match(/\d+/)[0];
-    const ordSuf = ordStr.replace(/\d+/,"");
-
-    const tag = d.rank===1 ? "Best match"
-              : d.rank===2 ? "Runner-up"
-              : d.rank===3 ? "Third pick"
-              : d.rank<=5  ? "Strong"
-              :              "Top pick";
+    const medal = MEDAL[d.rank];
+    const medalHTML = medal
+      ? `<div class="rank-medal"><div class="medal-pill"><span class="medal-icon">${medal.icon}</span>${medal.label}</div></div>`
+      : "";
+    const tagText = medal ? medal.label : "Top pick";
 
     el.innerHTML = `
-      <div class="wf-rank-photo" style="${photoStyle}">
-        <div class="rank-badge">${ordNum}${ordSuf} · ${tag}</div>
+      <div class="wf-rank-photo">
+        ${imgTag}
+        <div class="rank-num-badge">${d.rank}</div>
+        ${medalHTML}
         <div class="match-pill"><span class="match-num">${d.matchPct}</span><span class="match-unit">match</span></div>
       </div>
       <div class="wf-rank-body">
-        <div class="wf-rank-head">
-          <span class="wf-rank-ord">${ordNum}<span style="font-size:.62em;letter-spacing:.02em;">${ordSuf}</span></span>
-          <span class="wf-rank-tag">${tag}</span>
+        <div class="wf-rank-title-row">
+          <span class="wf-rank-ord">${d.rank}</span>
+          <h4 class="wf-rank-name">${d.name}</h4>
+          <span class="wf-rank-tag">${tagText}</span>
         </div>
-        <h4 class="wf-rank-name">${d.name}</h4>
         <div class="wf-rank-sub">
           <span>${d.country}</span>
           <span class="sep">·</span>
-          <span>${d.bearingDeg.toFixed(0)}° ${bearingLabel(d.bearingDeg)}</span>
+          <span class="rank-bearing">${d.bearingDeg.toFixed(0)}° ${bearingLabel(d.bearingDeg)}</span>
         </div>
-        <p class="wf-rank-insight">${d.insight}</p>
         <div class="wf-rank-metrics">
-          <div class="wf-rank-m"><span class="wf-rank-m-v">${d.time}h</span><span class="wf-rank-m-l">Travel</span></div>
+          <div class="wf-rank-m"><span class="wf-rank-m-v">${(()=>{const hh=Math.floor(d.time),mm=Math.round((d.time-hh)*60);return mm>0?`${hh}h ${mm}m`:`${hh}h`;})()}</span><span class="wf-rank-m-l">Travel</span></div>
           <div class="wf-rank-m"><span class="wf-rank-m-v">€${d.cost}</span><span class="wf-rank-m-l">Fare</span></div>
           <div class="wf-rank-m"><span class="wf-rank-m-v">${d.co2}kg</span><span class="wf-rank-m-l">CO₂</span></div>
           <div class="wf-rank-m"><span class="wf-rank-m-v" style="color:var(--wf-highlight);font-size:11px;letter-spacing:.04em;">${"★".repeat(Math.round((d.pop||0)/20))}${"☆".repeat(5-Math.round((d.pop||0)/20))}</span><span class="wf-rank-m-l">Popularity</span></div>
         </div>
       </div>
-      ${buildDetailHTML(d)}
     `;
     el.addEventListener("mouseenter", ()=> onHover(d.name));
     el.addEventListener("mouseleave", ()=> onHover(null));
-    el.addEventListener("click",      ()=> onSelect(d.name));
+    el.addEventListener("click",      ()=> openDetail(d.name));
     listEl.appendChild(el);
   });
 
@@ -604,13 +877,395 @@ function drawRanking(data){
   });
 }
 
-/* ────────── HEADLINE ────────── */
+/* ────────── DETAIL MODAL ────────── */
+
+// Build a quality-bucket label from the underlying metrics.
+function emissionTag(co2){
+  if(co2 == null) return { lab:"—",       cls:"is-neutral" };
+  if(co2 < 15)    return { lab:"Pure",    cls:"is-pure"    };
+  if(co2 < 60)    return { lab:"Moderate",cls:"is-neutral" };
+  return                  { lab:"Heavy",  cls:"is-tight"   };
+}
+function popularityTag(pop){
+  if(pop == null) return { lab:"—",       cls:"is-neutral" };
+  if(pop >= 75)   return { lab:"Tight",   cls:"is-tight"   };
+  if(pop >= 45)   return { lab:"Active",  cls:"is-neutral" };
+  return                  { lab:"Serene", cls:"is-serene"  };
+}
+function seasonalityTag(d){
+  if(!d.seasons || !STATE.month==null) return { lab:"Open", cls:"is-neutral" };
+  const ORDER = ["January","February","March","April","May","June",
+                 "July","August","September","October","November","December"];
+  const m = ORDER[STATE.month];
+  if(!m || !d.seasons) return { lab:"Open", cls:"is-neutral" };
+  if(d.seasons.high   && d.seasons.high.includes(m))   return { lab:"Tight",  cls:"is-tight"   };
+  if(d.seasons.medium && d.seasons.medium.includes(m)) return { lab:"Active", cls:"is-neutral" };
+  if(d.seasons.low    && d.seasons.low.includes(m))    return { lab:"Serene", cls:"is-serene"  };
+  return { lab:"Open", cls:"is-neutral" };
+}
+
+const TRANSPORT_ICON = {
+  train: `<svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="3"/><line x1="5" y1="11" x2="19" y2="11"/><circle cx="9" cy="14" r="1" fill="currentColor"/><circle cx="15" cy="14" r="1" fill="currentColor"/><line x1="7" y1="20" x2="9" y2="17"/><line x1="17" y1="20" x2="15" y2="17"/></svg>`,
+  flight: `<svg viewBox="0 0 24 24"><path d="M21 12c0-.7-.4-1.2-1-1.4l-7-2.4V3.5c0-.8-.7-1.5-1.5-1.5S10 2.7 10 3.5v4.7L3 10.6c-.6.2-1 .8-1 1.4 0 .5.4 1 1 1l7-1v4.6l-2 1.4v1l3-.6 3 .6v-1l-2-1.4V12l7 1c.6 0 1-.5 1-1z" stroke="none" fill="currentColor"/></svg>`,
+};
+
+function getCellFor(city){
+  const mk = currentMonthKey();
+  if(!mk || !WF.MONTHLY) return null;
+  const byO = WF.MONTHLY[STATE.originKey];
+  if(!byO || !city.iata) return null;
+  const byM = byO[city.iata];
+  return (byM && byM[mk]) || null;
+}
+
+function modePillCo2(co2){
+  if(co2 == null) return "";
+  const cls = co2 < 15 ? "low" : co2 < 60 ? "mid" : "high";
+  return `<span class="co2-dot ${cls}"></span>`;
+}
+
+function transportRowHTML(mode, info, isBest, isNA){
+  const icon = TRANSPORT_ICON[mode] || "";
+  if(isNA){
+    return `<div class="wf-transport-row is-na">
+      <div class="wf-transport-icon">${icon}</div>
+      <div class="wf-transport-main">
+        <div class="wf-transport-co2">— CO₂e</div>
+        <div class="wf-transport-mode">${mode}</div>
+      </div>
+      <div class="wf-transport-side">
+        <div class="wf-transport-time">unavailable</div>
+        <div class="wf-transport-cost">—</div>
+      </div>
+    </div>`;
+  }
+  const co2 = info.co2 ?? "?";
+  const hh = Math.floor(info.time);
+  const mm = Math.round((info.time - hh) * 60);
+  const timeStr = `${hh} hr ${mm.toString().padStart(2,"0")} min`;
+  const cost = info.cost!=null ? `€${info.cost}` : "—";
+  return `<div class="wf-transport-row${isBest ? " is-best" : ""}">
+    <div class="wf-transport-icon">${icon}</div>
+    <div class="wf-transport-main">
+      <div class="wf-transport-co2">${co2} kg CO₂e ${modePillCo2(info.co2)}</div>
+      <div class="wf-transport-mode">${mode}</div>
+    </div>
+    <div class="wf-transport-side">
+      <div class="wf-transport-time">${timeStr}</div>
+      <div class="wf-transport-cost">${cost}</div>
+    </div>
+  </div>`;
+}
+
+function buildDetailModalBody(d, cell){
+  const emis = emissionTag(d.co2);
+  const popT = popularityTag(d.pop);
+  const seas = seasonalityTag(d);
+
+  const hasFlight = !!(cell && cell.flight);
+  const hasTrain  = !!(cell && cell.train);
+  const preferTrain = pickBestMode(
+    hasTrain  ? cell.train  : null,
+    hasFlight ? cell.flight : null,
+    STATE.weights
+  );
+
+  const seasonStrip = (()=>{
+    if(!d.seasons) return "";
+    const SHORT = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const ORDER = ["January","February","March","April","May","June",
+                   "July","August","September","October","November","December"];
+    const highSet = new Set(d.seasons.high   || []);
+    const medSet  = new Set(d.seasons.medium || []);
+    const curIdx  = STATE.month; // 0-based, null if not set
+    const pills = ORDER.map((m,i) => {
+      const cls = highSet.has(m) ? "" : medSet.has(m) ? " is-med" : " is-low";
+      const isCur = (curIdx === i) ? " is-current" : "";
+      const tipText = highSet.has(m) ? "Peak season — high demand & prices" :
+                      medSet.has(m)  ? "Shoulder season — good balance" :
+                                       "Off-peak — quieter, cheaper";
+      return `<span class="wf-detail-month${cls}${isCur}" title="${tipText}">${SHORT[i]}</span>`;
+    }).join("");
+    return `<div class="wf-detail-season">
+      <div class="wf-detail-season-header">
+        <div class="wf-detail-season-label">Best time to visit
+          <span class="wf-season-help" title="Colour guide: teal = peak season (busy &amp; pricey), amber = shoulder (great balance), grey = off-peak (quietest). Your selected month is highlighted.">?</span>
+        </div>
+        <div class="wf-season-legend">
+          <span class="wf-season-legend-dot is-high"></span><span>Peak</span>
+          <span class="wf-season-legend-dot is-med"></span><span>Shoulder</span>
+          <span class="wf-season-legend-dot is-low"></span><span>Off-peak</span>
+        </div>
+      </div>
+      <div class="wf-detail-season-months">${pills}</div>
+    </div>`;
+  })();
+
+  const interestsHTML = (()=>{
+    if(!d.interests || !d.interests.length) return "";
+    const MAX = 6;
+    const shown = d.interests.slice(0, MAX);
+    const extra = d.interests.length - MAX;
+    const rows = shown.map(it => {
+      const icon = INTEREST_ICON[it.type] || "📍";
+      const safeTitle = (it.title||"").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+      return `<div class="wf-detail-interest" title="${it.text ? it.text.replace(/"/g,"&quot;") : ""}"><span class="wf-detail-interest-icon">${icon}</span><span class="wf-detail-interest-title">${safeTitle}</span></div>`;
+    }).join("");
+    const moreRow = extra > 0 ? `<div class="wf-detail-more">+${extra} more highlights</div>` : "";
+    return `<div>
+      <div class="wf-detail-section-head">
+        <h4 class="wf-detail-section-title">Highlights</h4>
+        <div class="wf-detail-section-meta">curated from wikivoyage</div>
+      </div>
+      <div class="wf-detail-interests">${rows}${moreRow}</div>
+    </div>`;
+  })();
+
+  let smartLabel = "—";
+  let smartReason = `based on your current weights (CO₂ ${Math.round(STATE.weights.co2*100)}%)`;
+  if(hasFlight || hasTrain){
+    smartLabel = preferTrain ? "Train" : "Flight";
+    if(hasFlight && hasTrain){
+      const tr = cell.train, fl = cell.flight;
+      const timeDiff = Math.abs(fl.time - tr.time);
+      const costSave = fl.cost - tr.cost;
+      if(preferTrain && costSave > 20 && timeDiff < 3)
+        smartReason = `saves €${costSave} with only ${Math.round(timeDiff*60)} min extra`;
+      else if(!preferTrain && fl.time < tr.time * 0.7)
+        smartReason = `${Math.round((tr.time - fl.time)*60)} min faster`;
+      else if(!preferTrain && fl.cost > tr.cost * 1.5)
+        smartReason = `time weight (${Math.round(STATE.weights.time*100)}%) outweighs cost saving`;
+    }
+  }
+
+  return `
+    <p class="wf-detail-insight">${d.insight || ""}</p>
+
+    <div class="wf-detail-badges">
+      <div class="wf-detail-badge">
+        <div class="wf-detail-badge-label">Emission impact</div>
+        <div class="wf-detail-badge-pill ${emis.cls}"><span class="pip"></span>${emis.lab}</div>
+      </div>
+      <div class="wf-detail-badge">
+        <div class="wf-detail-badge-label">Popularity</div>
+        <div class="wf-detail-badge-pill ${popT.cls}"><span class="pip"></span>${popT.lab}</div>
+      </div>
+      <div class="wf-detail-badge">
+        <div class="wf-detail-badge-label">Seasonality</div>
+        <div class="wf-detail-badge-pill ${seas.cls}"><span class="pip"></span>${seas.lab}</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="wf-detail-section-head">
+        <h4 class="wf-detail-section-title">Compare transportation</h4>
+        <div class="wf-detail-section-meta" title="Door-to-door estimate: includes check-in buffer, transfers and last-mile travel">${currentMonthKey() || "—"} · door-to-door ⓘ</div>
+      </div>
+      <div class="wf-transport-list">
+        ${hasTrain
+          ? transportRowHTML("Train",  cell.train,  preferTrain, false)
+          : transportRowHTML("Train",  null, false, true)}
+        ${hasFlight
+          ? transportRowHTML("Flight", cell.flight, !preferTrain && hasFlight, false)
+          : transportRowHTML("Flight", null, false, true)}
+      </div>
+    </div>
+
+    <div class="wf-smart-choice">
+      <span class="lightbulb">💡</span>
+      <span>Smart choice <b>${smartLabel}</b> — ${smartReason}.</span>
+    </div>
+
+    ${seasonStrip}
+    ${interestsHTML}
+  `;
+}
+
+function openDetail(name){
+  const d = lastData.find(x=>x.name===name);
+  if(!d) return;
+  STATE.active = name;
+  drawOverlay(lastData);
+  drawMini(lastData);
+  drawHeadline(lastData);
+  if(listEl){
+    listEl.querySelectorAll(".wf-rank-card").forEach(el=>{
+      el.classList.toggle("is-active", el.getAttribute("data-name")===name);
+    });
+  }
+
+  const overlay = document.getElementById("detail-overlay");
+  const hero    = document.getElementById("detail-hero");
+  const rankEl  = document.getElementById("detail-rank");
+  const nameEl  = document.getElementById("detail-name");
+  const countryEl = document.getElementById("detail-country");
+  const subEl   = document.getElementById("detail-sub");
+  const bodyEl  = document.getElementById("detail-body");
+  if(!overlay) return;
+
+  // Hero image — use <img> so onerror fallback works
+  hero.style.backgroundImage = "";
+  let heroImg = hero.querySelector(".wf-detail-hero-img");
+  if(!heroImg){
+    heroImg = document.createElement("img");
+    heroImg.className = "wf-detail-hero-img";
+    heroImg.style.cssText = "position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;";
+    hero.insertBefore(heroImg, hero.firstChild);
+  }
+  const url = photoURL(d.photoId, 800);
+  heroImg.src = url || "";
+  heroImg.onerror = () => { heroImg.style.display = "none"; };
+  heroImg.onload  = () => { heroImg.style.display = ""; };
+
+  // Rank pill (medal style for top 3)
+  rankEl.className = "wf-detail-hero-rank" + (d.rank <= 3 ? ` is-medal-${d.rank}` : "");
+  const medal = MEDAL[d.rank];
+  rankEl.innerHTML = medal
+    ? `<span style="font-size:14px;">${medal.icon}</span> #${d.rank} · ${medal.label}`
+    : `#${d.rank} · ${d.matchPct}% match`;
+
+  // Name + meta
+  nameEl.firstChild.nodeValue = d.name;
+  countryEl.textContent = ` ${d.country}`;
+  subEl.textContent = `${d.bearingDeg.toFixed(0)}° ${bearingLabel(d.bearingDeg)} · ${d.matchPct}% composite match`;
+
+  // Body
+  const cell = getCellFor(d);
+  bodyEl.innerHTML = buildDetailModalBody(d, cell);
+
+  overlay.classList.add("is-open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeDetail(){
+  const overlay = document.getElementById("detail-overlay");
+  if(!overlay) return;
+  overlay.classList.remove("is-open");
+  document.body.style.overflow = "";
+}
+
+function wireDetail(){
+  const overlay = document.getElementById("detail-overlay");
+  const close   = document.getElementById("detail-close");
+  if(!overlay || !close) return;
+  close.addEventListener("click", closeDetail);
+  overlay.addEventListener("click", (e)=>{
+    if(e.target === overlay) closeDetail();
+  });
+  document.addEventListener("keydown", e=>{
+    if(e.key === "Escape" && overlay.classList.contains("is-open")) closeDetail();
+  });
+}
+
+/* ────────── ABOUT MODAL ────────── */
+function wireAbout(){
+  const overlay = document.getElementById("about-overlay");
+  const btn     = document.getElementById("btn-about");
+  const close   = document.getElementById("about-close");
+  const close2  = document.getElementById("about-close-2");
+  if(!overlay || !btn) return;
+  const open  = ()=> { overlay.classList.add("is-open"); document.body.style.overflow="hidden"; };
+  const shut  = ()=> { overlay.classList.remove("is-open"); document.body.style.overflow=""; };
+  btn.addEventListener("click", open);
+  close && close.addEventListener("click", shut);
+  close2 && close2.addEventListener("click", shut);
+  overlay.addEventListener("click", e=>{ if(e.target === overlay) shut(); });
+}
+
+/* ────────── MAP ZOOM + PAN ────────── */
+const ZOOM = { scale: 1, min: 0.7, max: 4, tx: 0, ty: 0 };
+function applyZoom(){
+  const g = document.getElementById("map-zoom");
+  if(!g) return;
+  const baseT = 500 * (1 - ZOOM.scale);
+  g.setAttribute("transform",
+    `translate(${baseT + ZOOM.tx} ${baseT + ZOOM.ty}) scale(${ZOOM.scale})`);
+  const lvl = document.getElementById("zoom-level");
+  if(lvl) lvl.textContent = Math.round(ZOOM.scale * 100) + "%";
+  // Re-render labels: counter-scale font + adjust semantic-zoom limit.
+  if(lastData && lastData.length) drawLabels(lastData);
+  // Counter-scale label font so text stays readable at high zoom,
+  // while preserving the major/normal/dim tier sizes.
+  const sizeFor = (cls)=>
+    !cls ? 17 :
+    cls.indexOf("wf-label-major") >= 0 ? 21 :
+    cls.indexOf("wf-label-dim")   >= 0 ? 14 :
+    17;
+  g.querySelectorAll(".wf-label").forEach(el => {
+    el.style.fontSize = (sizeFor(el.getAttribute("class")) / ZOOM.scale) + "px";
+  });
+  // Also counter-scale ring band labels, cardinals
+  g.querySelectorAll(".wf-ring-label").forEach(el => el.style.fontSize = (11 / ZOOM.scale) + "px");
+  g.querySelectorAll(".wf-cardinal").forEach(el => el.style.fontSize = (13 / ZOOM.scale) + "px");
+  g.querySelectorAll(".wf-intercardinal").forEach(el => el.style.fontSize = (10 / ZOOM.scale) + "px");
+  g.querySelectorAll(".wf-origin-label").forEach(el => el.style.fontSize = (20 / ZOOM.scale) + "px");
+  g.querySelectorAll(".wf-origin-sub").forEach(el => el.style.fontSize = (9 / ZOOM.scale) + "px");
+}
+function setZoom(s){
+  ZOOM.scale = Math.max(ZOOM.min, Math.min(ZOOM.max, s));
+  applyZoom();
+}
+function resetView(){
+  ZOOM.scale = 1; ZOOM.tx = 0; ZOOM.ty = 0;
+  applyZoom();
+}
+function wireZoom(){
+  const svg = document.getElementById("map");
+  const ctrlIn  = document.getElementById("zoom-in");
+  const ctrlOut = document.getElementById("zoom-out");
+  const ctrlRst = document.getElementById("zoom-reset");
+  if(!svg) return;
+  svg.addEventListener("wheel", (e)=>{
+    e.preventDefault();
+    const factor = Math.exp(-e.deltaY * 0.0015);
+    setZoom(ZOOM.scale * factor);
+    const hint = document.getElementById("zoom-hint");
+    if(hint) hint.style.opacity = "0";
+  }, { passive: false });
+  ctrlIn  && ctrlIn .addEventListener("click", ()=> setZoom(ZOOM.scale * 1.25));
+  ctrlOut && ctrlOut.addEventListener("click", ()=> setZoom(ZOOM.scale / 1.25));
+  ctrlRst && ctrlRst.addEventListener("click", resetView);
+
+  // Drag to pan — only kicks in when the pointer started on empty map
+  // (not on a dot, label, or origin marker) so clicks still select cities.
+  let dragging = false, startX=0, startY=0, startTx=0, startTy=0;
+  svg.addEventListener("pointerdown", (e)=>{
+    if(e.target.closest(".wf-dot-g, .wf-rank-card, #g-origin")) return;
+    dragging = true;
+    startX = e.clientX; startY = e.clientY;
+    startTx = ZOOM.tx;  startTy = ZOOM.ty;
+    svg.setPointerCapture(e.pointerId);
+    svg.style.cursor = "grabbing";
+  });
+  svg.addEventListener("pointermove", (e)=>{
+    if(!dragging) return;
+    // Convert pixel delta to viewBox units (viewBox is 1000 wide, but SVG
+    // is sized via CSS; rect gives us the px size of the visible SVG).
+    const r = svg.getBoundingClientRect();
+    const vbScale = 1000 / r.width;
+    ZOOM.tx = startTx + (e.clientX - startX) * vbScale;
+    ZOOM.ty = startTy + (e.clientY - startY) * vbScale;
+    applyZoom();
+  });
+  const endDrag = (e)=>{
+    if(!dragging) return;
+    dragging = false;
+    try { svg.releasePointerCapture(e.pointerId); } catch(_){}
+    svg.style.cursor = "";
+  };
+  svg.addEventListener("pointerup",     endDrag);
+  svg.addEventListener("pointercancel", endDrag);
+  svg.addEventListener("pointerleave",  endDrag);
+
+  applyZoom();
+}
 function drawHeadline(data){
   const focusName = STATE.active || STATE.hovered;
   const d = focusName ? data.find(x=>x.name===focusName) : data[0];
   if(!d) return;
   matchNameEl.textContent = d.name;
-  matchSubEl.textContent  = `${d.country} · ${d.bearingDeg.toFixed(0)}° ${bearingLabel(d.bearingDeg)} · ${d.time}h · €${d.cost} · ${d.co2}kg CO₂`;
+  const _hh=Math.floor(d.time),_mm=Math.round((d.time-_hh)*60);
+  matchSubEl.textContent  = `${d.country} · ${d.bearingDeg.toFixed(0)}° ${bearingLabel(d.bearingDeg)} · ${_mm>0?`${_hh}h ${_mm}m`:`${_hh}h`} · €${d.cost} · ${d.co2}kg CO₂`;
   matchPctEl.textContent  = d.matchPct;
   insightEl.textContent   = d.insight;
 }
@@ -621,6 +1276,9 @@ function onHover(name){
   if(STATE.hovered === name) return;
   STATE.hovered = name;
   drawOverlay(lastData);
+  // Hide the g-labels text for whichever city now has the overlay label,
+  // so it doesn't double-render (white text behind the green italic one).
+  _syncLabelVisibility();
   drawMini(lastData);
   drawHeadline(lastData);
   if(listEl){
@@ -629,14 +1287,23 @@ function onHover(name){
     });
   }
   gLayer.dots.classList.toggle("has-focus", !!(name || STATE.active));
-  gLayer.dots.querySelectorAll(".wf-dot").forEach(el=>{
-    const isFocus = el.getAttribute("data-name") === (name || STATE.active);
-    el.classList.toggle("is-focus", isFocus);
+  gLayer.dots.querySelectorAll(".wf-dot-g").forEach(g=>{
+    const isFocus = g.getAttribute("data-name") === (name || STATE.active);
+    const dot = g.querySelector(".wf-dot");
+    if(dot) dot.classList.toggle("is-focus", isFocus);
+  });
+}
+function _syncLabelVisibility(){
+  if(!gLayer || !gLayer.labels) return;
+  const focus = STATE.active || STATE.hovered;
+  gLayer.labels.querySelectorAll("[data-name]").forEach(el => {
+    el.style.display = (focus && el.getAttribute("data-name") === focus) ? "none" : "";
   });
 }
 function onSelect(name){
   STATE.active = (STATE.active === name) ? null : name;
   drawOverlay(lastData);
+  _syncLabelVisibility();
   drawMini(lastData);
   drawHeadline(lastData);
   if(listEl){
@@ -645,9 +1312,10 @@ function onSelect(name){
     });
   }
   gLayer.dots.classList.toggle("has-focus", !!(STATE.active || STATE.hovered));
-  gLayer.dots.querySelectorAll(".wf-dot").forEach(el=>{
-    const isFocus = el.getAttribute("data-name") === (STATE.active || STATE.hovered);
-    el.classList.toggle("is-focus", isFocus);
+  gLayer.dots.querySelectorAll(".wf-dot-g").forEach(g=>{
+    const isFocus = g.getAttribute("data-name") === (STATE.active || STATE.hovered);
+    const dot = g.querySelector(".wf-dot");
+    if(dot) dot.classList.toggle("is-focus", isFocus);
   });
   if(STATE.active && listEl){
     const el = listEl.querySelector(`.wf-rank-card[data-name="${CSS.escape(STATE.active)}"]`);
@@ -901,6 +1569,10 @@ function openEntry(){
 function render(){
   const data = compute();
   lastData = data;
+  drawBasemap();
+  // Rose removed — origin uses simple pulse ring; g-rose kept empty
+  const gRose = document.getElementById("g-rose");
+  if(gRose) gRose.innerHTML = "";
   drawRings();
   drawBearings();
   drawCardinal();
@@ -911,6 +1583,35 @@ function render(){
   drawMini(data);
   drawRanking(data);
   drawHeadline(data);
+  syncUrlFromState();
+}
+
+/* ────────── URL STATE ────────── */
+function syncUrlFromState(){
+  if(!STATE.entryDone) return;
+  try {
+    const params = new URLSearchParams();
+    params.set("from", STATE.originKey);
+    params.set("m",    String((STATE.month ?? 0) + 1));
+    params.set("p",    STATE.presetId);
+    history.replaceState(null, "", "?" + params.toString());
+  } catch (_) { /* file:// or sandboxed iframe — ignore */ }
+}
+function syncStateFromUrl(){
+  try {
+    const params = new URLSearchParams(location.search);
+    const from = params.get("from");
+    const m    = parseInt(params.get("m"), 10);
+    const p    = params.get("p");
+    if (from && ORIGINS[from]) STATE.originKey = from;
+    if (m >= 1 && m <= 12)     STATE.month = m - 1;
+    const preset = p && PRESETS.find(x=>x.id===p);
+    if (preset){
+      STATE.presetId  = preset.id;
+      STATE.weights   = { ...preset.w };
+      STATE.popInvert = !!preset.popInvert;
+    }
+  } catch (_) {}
 }
 
 /* ────────── SVG HELPERS ────────── */
@@ -920,6 +1621,33 @@ function svgEl(tag, attrs){
     if(attrs[k]!=null) el.setAttribute(k, attrs[k]);
   }
   return el;
+}
+
+/* ────────── LEGEND PANEL ────────── */
+function wireLegend(){
+  function toggleLayer(layer){
+    LEGEND[layer] = !LEGEND[layer];
+
+    const row = document.getElementById(`legend-${layer}`);
+    const ind = document.getElementById(`legend-ind-${layer}`);
+    if(row){ row.classList.toggle("is-on", LEGEND[layer]); row.setAttribute("aria-pressed", LEGEND[layer]); }
+    if(ind){ ind.classList.toggle("is-on", LEGEND[layer]); }
+
+    // Show CO₂ colour key strip when CO₂ layer turns on
+    if(layer === "co2"){
+      const strip = document.getElementById("legend-co2-strip");
+      if(strip) strip.classList.toggle("is-visible", LEGEND[layer]);
+    }
+
+    if(lastData && lastData.length) drawDots(lastData);
+  }
+
+  ["transport","co2"].forEach(layer=>{
+    const el = document.getElementById(`legend-${layer}`);
+    if(!el) return;
+    el.addEventListener("click", ()=> toggleLayer(layer));
+    el.addEventListener("keydown", e=>{ if(e.key===" "||e.key==="Enter"){ e.preventDefault(); toggleLayer(layer); } });
+  });
 }
 
 /* ────────── ADVANCED DOCK ────────── */
@@ -979,6 +1707,10 @@ function bootApp(){
   drawOriginSelect();
   drawPresetTray();
   wireAdvanced();
+  wireAbout();
+  wireDetail();
+  wireLegend();
+  wireZoom();
   drawMiniLand();
   render();
 
@@ -997,6 +1729,13 @@ function bootApp(){
 }
 
 async function boot(){
+  // Hydrate STATE from ?from=…&m=…&p=… so users can share URLs.
+  syncStateFromUrl();
+
+  // Loading state — visible while destinations_all_months.json fetches.
+  const loaderEl = document.getElementById("wf-loading");
+  if(loaderEl) loaderEl.hidden = false;
+
   // Load monthly fare/duration data before showing entry. If the JSON is
   // missing or the fetch fails (e.g. opened via file://), the app still
   // works using each city's static fallback time/cost.
@@ -1005,9 +1744,17 @@ async function boot(){
       await WF.loadDestinations();
     }
   } catch (err) {
-    console.warn("[Wayfinder] Could not load destinations_all_months.json — running with static fallbacks.", err);
+    console.warn("[WhereToGo] Could not load destinations_all_months.json — running with static fallbacks.", err);
   }
+  if(loaderEl) loaderEl.hidden = true;
   drawEntry();
+
+  // If the URL contained valid params, jump straight to the main view so
+  // shared links land on the map instead of the entry screen.
+  const params = new URLSearchParams(location.search);
+  if (params.has("from") && params.has("m") && params.has("p")) {
+    finishEntry();
+  }
   // If the user wants to skip the entry (e.g. dev), they can call WF.skipEntry()
 }
 WF.skipEntry = finishEntry;

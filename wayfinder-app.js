@@ -20,6 +20,12 @@ const STATE = {
   entryDone:  false,
 };
 
+/* Legend layer toggles — both OFF by default (dots only, no glyph/CO₂ colour) */
+const LEGEND = {
+  transport: false,
+  co2:       false,
+};
+
 const MONTHS = [
   ["Jan","01"],["Feb","02"],["Mar","03"],["Apr","04"],["May","05"],["Jun","06"],
   ["Jul","07"],["Aug","08"],["Sep","09"],["Oct","10"],["Nov","11"],["Dec","12"],
@@ -31,13 +37,14 @@ const CX = VB/2, CY = VB/2;
 const R_MIN = 90;
 const R_MAX = 430;
 
-/* Match-band labels for the rings (best inner → worst outer). */
+/* Match-band labels for the rings (best inner → worst outer).
+   Outermost ring is the cartographic boundary — no label needed. */
 const RING_BANDS = [
   { t:0.00, label:"Best match" },
   { t:0.25, label:"Strong" },
   { t:0.50, label:"Fair" },
   { t:0.75, label:"Stretch" },
-  { t:1.00, label:"Outer band" },
+  { t:1.00, label:null },
 ];
 
 /* ────────── HELPERS ────────── */
@@ -110,8 +117,21 @@ function normalize(arr,key,inverse=false){
     d["n_"+key]= inverse ? 1-n : n;
   });
 }
+/* Known broken Unsplash IDs — some photoIds in destinations.json point to
+   unrelated stock photos (Naples → a space photo, etc). These force a
+   direct fallback to the deterministic IATA-seeded Picsum image. */
+const BAD_PHOTOS = new Set([
+  "1583000186270-d3b0fec0d2c8", // Naples → was a space photo
+]);
 function photoURL(id,w=640){
-  return id ? `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70` : null;
+  if(!id || BAD_PHOTOS.has(id)) return null;
+  return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70`;
+}
+/* Deterministic fallback image (Picsum seed) — always resolves to a real photo,
+   so cards never show empty grey rectangles when Unsplash IDs 404. */
+function fallbackPhotoURL(seed, w=240){
+  const s = encodeURIComponent(String(seed || "city").toLowerCase());
+  return `https://picsum.photos/seed/${s}/${w}/${Math.round(w*0.72)}`;
 }
 
 function currentMonthKey(){
@@ -277,38 +297,157 @@ function drawBearings(){
     const θ = toRad(a-90);
     const x1 = CX + R_MIN * Math.cos(θ);
     const y1 = CY + R_MIN * Math.sin(θ);
-    const x2 = CX + (R_MAX + 16) * Math.cos(θ);
-    const y2 = CY + (R_MAX + 16) * Math.sin(θ);
+    const x2 = CX + R_MAX * Math.cos(θ);
+    const y2 = CY + R_MAX * Math.sin(θ);
     g.appendChild(svgEl("line",{x1,y1,x2,y2,class:"wf-bearing-line"}));
   }
 }
 function drawCardinal(){
   const g = gLayer.cardinal;
   g.innerHTML = "";
-  const cardinals  = [["N",0],["E",90],["S",180],["W",270]];
-  const intercards = [["NE",45],["SE",135],["SW",225],["NW",315]];
-  cardinals.forEach(([l,a])=>{
+
+  /* ── The outer map ring (wf-ring-outer at r = R_MAX) already serves as
+     the compass bezel — we don't draw a separate circle here.
+     All compass geometry is referenced to R_MAX so the two elements are
+     perfectly coincident. ── */
+  const R_BEZEL        = R_MAX;          // 430 — unified with outer map ring
+  const R_TICK_IN      = R_MAX - 9;      // 421 — major tick inner end (inside ring)
+  const R_TICK_OUT     = R_MAX + 9;      // 439 — major tick outer end (outside ring)
+  const R_MINOR_IN     = R_MAX - 5;      // 425
+  const R_MINOR_OUT    = R_MAX + 5;      // 435
+  const R_LABEL        = R_MAX + 34;     // 464 — cardinal/intercardinal labels
+
+  // One subtle inner deco ring to give the compass depth
+  g.appendChild(svgEl("circle",{
+    cx:CX, cy:CY, r: R_MAX - 16,
+    stroke:"rgba(255,255,255,0.05)", "stroke-width":0.8, fill:"none"
+  }));
+
+  // 16 tick marks: major at every 45° (8), minor at every 22.5° (8 intermediate)
+  for(let i=0;i<16;i++){
+    const a = i*22.5;
     const θ = toRad(a-90);
-    const r = R_MAX + 38;
+    const isMajor = (i%2===0);
+    const r1 = isMajor ? R_TICK_IN  : R_MINOR_IN;
+    const r2 = isMajor ? R_TICK_OUT : R_MINOR_OUT;
+    g.appendChild(svgEl("line",{
+      x1: CX+r1*Math.cos(θ), y1: CY+r1*Math.sin(θ),
+      x2: CX+r2*Math.cos(θ), y2: CY+r2*Math.sin(θ),
+      stroke: isMajor ? "rgba(255,255,255,0.50)" : "rgba(255,255,255,0.20)",
+      "stroke-width": isMajor ? 1.6 : 1,
+    }));
+  }
+
+  // North triangle — accent-filled, straddles the outer ring at bearing 0°
+  // Tip points inward; base sits outside the ring
+  const triH   = 10;
+  const triW   = triH * 2 / Math.sqrt(3);
+  const triTipY  = CY - R_TICK_IN;        // tip inside the ring
+  const triBaseY = CY - R_TICK_OUT;       // base outside the ring
+  g.appendChild(svgEl("polygon",{
+    points:`${CX},${triTipY} ${CX-triW/2},${triBaseY} ${CX+triW/2},${triBaseY}`,
+    fill:"var(--wf-accent)"
+  }));
+
+  // Cardinal labels N/S/E/W
+  [["N",0],["E",90],["S",180],["W",270]].forEach(([l,a])=>{
+    const θ = toRad(a-90);
     const t = svgEl("text",{
-      x: CX + r*Math.cos(θ),
-      y: CY + r*Math.sin(θ),
+      x: CX+R_LABEL*Math.cos(θ),
+      y: CY+R_LABEL*Math.sin(θ),
       class:"wf-cardinal","text-anchor":"middle","dominant-baseline":"middle",
     });
     t.textContent = l;
     g.appendChild(t);
   });
-  intercards.forEach(([l,a])=>{
+
+  // Intercardinal labels NE/SE/SW/NW
+  [["NE",45],["SE",135],["SW",225],["NW",315]].forEach(([l,a])=>{
     const θ = toRad(a-90);
-    const r = R_MAX + 32;
     const t = svgEl("text",{
-      x: CX + r*Math.cos(θ),
-      y: CY + r*Math.sin(θ),
+      x: CX+R_LABEL*Math.cos(θ),
+      y: CY+R_LABEL*Math.sin(θ),
       class:"wf-intercardinal","text-anchor":"middle","dominant-baseline":"middle",
     });
     t.textContent = l;
     g.appendChild(t);
   });
+}
+
+/* ────────── DRAW: BASEMAP ──────────
+   Azimuthal-equidistant projection of European coastlines, centred on the
+   current origin. Distance from centre is real great-circle distance scaled
+   to ~5000 km → R_MAX*1.4 (so even Iceland and the Aegean fit on screen).
+   Bearing matches the polar plot exactly — that's the whole point. */
+const EARTH_KM_PER_RAD = 6371;
+const BASEMAP_KM_REACH = 5200;
+const BASEMAP_PX_REACH = R_MAX * 1.45;
+
+function azProject(lat, lon, oLat, oLon){
+  if (Math.abs(lat - oLat) < 1e-6 && Math.abs(lon - oLon) < 1e-6) return [CX, CY];
+  const φ1 = toRad(oLat), φ2 = toRad(lat);
+  const Δλ = toRad(lon - oLon);
+  const cosC = Math.sin(φ1)*Math.sin(φ2) + Math.cos(φ1)*Math.cos(φ2)*Math.cos(Δλ);
+  const c = Math.acos(Math.max(-1, Math.min(1, cosC)));   // angular distance
+  const distKm = c * EARTH_KM_PER_RAD;
+  const r = (distKm / BASEMAP_KM_REACH) * BASEMAP_PX_REACH;
+  const θ = toRad(bearing(oLat, oLon, lat, lon) - 90);
+  return [CX + r*Math.cos(θ), CY + r*Math.sin(θ)];
+}
+function azPolygonPath(latLonArr, oLat, oLon){
+  return latLonArr.map(([la,lo], i)=>{
+    const [x,y] = azProject(la, lo, oLat, oLon);
+    return (i===0?"M":"L") + x.toFixed(1) + "," + y.toFixed(1);
+  }).join(" ") + " Z";
+}
+function drawBasemap(){
+  const g = document.getElementById("g-basemap");
+  if(!g) return;
+  g.innerHTML = "";
+  const O = ORIGINS[STATE.originKey];
+
+  // Faint distance graticule: 1000, 2000, 3000, 4000 km circles
+  [1000, 2000, 3000, 4000].forEach(km => {
+    const r = (km / BASEMAP_KM_REACH) * BASEMAP_PX_REACH;
+    g.appendChild(svgEl("circle", {
+      cx: CX, cy: CY, r,
+      class: "wf-basemap-graticule",
+    }));
+  });
+
+  // Coastline polygons removed — the bearing lines and rings carry enough structure.
+}
+
+/* ────────── DRAW: COMPASS ROSE ──────────
+   Subtle 8-petal rose behind the origin marker. Pure decoration but it
+   makes the centre feel like a cartographic anchor, not a void. */
+function drawRose(){
+  const g = document.getElementById("g-rose");
+  if(!g) return;
+  g.innerHTML = "";
+  const R1 = 22, R2 = 42, R3 = 58;
+  // Outer guide ring
+  g.appendChild(svgEl("circle", { cx:CX, cy:CY, r:R3, class:"wf-rose-ring" }));
+  g.appendChild(svgEl("circle", { cx:CX, cy:CY, r:R1, class:"wf-rose-ring" }));
+  // 8 petals
+  for(let i=0;i<8;i++){
+    const a   = toRad(i*45 - 90);
+    const ap  = toRad(i*45 - 45 - 90);
+    const an  = toRad(i*45 + 45 - 90);
+    const longR = (i % 2 === 0) ? R3 : R2;     // cardinals reach farther
+    const tipX = CX + longR*Math.cos(a),  tipY = CY + longR*Math.sin(a);
+    const lX  = CX + R1*Math.cos(ap),     lY  = CY + R1*Math.sin(ap);
+    const rX  = CX + R1*Math.cos(an),     rY  = CY + R1*Math.sin(an);
+    const d = `M${CX} ${CY} L${lX} ${lY} L${tipX} ${tipY} L${rX} ${rY} Z`;
+    g.appendChild(svgEl("path", { d, class:"wf-rose-petal" }));
+  }
+  // Tiny radial tick marks every 22.5° for a navigator's feel
+  for(let i=0;i<16;i++){
+    const a = toRad(i*22.5 - 90);
+    const x1 = CX + R3*Math.cos(a),  y1 = CY + R3*Math.sin(a);
+    const x2 = CX + (R3+4)*Math.cos(a), y2 = CY + (R3+4)*Math.sin(a);
+    g.appendChild(svgEl("line", { x1, y1, x2, y2, class:"wf-rose-tick" }));
+  }
 }
 
 /* ────────── DRAW: ORIGIN ────────── */
@@ -363,6 +502,13 @@ function updateByName(g, items, makeFn, updateFn){
   });
 }
 
+function _co2Color(co2){
+  if(co2 == null) return null;
+  if(co2 < 15)  return "rgba(80,190,158,.85)";   // muted green
+  if(co2 < 60)  return "rgba(210,165,75,.85)";   // muted amber
+  return          "rgba(195,90,90,.85)";          // muted red
+}
+
 function drawDots(data){
   // Halos for top tier
   const topData = data.filter(d => d.rank <= 5);
@@ -375,46 +521,126 @@ function drawDots(data){
       el.setAttribute("r", 15);
     }
   );
-  // Dots
+
+  // Dots — <g> containing: hit target, shape (circle=flight / rect=train), optional train ring.
   updateByName(
     gLayer.dots, data,
     (d) => {
-      const c = svgEl("circle", { class:"wf-dot" });
-      // Bind interactions once — name is captured from creation closure.
+      const g = svgEl("g", { class:"wf-dot-g" });
+      const hit = svgEl("circle", { class:"wf-dot-hit" });
+      g.appendChild(hit);
       const name = d.name;
-      c.addEventListener("mouseenter", () => onHover(name));
-      c.addEventListener("mouseleave", () => onHover(null));
-      c.addEventListener("click",      () => onSelect(name));
-      return c;
+      g.addEventListener("mouseenter", () => onHover(name));
+      g.addEventListener("mouseleave", () => onHover(null));
+      g.addEventListener("click",      () => onSelect(name));
+      return g;
     },
     (el, d) => {
-      const tier = d.rank<=5 ? "top" : d.rank<=12 ? "mid" : "low";
-      const r = tier==="top" ? 6.0 : tier==="mid" ? 4.5 : 3.4;
-      el.setAttribute("cx", d.x);
-      el.setAttribute("cy", d.y);
-      el.setAttribute("r", r);
+      const tier    = d.rank<=5 ? "top" : d.rank<=12 ? "mid" : "low";
+      const r       = tier==="top" ? 6.0 : tier==="mid" ? 4.5 : 3.4;
+      const isTrain = d.transport === "train";
       const focusName = STATE.active || STATE.hovered;
-      const isFocus = focusName === d.name;
-      el.setAttribute("class", `wf-dot wf-dot-${tier}${isFocus ? " is-focus" : ""}`);
+      const isFocus   = focusName === d.name;
+      const co2Color  = _co2Color(d.co2);
+
+      // Legend gate: only show train glyph when transport layer is ON
+      const showAsTrain = LEGEND.transport && isTrain;
+
+      // Hit target
+      const hit = el.querySelector(".wf-dot-hit");
+      hit.setAttribute("cx", d.x);
+      hit.setAttribute("cy", d.y);
+      hit.setAttribute("r", 14);
+
+      // Shape — replace element if glyph type changed (circle ↔ rect)
+      let shape = el.querySelector(".wf-dot-shape");
+      const needsRect = showAsTrain;
+      const hasRect   = shape && shape.tagName.toLowerCase() === "rect";
+      if(!shape || needsRect !== hasRect){
+        if(shape) shape.remove();
+        shape = svgEl(showAsTrain ? "rect" : "circle", { class:"wf-dot-shape wf-dot" });
+        const ring = el.querySelector(".wf-dot-mode-ring");
+        ring ? el.insertBefore(shape, ring) : el.appendChild(shape);
+      }
+
+      if(showAsTrain){
+        const s = r * 1.75;
+        shape.setAttribute("x",      d.x - s / 2);
+        shape.setAttribute("y",      d.y - s / 2);
+        shape.setAttribute("width",  s);
+        shape.setAttribute("height", s);
+        shape.setAttribute("rx",     s * 0.28);
+        shape.setAttribute("ry",     s * 0.28);
+      } else {
+        shape.setAttribute("cx", d.x);
+        shape.setAttribute("cy", d.y);
+        shape.setAttribute("r",  r);
+      }
+
+      shape.setAttribute("class", `wf-dot-shape wf-dot wf-dot-${tier}${isFocus ? " is-focus" : ""}`);
+      // CO₂ colour: only when legend CO₂ layer is ON; focus accent overrides anyway
+      shape.style.fill = (LEGEND.co2 && co2Color && !isFocus) ? co2Color : "";
+
+      // Mode ring (outer cyan ring): only when transport layer is ON and train is available
+      let modeRing = el.querySelector(".wf-dot-mode-ring");
+      if(LEGEND.transport && d.hasTrain){
+        if(!modeRing){
+          modeRing = svgEl("circle", { class:"wf-dot-mode-ring" });
+          el.appendChild(modeRing);
+        }
+        modeRing.setAttribute("cx", d.x);
+        modeRing.setAttribute("cy", d.y);
+        modeRing.setAttribute("r",  r + 3.5);
+      } else if(modeRing){
+        modeRing.remove();
+      }
     }
   );
-  // Has-focus state on group
+
   gLayer.dots.classList.toggle("has-focus", !!(STATE.active || STATE.hovered));
 }
 function drawLabels(data){
   const g = gLayer.labels;
-  const limit = STATE.density==="rich" ? 14 : 7;
+  // semantic zoom: at higher zoom show more labels, at lower zoom fewer.
+  const baseLimit = STATE.density==="rich" ? 14 : 7;
+  const limit = Math.min(
+    data.length,
+    Math.max(4, Math.round(baseLimit + (ZOOM.scale - 1) * 6))
+  );
   const top = data.slice(0, limit);
+  const focusName = STATE.active || STATE.hovered;
+
+  // Greedy de-overlap: keep estimated bounding boxes of already-placed labels
+  // and push new ones outward if they'd collide. Labels are sorted by rank,
+  // so the most important always wins.
+  const placed = [];
+  const approxCharW = 7.5;
+  const approxH = 18;
+
   updateByName(
     g, top,
     (d) => svgEl("text", { class:"wf-label", "data-name": d.name }),
     (el, d) => {
       const θ = toRad(d.bearingDeg-90);
-      const offset = 16;
-      const lx = d.x + offset*Math.cos(θ);
-      const ly = d.y + offset*Math.sin(θ);
-      const anchor = Math.cos(θ) > 0.25 ? "start" : Math.cos(θ) < -0.25 ? "end" : "middle";
-      // recompute class from current index in `top`
+      let offset = 16;
+      let lx, ly, bx, by, w, anchor;
+      // try a few offsets to avoid collisions
+      for(let tries=0; tries<6; tries++){
+        lx = d.x + offset*Math.cos(θ);
+        ly = d.y + offset*Math.sin(θ);
+        anchor = Math.cos(θ) > 0.25 ? "start" : Math.cos(θ) < -0.25 ? "end" : "middle";
+        w = (d.name.length) * approxCharW;
+        bx = anchor==="start" ? lx : anchor==="end" ? lx - w : lx - w/2;
+        by = ly - approxH/2;
+        const hit = placed.some(p =>
+          bx < p.bx + p.w && bx + w > p.bx &&
+          by < p.by + p.h && by + p.h > p.by
+        );
+        if(!hit) break;
+        offset += 14;
+      }
+      placed.push({ bx, by, w, h: approxH });
+
       const i = top.indexOf(d);
       const cls = i<3 ? "wf-label wf-label-major" : (i<7 ? "wf-label" : "wf-label wf-label-dim");
       el.setAttribute("class", cls);
@@ -423,6 +649,10 @@ function drawLabels(data){
       el.setAttribute("text-anchor", anchor);
       el.setAttribute("dominant-baseline", "middle");
       el.textContent = d.name;
+
+      // Hide this label if it's the focused city — the overlay
+      // group renders an accent-styled label for the focus.
+      el.style.display = (focusName && focusName === d.name) ? "none" : "";
     }
   );
 }
@@ -453,14 +683,14 @@ function drawOverlay(data){
 }
 
 /* ────────── MINI EUROPE MAP (real coastline) ────────── */
-const MINI = { W: 200, H: 180, latMin: 34, latMax: 71, lonMin: -25, lonMax: 32 };
+const MINI = { W: 240, H: 216, latMin: 34, latMax: 71, lonMin: -25, lonMax: 32 };
 function miniProject(lat, lon){
   const x = (lon - MINI.lonMin) / (MINI.lonMax - MINI.lonMin) * MINI.W;
-  // mild equirectangular squish: keep linear in lat but multiply by cos(latMid)
-  const latMid = (MINI.latMin + MINI.latMax) / 2;
-  const yScale = Math.cos(toRad(latMid));
-  // back to linear lat (don't actually mercator; keep things simple)
-  const y = (1 - (lat - MINI.latMin) / (MINI.latMax - MINI.latMin)) * MINI.H;
+  // Mercator projection — gives Europe its familiar realistic proportions
+  const merc = l => Math.log(Math.tan(Math.PI / 4 + toRad(l) / 2));
+  const yMin = merc(MINI.latMin);
+  const yMax = merc(MINI.latMax);
+  const y = (1 - (merc(lat) - yMin) / (yMax - yMin)) * MINI.H;
   return [x, y];
 }
 function polygonPath(latLonArr){
@@ -484,10 +714,14 @@ function drawMiniLand(){
     const [x2] = miniProject(MINI.latMax, lo);
     miniGratEl.appendChild(svgEl("line",{x1,y1:0,x2,y2:MINI.H,class:"wf-mini-grat"}));
   }
-  // landmasses
-  ["mainland","scandinavia","britain","ireland","iceland"].forEach(k=>{
+  // landmasses (italy added for the recognisable boot shape; small Med
+  // islands for cartographic accuracy)
+  ["mainland","italy","scandinavia","britain","ireland","iceland",
+   "sicily","sardinia","corsica","crete","cyprus","mallorca"].forEach(k=>{
+    const poly = EUROPE[k];
+    if(!poly) return;
     const path = svgEl("path",{
-      d: polygonPath(EUROPE[k]),
+      d: polygonPath(poly),
       class: "wf-mini-land",
     });
     miniLandEl.appendChild(path);
@@ -520,10 +754,31 @@ function drawMini(data){
       const tier = d.rank<=5 ? "top" : d.rank<=12 ? "mid" : "low";
       el.setAttribute("cx", x);
       el.setAttribute("cy", y);
-      el.setAttribute("r", tier==="top" ? 2.4 : 1.6);
+      el.setAttribute("r", tier==="top" ? 3 : 2);
       el.setAttribute("class", `wf-mini-dot wf-mini-${tier}`);
     }
   );
+
+  // Hit targets — generous transparent circles for hover/click on the mini-map
+  const hitsG = document.getElementById("mini-hits");
+  if(hitsG){
+    updateByName(
+      hitsG, data,
+      (d) => {
+        const c = svgEl("circle", { class:"wf-mini-hit", r: 8 });
+        const name = d.name;
+        c.addEventListener("mouseenter", () => onHover(name));
+        c.addEventListener("mouseleave", () => onHover(null));
+        c.addEventListener("click",      () => onSelect(name));
+        return c;
+      },
+      (el, d) => {
+        const [x,y] = miniProject(d.lat, d.lon);
+        el.setAttribute("cx", x);
+        el.setAttribute("cy", y);
+      }
+    );
+  }
 
   // Focus ring — stable single element
   let focusEl = g.querySelector(".wf-mini-focus");
@@ -572,31 +827,29 @@ function drawRanking(data){
     if(STATE.active === d.name) el.classList.add("is-active");
     if(STATE.hovered === d.name) el.classList.add("is-hover");
 
-    const url = photoURL(d.photoId, 240);
-    const photoStyle = url ? `background-image:url(${url})` : "";
+    const primaryUrl  = photoURL(d.photoId, 240);
+    const fallbackUrl = fallbackPhotoURL(d.iata || d.name, 240);
+    const imgTag = `<img class="wf-rank-photo-img" src="${primaryUrl || fallbackUrl}" data-fb="${fallbackUrl}" alt="" loading="lazy" onerror="if(this.dataset.fb && this.src!==this.dataset.fb){this.src=this.dataset.fb;}else{this.style.display='none';}">`;
 
     const medal = MEDAL[d.rank];
-    const medalHTML = medal
-      ? `<div class="rank-medal"><div class="medal-pill"><span class="medal-icon">${medal.icon}</span>${medal.label}</div></div>`
+    /* Small inline medal badge sits next to the city name in the title row,
+       not over the photo. Top-3 cards get gold / silver / bronze. */
+    const medalInline = medal
+      ? `<span class="wf-rank-medal-inline is-rank-${d.rank}" title="${medal.label}" aria-label="${medal.label}"><span class="medal-disc">${d.rank}</span></span>`
       : "";
-    const tagText = medal ? medal.label : "Top pick";
 
     el.innerHTML = `
-      <div class="wf-rank-photo" style="${photoStyle}">
-        <div class="rank-num-badge">${d.rank}</div>
-        ${medalHTML}
+      <div class="wf-rank-photo">
+        ${imgTag}
         <div class="match-pill"><span class="match-num">${d.matchPct}</span><span class="match-unit">match</span></div>
       </div>
       <div class="wf-rank-body">
-        <div class="wf-rank-head">
-          <span class="wf-rank-ord">${d.rank}</span>
-          <span class="wf-rank-tag">${tagText}</span>
+        <div class="wf-rank-title-row">
+          <h4 class="wf-rank-name">${d.name}</h4>
+          ${medalInline}
         </div>
-        <h4 class="wf-rank-name">${d.name}</h4>
         <div class="wf-rank-sub">
           <span>${d.country}</span>
-          <span class="sep">·</span>
-          <span>${d.bearingDeg.toFixed(0)}° ${bearingLabel(d.bearingDeg)}</span>
         </div>
         <div class="wf-rank-metrics">
           <div class="wf-rank-m"><span class="wf-rank-m-v">${(()=>{const hh=Math.floor(d.time),mm=Math.round((d.time-hh)*60);return mm>0?`${hh}h ${mm}m`:`${hh}h`;})()}</span><span class="wf-rank-m-l">Travel</span></div>
@@ -855,9 +1108,24 @@ function openDetail(name){
   const bodyEl  = document.getElementById("detail-body");
   if(!overlay) return;
 
-  // Hero image
-  const url = photoURL(d.photoId, 800);
-  hero.style.backgroundImage = url ? `url(${url})` : "";
+  // Hero image — use <img> so onerror fallback works.
+  // First try Unsplash, then Picsum (seeded by IATA) so we never show a blank hero.
+  hero.style.backgroundImage = "";
+  let heroImg = hero.querySelector(".wf-detail-hero-img");
+  if(!heroImg){
+    heroImg = document.createElement("img");
+    heroImg.className = "wf-detail-hero-img";
+    heroImg.style.cssText = "position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;";
+    hero.insertBefore(heroImg, hero.firstChild);
+  }
+  const primary  = photoURL(d.photoId, 800);
+  const fallback = fallbackPhotoURL(d.iata || d.name, 800);
+  heroImg.src = primary || fallback;
+  heroImg.style.display = "";
+  heroImg.onerror = () => {
+    if(heroImg.src !== fallback){ heroImg.src = fallback; }
+    else { heroImg.style.display = "none"; }
+  };
 
   // Rank pill (medal style for top 3)
   rankEl.className = "wf-detail-hero-rank" + (d.rank <= 3 ? ` is-medal-${d.rank}` : "");
@@ -869,7 +1137,7 @@ function openDetail(name){
   // Name + meta
   nameEl.firstChild.nodeValue = d.name;
   countryEl.textContent = ` ${d.country}`;
-  subEl.textContent = `${d.bearingDeg.toFixed(0)}° ${bearingLabel(d.bearingDeg)} · ${d.matchPct}% composite match`;
+  subEl.textContent = `${d.matchPct}% composite match · ${currentMonthKey() || "—"}`;
 
   // Body
   const cell = getCellFor(d);
@@ -914,17 +1182,41 @@ function wireAbout(){
   overlay.addEventListener("click", e=>{ if(e.target === overlay) shut(); });
 }
 
-/* ────────── MAP ZOOM ────────── */
-const ZOOM = { scale: 1, min: 0.7, max: 4 };
+/* ────────── MAP ZOOM + PAN ────────── */
+const ZOOM = { scale: 1, min: 0.7, max: 4, tx: 0, ty: 0 };
 function applyZoom(){
   const g = document.getElementById("map-zoom");
   if(!g) return;
-  g.setAttribute("transform", `translate(${500*(1-ZOOM.scale)} ${500*(1-ZOOM.scale)}) scale(${ZOOM.scale})`);
+  const baseT = 500 * (1 - ZOOM.scale);
+  g.setAttribute("transform",
+    `translate(${baseT + ZOOM.tx} ${baseT + ZOOM.ty}) scale(${ZOOM.scale})`);
   const lvl = document.getElementById("zoom-level");
   if(lvl) lvl.textContent = Math.round(ZOOM.scale * 100) + "%";
+  // Re-render labels: counter-scale font + adjust semantic-zoom limit.
+  if(lastData && lastData.length) drawLabels(lastData);
+  // Counter-scale label font so text stays readable at high zoom,
+  // while preserving the major/normal/dim tier sizes.
+  const sizeFor = (cls)=>
+    !cls ? 17 :
+    cls.indexOf("wf-label-major") >= 0 ? 21 :
+    cls.indexOf("wf-label-dim")   >= 0 ? 14 :
+    17;
+  g.querySelectorAll(".wf-label").forEach(el => {
+    el.style.fontSize = (sizeFor(el.getAttribute("class")) / ZOOM.scale) + "px";
+  });
+  // Also counter-scale ring band labels, cardinals
+  g.querySelectorAll(".wf-ring-label").forEach(el => el.style.fontSize = (11 / ZOOM.scale) + "px");
+  g.querySelectorAll(".wf-cardinal").forEach(el => el.style.fontSize = (13 / ZOOM.scale) + "px");
+  g.querySelectorAll(".wf-intercardinal").forEach(el => el.style.fontSize = (10 / ZOOM.scale) + "px");
+  g.querySelectorAll(".wf-origin-label").forEach(el => el.style.fontSize = (20 / ZOOM.scale) + "px");
+  g.querySelectorAll(".wf-origin-sub").forEach(el => el.style.fontSize = (9 / ZOOM.scale) + "px");
 }
 function setZoom(s){
   ZOOM.scale = Math.max(ZOOM.min, Math.min(ZOOM.max, s));
+  applyZoom();
+}
+function resetView(){
+  ZOOM.scale = 1; ZOOM.tx = 0; ZOOM.ty = 0;
   applyZoom();
 }
 function wireZoom(){
@@ -937,22 +1229,70 @@ function wireZoom(){
     e.preventDefault();
     const factor = Math.exp(-e.deltaY * 0.0015);
     setZoom(ZOOM.scale * factor);
-    // Hide hint after first wheel use
     const hint = document.getElementById("zoom-hint");
-    if(hint) hint.style.opacity = "0";
+    if(hint) hint.classList.add("is-faded");
   }, { passive: false });
-  ctrlIn  && ctrlIn .addEventListener("click", ()=> setZoom(ZOOM.scale * 1.25));
-  ctrlOut && ctrlOut.addEventListener("click", ()=> setZoom(ZOOM.scale / 1.25));
-  ctrlRst && ctrlRst.addEventListener("click", ()=> setZoom(1));
+  ctrlIn  && ctrlIn .addEventListener("click", ()=> { setZoom(ZOOM.scale * 1.25); const h=document.getElementById("zoom-hint"); if(h) h.classList.add("is-faded"); });
+  ctrlOut && ctrlOut.addEventListener("click", ()=> { setZoom(ZOOM.scale / 1.25); const h=document.getElementById("zoom-hint"); if(h) h.classList.add("is-faded"); });
+  ctrlRst && ctrlRst.addEventListener("click", resetView);
+  /* Hint auto-fades after a few seconds even if the user never zooms,
+     so it doesn't sit on top of the map indefinitely. */
+  setTimeout(()=>{
+    const h = document.getElementById("zoom-hint");
+    if(h) h.classList.add("is-faded");
+  }, 5500);
+
+  // Drag to pan — only kicks in when the pointer started on empty map
+  // (not on a dot, label, or origin marker) so clicks still select cities.
+  let dragging = false, startX=0, startY=0, startTx=0, startTy=0;
+  svg.addEventListener("pointerdown", (e)=>{
+    if(e.target.closest(".wf-dot-g, .wf-rank-card, #g-origin")) return;
+    dragging = true;
+    startX = e.clientX; startY = e.clientY;
+    startTx = ZOOM.tx;  startTy = ZOOM.ty;
+    svg.setPointerCapture(e.pointerId);
+    svg.style.cursor = "grabbing";
+  });
+  svg.addEventListener("pointermove", (e)=>{
+    if(!dragging) return;
+    // Convert pixel delta to viewBox units (viewBox is 1000 wide, but SVG
+    // is sized via CSS; rect gives us the px size of the visible SVG).
+    const r = svg.getBoundingClientRect();
+    const vbScale = 1000 / r.width;
+    ZOOM.tx = startTx + (e.clientX - startX) * vbScale;
+    ZOOM.ty = startTy + (e.clientY - startY) * vbScale;
+    applyZoom();
+  });
+  const endDrag = (e)=>{
+    if(!dragging) return;
+    dragging = false;
+    try { svg.releasePointerCapture(e.pointerId); } catch(_){}
+    svg.style.cursor = "";
+  };
+  svg.addEventListener("pointerup",     endDrag);
+  svg.addEventListener("pointercancel", endDrag);
+  svg.addEventListener("pointerleave",  endDrag);
+
   applyZoom();
 }
 function drawHeadline(data){
   const focusName = STATE.active || STATE.hovered;
   const d = focusName ? data.find(x=>x.name===focusName) : data[0];
   if(!d) return;
-  matchNameEl.textContent = d.name;
+  /* City + country on one row — country as a small inline meta string,
+     not a separate line, so the panel reads as one block. */
+  matchNameEl.innerHTML = `${d.name}<span class="wf-headline-country">${d.country}</span>`;
+  const eyebrowEl = document.getElementById("match-eyebrow");
+  if(eyebrowEl){
+    eyebrowEl.textContent = focusName
+      ? (`Rank · ${ord(d.rank)}`)
+      : "Best match · composite score";
+  }
   const _hh=Math.floor(d.time),_mm=Math.round((d.time-_hh)*60);
-  matchSubEl.textContent  = `${d.country} · ${d.bearingDeg.toFixed(0)}° ${bearingLabel(d.bearingDeg)} · ${_mm>0?`${_hh}h ${_mm}m`:`${_hh}h`} · €${d.cost} · ${d.co2}kg CO₂`;
+  /* Bearing removed — the radial position on the map already encodes direction.
+     Subtitle shows the three core travel metrics, cleanly grouped. */
+  const _timeStr = _mm>0 ? `${_hh}h ${_mm}m` : `${_hh}h`;
+  matchSubEl.innerHTML  = `<span class="wf-h-metric"><b>${_timeStr}</b><i>travel</i></span><span class="wf-h-metric"><b>€${d.cost}</b><i>fare</i></span><span class="wf-h-metric"><b>${d.co2}<u>kg</u></b><i>CO₂</i></span>`;
   matchPctEl.textContent  = d.matchPct;
   insightEl.textContent   = d.insight;
 }
@@ -963,6 +1303,9 @@ function onHover(name){
   if(STATE.hovered === name) return;
   STATE.hovered = name;
   drawOverlay(lastData);
+  // Hide the g-labels text for whichever city now has the overlay label,
+  // so it doesn't double-render (white text behind the green italic one).
+  _syncLabelVisibility();
   drawMini(lastData);
   drawHeadline(lastData);
   if(listEl){
@@ -971,14 +1314,23 @@ function onHover(name){
     });
   }
   gLayer.dots.classList.toggle("has-focus", !!(name || STATE.active));
-  gLayer.dots.querySelectorAll(".wf-dot").forEach(el=>{
-    const isFocus = el.getAttribute("data-name") === (name || STATE.active);
-    el.classList.toggle("is-focus", isFocus);
+  gLayer.dots.querySelectorAll(".wf-dot-g").forEach(g=>{
+    const isFocus = g.getAttribute("data-name") === (name || STATE.active);
+    const dot = g.querySelector(".wf-dot");
+    if(dot) dot.classList.toggle("is-focus", isFocus);
+  });
+}
+function _syncLabelVisibility(){
+  if(!gLayer || !gLayer.labels) return;
+  const focus = STATE.active || STATE.hovered;
+  gLayer.labels.querySelectorAll("[data-name]").forEach(el => {
+    el.style.display = (focus && el.getAttribute("data-name") === focus) ? "none" : "";
   });
 }
 function onSelect(name){
   STATE.active = (STATE.active === name) ? null : name;
   drawOverlay(lastData);
+  _syncLabelVisibility();
   drawMini(lastData);
   drawHeadline(lastData);
   if(listEl){
@@ -987,9 +1339,10 @@ function onSelect(name){
     });
   }
   gLayer.dots.classList.toggle("has-focus", !!(STATE.active || STATE.hovered));
-  gLayer.dots.querySelectorAll(".wf-dot").forEach(el=>{
-    const isFocus = el.getAttribute("data-name") === (STATE.active || STATE.hovered);
-    el.classList.toggle("is-focus", isFocus);
+  gLayer.dots.querySelectorAll(".wf-dot-g").forEach(g=>{
+    const isFocus = g.getAttribute("data-name") === (STATE.active || STATE.hovered);
+    const dot = g.querySelector(".wf-dot");
+    if(dot) dot.classList.toggle("is-focus", isFocus);
   });
   if(STATE.active && listEl){
     const el = listEl.querySelector(`.wf-rank-card[data-name="${CSS.escape(STATE.active)}"]`);
@@ -1243,6 +1596,10 @@ function openEntry(){
 function render(){
   const data = compute();
   lastData = data;
+  drawBasemap();
+  // Rose removed — origin uses simple pulse ring; g-rose kept empty
+  const gRose = document.getElementById("g-rose");
+  if(gRose) gRose.innerHTML = "";
   drawRings();
   drawBearings();
   drawCardinal();
@@ -1253,6 +1610,35 @@ function render(){
   drawMini(data);
   drawRanking(data);
   drawHeadline(data);
+  syncUrlFromState();
+}
+
+/* ────────── URL STATE ────────── */
+function syncUrlFromState(){
+  if(!STATE.entryDone) return;
+  try {
+    const params = new URLSearchParams();
+    params.set("from", STATE.originKey);
+    params.set("m",    String((STATE.month ?? 0) + 1));
+    params.set("p",    STATE.presetId);
+    history.replaceState(null, "", "?" + params.toString());
+  } catch (_) { /* file:// or sandboxed iframe — ignore */ }
+}
+function syncStateFromUrl(){
+  try {
+    const params = new URLSearchParams(location.search);
+    const from = params.get("from");
+    const m    = parseInt(params.get("m"), 10);
+    const p    = params.get("p");
+    if (from && ORIGINS[from]) STATE.originKey = from;
+    if (m >= 1 && m <= 12)     STATE.month = m - 1;
+    const preset = p && PRESETS.find(x=>x.id===p);
+    if (preset){
+      STATE.presetId  = preset.id;
+      STATE.weights   = { ...preset.w };
+      STATE.popInvert = !!preset.popInvert;
+    }
+  } catch (_) {}
 }
 
 /* ────────── SVG HELPERS ────────── */
@@ -1262,6 +1648,50 @@ function svgEl(tag, attrs){
     if(attrs[k]!=null) el.setAttribute(k, attrs[k]);
   }
   return el;
+}
+
+/* ────────── LEGEND PANEL ────────── */
+function wireLegend(){
+  function toggleLayer(layer){
+    LEGEND[layer] = !LEGEND[layer];
+    const row = document.getElementById(`legend-${layer}`);
+    if(row){
+      row.classList.toggle("is-on", LEGEND[layer]);
+      row.setAttribute("aria-pressed", LEGEND[layer]);
+    }
+    if(layer === "co2"){
+      const strip = document.getElementById("legend-co2-strip");
+      if(strip){
+        strip.classList.toggle("is-visible", LEGEND[layer]);
+        strip.setAttribute("aria-hidden", String(!LEGEND[layer]));
+      }
+    }
+    if(lastData && lastData.length) drawDots(lastData);
+  }
+
+  ["transport","co2"].forEach(layer=>{
+    const el = document.getElementById(`legend-${layer}`);
+    if(!el) return;
+    el.addEventListener("click", ()=> toggleLayer(layer));
+    el.addEventListener("keydown", e=>{ if(e.key===" "||e.key==="Enter"){ e.preventDefault(); toggleLayer(layer); } });
+  });
+
+  /* Collapse / expand toggle on the legend chrome — the panel folds into a
+     tiny pill so the map stays uncovered when the legend isn't needed. */
+  const legend  = document.getElementById("wf-legend");
+  const toggle  = document.getElementById("legend-toggle");
+  const reopen  = document.getElementById("legend-reopen");
+  function setCollapsed(v){
+    if(!legend) return;
+    legend.classList.toggle("is-collapsed", v);
+    if(reopen) reopen.hidden = !v;
+    try { localStorage.setItem("wf-legend-collapsed", v ? "1" : "0"); } catch(_){}
+  }
+  if(toggle) toggle.addEventListener("click", ()=> setCollapsed(true));
+  if(reopen) reopen.addEventListener("click", ()=> setCollapsed(false));
+  try {
+    if(localStorage.getItem("wf-legend-collapsed") === "1") setCollapsed(true);
+  } catch(_){}
 }
 
 /* ────────── ADVANCED DOCK ────────── */
@@ -1323,6 +1753,7 @@ function bootApp(){
   wireAdvanced();
   wireAbout();
   wireDetail();
+  wireLegend();
   wireZoom();
   drawMiniLand();
   render();
@@ -1342,6 +1773,13 @@ function bootApp(){
 }
 
 async function boot(){
+  // Hydrate STATE from ?from=…&m=…&p=… so users can share URLs.
+  syncStateFromUrl();
+
+  // Loading state — visible while destinations_all_months.json fetches.
+  const loaderEl = document.getElementById("wf-loading");
+  if(loaderEl) loaderEl.hidden = false;
+
   // Load monthly fare/duration data before showing entry. If the JSON is
   // missing or the fetch fails (e.g. opened via file://), the app still
   // works using each city's static fallback time/cost.
@@ -1352,7 +1790,15 @@ async function boot(){
   } catch (err) {
     console.warn("[WhereToGo] Could not load destinations_all_months.json — running with static fallbacks.", err);
   }
+  if(loaderEl) loaderEl.hidden = true;
   drawEntry();
+
+  // If the URL contained valid params, jump straight to the main view so
+  // shared links land on the map instead of the entry screen.
+  const params = new URLSearchParams(location.search);
+  if (params.has("from") && params.has("m") && params.has("p")) {
+    finishEntry();
+  }
   // If the user wants to skip the entry (e.g. dev), they can call WF.skipEntry()
 }
 WF.skipEntry = finishEntry;
