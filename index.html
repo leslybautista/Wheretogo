@@ -116,59 +116,56 @@ window.__WF_TWEAKS = /*EDITMODE-BEGIN*/{
           <div class="wf-q-label-text">What matters?</div>
           <div class="wf-q-label-hint">We'll weight the ranking. Edit later.</div>
         </div>
-        <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
-          <!-- All vibe cards in one grid — app.js injects presets, our card is last -->
-          <div class="wf-vibes" id="entry-vibes">
-            <!-- app.js populates preset vibe cards here -->
-          </div>
 
-          <!-- entry-adv wrapper required by app.js (drawEntry wires advToggle + advBody) -->
-          <div id="entry-adv">
-            <!-- Toggle styled as a vibe card, sits visually after the vibes grid -->
-            <button class="wf-vibe wf-entry-adv-vibe" id="entry-adv-toggle" type="button" aria-expanded="false">
-              <div class="wf-vibe-tick"></div>
-              <div class="wf-vibe-name">More <em>personalised</em></div>
-              <div class="wf-vibe-hint">Set each factor weight manually (0–100%).</div>
-            </button>
-            <div class="wf-entry-adv-body" id="entry-adv-body" hidden>
-              <div class="wf-entry-slider-card">
-                <div class="wf-entry-slider-head">
-                  <span class="wf-entry-slider-lbl">Time</span>
-                  <span class="wf-entry-slider-val" data-evw="time">25%</span>
-                </div>
-                <input class="wf-range" type="range" min="0" max="100" value="25" data-ew="time"/>
+        <div id="entry-adv">
+          <!-- entry-vibes: app.js fills 7 preset cards then re-appends #entry-adv-toggle as the 8th -->
+          <div class="wf-vibes" id="entry-vibes"></div>
+
+          <!-- Staging node — app.js moves this into #entry-vibes as the 8th grid card -->
+          <button class="wf-vibe wf-entry-adv-vibe" id="entry-adv-toggle" type="button"
+                  aria-expanded="false" style="display:none">
+            <div class="wf-vibe-tick"></div>
+            <div class="wf-vibe-name">More <em>personalised</em></div>
+            <div class="wf-vibe-hint">Set each factor weight manually (0–100%).</div>
+          </button>
+
+          <div class="wf-entry-adv-body" id="entry-adv-body" hidden>
+            <div class="wf-entry-slider-card">
+              <div class="wf-entry-slider-head">
+                <span class="wf-entry-slider-lbl">Time</span>
+                <span class="wf-entry-slider-val" data-evw="time">25%</span>
               </div>
-              <div class="wf-entry-slider-card">
-                <div class="wf-entry-slider-head">
-                  <span class="wf-entry-slider-lbl">Cost</span>
-                  <span class="wf-entry-slider-val" data-evw="cost">25%</span>
-                </div>
-                <input class="wf-range" type="range" min="0" max="100" value="25" data-ew="cost"/>
-              </div>
-              <div class="wf-entry-slider-card">
-                <div class="wf-entry-slider-head">
-                  <span class="wf-entry-slider-lbl">CO₂</span>
-                  <span class="wf-entry-slider-val" data-evw="co2">25%</span>
-                </div>
-                <input class="wf-range" type="range" min="0" max="100" value="25" data-ew="co2"/>
-              </div>
-              <div class="wf-entry-slider-card">
-                <div class="wf-entry-slider-head">
-                  <span class="wf-entry-slider-lbl">Popularity</span>
-                  <span class="wf-entry-slider-val" data-evw="pop">25%</span>
-                </div>
-                <input class="wf-range" type="range" min="0" max="100" value="25" data-ew="pop"/>
-              </div>
-              <label class="wf-entry-invert">
-                <input type="checkbox" data-epop-invert/>
-                <span class="wf-switch"></span>
-                <span>Prefer hidden gems <span class="lbl-hint">— invert popularity to favour less‑visited cities</span></span>
-              </label>
+              <input class="wf-range" type="range" min="0" max="100" value="25" data-ew="time"/>
             </div>
+            <div class="wf-entry-slider-card">
+              <div class="wf-entry-slider-head">
+                <span class="wf-entry-slider-lbl">Cost</span>
+                <span class="wf-entry-slider-val" data-evw="cost">25%</span>
+              </div>
+              <input class="wf-range" type="range" min="0" max="100" value="25" data-ew="cost"/>
+            </div>
+            <div class="wf-entry-slider-card">
+              <div class="wf-entry-slider-head">
+                <span class="wf-entry-slider-lbl">CO₂</span>
+                <span class="wf-entry-slider-val" data-evw="co2">25%</span>
+              </div>
+              <input class="wf-range" type="range" min="0" max="100" value="25" data-ew="co2"/>
+            </div>
+            <div class="wf-entry-slider-card">
+              <div class="wf-entry-slider-head">
+                <span class="wf-entry-slider-lbl">Popularity</span>
+                <span class="wf-entry-slider-val" data-evw="pop">25%</span>
+              </div>
+              <input class="wf-range" type="range" min="0" max="100" value="25" data-ew="pop"/>
+            </div>
+            <label class="wf-entry-invert">
+              <input type="checkbox" data-epop-invert/>
+              <span class="wf-switch"></span>
+              <span>Prefer hidden gems <span class="lbl-hint">— invert popularity to favour less‑visited cities</span></span>
+            </label>
           </div>
-        </div>
-      </div>
-
+        </div><!-- /#entry-adv -->
+      </div><!-- /.wf-q -->
       </div><!-- /.wf-entry-form -->
 
     </div>

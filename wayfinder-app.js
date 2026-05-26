@@ -1581,6 +1581,13 @@ function drawEntry(){
     vibesEl.appendChild(b);
   });
 
+  // Move the adv-toggle button INTO entry-vibes as the 8th grid card.
+  // It lives in the HTML outside the grid so innerHTML="" above doesn't destroy it,
+  // then we re-insert it here as the final grid item.
+  const advToggleCard = document.getElementById("entry-adv-toggle");
+  advToggleCard.style.display = ""; // unhide from staging position
+  vibesEl.appendChild(advToggleCard);
+
   // Entry advanced disclosure
   const advRoot   = document.getElementById("entry-adv");
   const advToggle = document.getElementById("entry-adv-toggle");

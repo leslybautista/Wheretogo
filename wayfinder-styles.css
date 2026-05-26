@@ -358,7 +358,8 @@ html, body {
 }
 
 #entry-adv{ display: flex; flex-direction: column; gap: 8px; }
-.wf-entry-adv-vibe{ max-width: none; width: 100%; text-align: left; }
+/* adv-toggle is the 8th card in the .wf-vibes grid — no overrides needed */
+.wf-entry-adv-vibe{ text-align: left; }
 #entry-adv.is-open .wf-entry-adv-vibe,
 .wf-entry-adv-vibe[aria-expanded="true"]{
   border-color: var(--wf-accent);
