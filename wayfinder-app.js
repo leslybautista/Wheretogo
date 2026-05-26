@@ -5,7 +5,7 @@
 
 (function(){
 
-const { ORIGINS, CITIES, PRESETS, EUROPE } = window.WF;
+const { ORIGINS, CITIES, PRESETS } = window.WF;
 
 /* ────────── STATE ────────── */
 const STATE = {
@@ -229,7 +229,7 @@ function compute(){
 let gLayer = null;
 let listEl = null;
 let tipEl  = null;
-let miniLandEl = null, miniDotsEl = null, miniGratEl = null;
+let miniLandEl = null, miniDotsEl = null, miniGratEl = null, miniHitsEl = null;
 let presetTrayEl = null, originSelectEl = null;
 let insightEl=null, matchPctEl=null, matchNameEl=null, matchSubEl=null;
 let rankCountEl=null, rankPresetEl=null;
@@ -250,6 +250,7 @@ function captureRefs(){
   miniLandEl   = document.getElementById("mini-land");
   miniDotsEl   = document.getElementById("mini-dots");
   miniGratEl   = document.getElementById("mini-grat");
+  miniHitsEl   = document.getElementById("mini-hits");
   presetTrayEl = document.getElementById("preset-tray");
   originSelectEl = document.getElementById("origin-select");
   insightEl    = document.getElementById("insight-line");
@@ -400,23 +401,159 @@ function azPolygonPath(latLonArr, oLat, oLon){
     return (i===0?"M":"L") + x.toFixed(1) + "," + y.toFixed(1);
   }).join(" ") + " Z";
 }
+
+function geoJSONPolygonPath(coords, oLat, oLon){
+  return coords.map(ring => {
+    return ring.map(([lon, lat], i) => {
+      const [x, y] = azProject(lat, lon, oLat, oLon);
+      return `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(" ") + " Z";
+  }).join(" ");
+}
+
 function drawBasemap(){
   const g = document.getElementById("g-basemap");
-  if(!g) return;
+  if (!g) return;
   g.innerHTML = "";
-  const O = ORIGINS[STATE.originKey];
 
-  // Faint distance graticule: 1000, 2000, 3000, 4000 km circles
+  const O = ORIGINS[STATE.originKey];
+  const geo = window.WF.EUROPE_GEOJSON;
+  if (!geo || !geo.features) return;
+
   [1000, 2000, 3000, 4000].forEach(km => {
-    const r = (km / BASEMAP_KM_REACH) * BASEMAP_PX_REACH;
+    const r = km / BASEMAP_KM_REACH * BASEMAP_PX_REACH;
     g.appendChild(svgEl("circle", {
-      cx: CX, cy: CY, r,
-      class: "wf-basemap-graticule",
+      cx: CX,
+      cy: CY,
+      r,
+      class: "wf-basemap-graticule"
     }));
   });
 
-  // Coastline polygons removed — the bearing lines and rings carry enough structure.
+  geo.features.forEach(f => {
+    const geom = f.geometry;
+    if (!geom) return;
+
+    if (geom.type === "Polygon") {
+      g.appendChild(svgEl("path", {
+        d: geoJSONPolygonPath(geom.coordinates, O.lat, O.lon),
+        class: "wf-basemap-land"
+      }));
+    }
+
+    if (geom.type === "MultiPolygon") {
+      geom.coordinates.forEach(poly => {
+        g.appendChild(svgEl("path", {
+          d: geoJSONPolygonPath(poly, O.lat, O.lon),
+          class: "wf-basemap-land"
+        }));
+      });
+    }
+  });
 }
+
+function drawMini(data){
+  if (!miniDotsEl) return;
+
+  const O = ORIGINS[STATE.originKey];
+  const focusName = STATE.active || STATE.hovered;
+
+  /* ── Dots layer: same tier/size/color logic as the radial map ── */
+  const gDots = miniDotsEl;
+  gDots.innerHTML = "";
+
+  // Origin dot
+  const [ox, oy] = miniProject(O.lat, O.lon);
+  gDots.appendChild(svgEl("circle", { cx: ox, cy: oy, r: 4.5, class: "wf-mini-origin" }));
+  gDots.appendChild(svgEl("circle", { cx: ox, cy: oy, r: 7,   class: "wf-mini-origin-ring" }));
+
+  // Destination dots — same tier colour as radial (top/mid/low)
+  data.forEach(d => {
+    const [x, y] = miniProject(d.lat, d.lon);
+    const tier = d.rank <= 5 ? "top" : d.rank <= 12 ? "mid" : "low";
+    const r    = tier === "top" ? 3.5 : tier === "mid" ? 2.5 : 1.8;
+    const isFocus = focusName === d.name;
+    const cls  = `wf-mini-dot wf-mini-${tier}${isFocus ? " wf-mini-is-focus" : ""}`;
+    gDots.appendChild(svgEl("circle", { cx: x, cy: y, r, class: cls }));
+  });
+
+  // Focus accent ring on active/hovered city
+  if(focusName){
+    const fd = data.find(x => x.name === focusName);
+    if(fd){
+      const [fx, fy] = miniProject(fd.lat, fd.lon);
+      gDots.appendChild(svgEl("circle", { cx: fx, cy: fy, r: 6.5, class: "wf-mini-focus" }));
+    }
+  }
+
+  /* ── Hit targets layer: transparent circles that receive clicks/hovers ── */
+  if (!miniHitsEl) return;
+  const gHits = miniHitsEl;
+  gHits.innerHTML = "";
+
+  data.forEach(d => {
+    const [x, y] = miniProject(d.lat, d.lon);
+    const hit = svgEl("circle", { cx: x, cy: y, r: 9, class: "wf-mini-hit" });
+    hit.addEventListener("mouseenter", () => {
+      STATE.hovered = d.name;
+      drawOverlay(lastData);
+      drawMini(lastData);
+      drawHeadline(lastData);
+      _syncLabelVisibility();
+      gLayer.dots.classList.add("has-focus");
+      gLayer.dots.querySelectorAll(".wf-dot-g").forEach(g => {
+        const dot = g.querySelector(".wf-dot");
+        if(dot) dot.classList.toggle("is-focus", g.getAttribute("data-name") === d.name);
+      });
+      if(listEl) listEl.querySelectorAll(".wf-rank-card").forEach(el => {
+        el.classList.toggle("is-hover", el.getAttribute("data-name") === d.name);
+      });
+    });
+    hit.addEventListener("mouseleave", () => {
+      STATE.hovered = null;
+      drawOverlay(lastData);
+      drawMini(lastData);
+      drawHeadline(lastData);
+      _syncLabelVisibility();
+      gLayer.dots.classList.toggle("has-focus", !!STATE.active);
+      gLayer.dots.querySelectorAll(".wf-dot-g").forEach(g => {
+        const dot = g.querySelector(".wf-dot");
+        if(dot) dot.classList.toggle("is-focus", g.getAttribute("data-name") === STATE.active);
+      });
+      if(listEl) listEl.querySelectorAll(".wf-rank-card").forEach(el => {
+        el.classList.remove("is-hover");
+      });
+    });
+    hit.addEventListener("click", () => {
+      STATE.active = (STATE.active === d.name) ? null : d.name;
+      drawOverlay(lastData);
+      _syncLabelVisibility();
+      drawMini(lastData);
+      drawHeadline(lastData);
+      gLayer.dots.classList.toggle("has-focus", !!(STATE.active || STATE.hovered));
+      gLayer.dots.querySelectorAll(".wf-dot-g").forEach(g => {
+        const dot = g.querySelector(".wf-dot");
+        if(dot) dot.classList.toggle("is-focus", g.getAttribute("data-name") === (STATE.active || STATE.hovered));
+      });
+      if(listEl){
+        listEl.querySelectorAll(".wf-rank-card").forEach(el => {
+          el.classList.toggle("is-active", el.getAttribute("data-name") === STATE.active);
+        });
+        if(STATE.active){
+          const cardEl = listEl.querySelector(`.wf-rank-card[data-name="${CSS.escape(STATE.active)}"]`);
+          if(cardEl){
+            const top = cardEl.offsetTop - listEl.offsetTop - 12;
+            listEl.scrollTo({ top, behavior: "smooth" });
+          }
+        }
+      }
+      if(STATE.active) openDetail(STATE.active);
+    });
+    gHits.appendChild(hit);
+  });
+}
+
+
 
 /* ────────── DRAW: COMPASS ROSE ──────────
    Subtle 8-petal rose behind the origin marker. Pure decoration but it
@@ -699,102 +836,58 @@ function polygonPath(latLonArr){
     return (i===0?"M":"L") + x.toFixed(1) + "," + y.toFixed(1);
   }).join(" ") + " Z";
 }
-function drawMiniLand(){
-  if(!miniLandEl) return;
-  miniLandEl.innerHTML = "";
-  // graticule — every 10° lat & lon, very faint
-  miniGratEl.innerHTML = "";
-  for(let la = Math.ceil(MINI.latMin/10)*10; la <= MINI.latMax; la += 10){
-    const [, y1] = miniProject(la, MINI.lonMin);
-    const [, y2] = miniProject(la, MINI.lonMax);
-    miniGratEl.appendChild(svgEl("line",{x1:0,y1,x2:MINI.W,y2,class:"wf-mini-grat"}));
-  }
-  for(let lo = Math.ceil(MINI.lonMin/10)*10; lo <= MINI.lonMax; lo += 10){
-    const [x1] = miniProject(MINI.latMin, lo);
-    const [x2] = miniProject(MINI.latMax, lo);
-    miniGratEl.appendChild(svgEl("line",{x1,y1:0,x2,y2:MINI.H,class:"wf-mini-grat"}));
-  }
-  // landmasses (italy added for the recognisable boot shape; small Med
-  // islands for cartographic accuracy)
-  ["mainland","italy","scandinavia","britain","ireland","iceland",
-   "sicily","sardinia","corsica","crete","cyprus","mallorca"].forEach(k=>{
-    const poly = EUROPE[k];
-    if(!poly) return;
-    const path = svgEl("path",{
-      d: polygonPath(poly),
-      class: "wf-mini-land",
-    });
-    miniLandEl.appendChild(path);
-  });
+
+function miniGeoJSONPolygonPath(coords){
+  return coords.map(ring => {
+    return ring.map(([lon, lat], i) => {
+      const [x, y] = miniProject(lat, lon);
+      return `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(" ") + " Z";
+  }).join(" ");
 }
-function drawMini(data){
-  if(!miniDotsEl) return;
-  const g = miniDotsEl;
-  const O = ORIGINS[STATE.originKey];
-  const [ox,oy] = miniProject(O.lat, O.lon);
 
-  // Origin pin — one ring + one fill, stable identity
-  let originRing = g.querySelector(".wf-mini-origin-ring");
-  let originDot  = g.querySelector(".wf-mini-origin");
-  if(!originRing){
-    originRing = svgEl("circle",{class:"wf-mini-origin-ring", r:8});
-    originDot  = svgEl("circle",{class:"wf-mini-origin", r:3.5});
-    g.appendChild(originRing);
-    g.appendChild(originDot);
+function drawMiniLand(){
+  if (!miniLandEl) return;
+  miniLandEl.innerHTML = "";
+  miniGratEl.innerHTML = "";
+
+  for (let la = Math.ceil(MINI.latMin / 10) * 10; la <= MINI.latMax; la += 10) {
+    const [, y1] = miniProject(la, MINI.lonMin);
+    miniGratEl.appendChild(svgEl("line", {
+      x1: 0, y1, x2: MINI.W, y2: y1, class: "wf-mini-grat"
+    }));
   }
-  originRing.setAttribute("cx", ox); originRing.setAttribute("cy", oy);
-  originDot.setAttribute("cx", ox);  originDot.setAttribute("cy", oy);
 
-  // City dots — update by name
-  updateByName(
-    g, data,
-    () => svgEl("circle", { class:"wf-mini-dot" }),
-    (el, d) => {
-      const [x,y] = miniProject(d.lat, d.lon);
-      const tier = d.rank<=5 ? "top" : d.rank<=12 ? "mid" : "low";
-      el.setAttribute("cx", x);
-      el.setAttribute("cy", y);
-      el.setAttribute("r", tier==="top" ? 3 : 2);
-      el.setAttribute("class", `wf-mini-dot wf-mini-${tier}`);
+  for (let lo = Math.ceil(MINI.lonMin / 10) * 10; lo <= MINI.lonMax; lo += 10) {
+    const [x1] = miniProject(MINI.latMin, lo);
+    miniGratEl.appendChild(svgEl("line", {
+      x1, y1: 0, x2: x1, y2: MINI.H, class: "wf-mini-grat"
+    }));
+  }
+
+  const geo = window.WF.EUROPE_GEOJSON;
+  if (!geo || !geo.features) return;
+
+  geo.features.forEach(f => {
+    const geom = f.geometry;
+    if (!geom) return;
+
+    if (geom.type === "Polygon") {
+      miniLandEl.appendChild(svgEl("path", {
+        d: miniGeoJSONPolygonPath(geom.coordinates),
+        class: "wf-mini-land"
+      }));
     }
-  );
 
-  // Hit targets — generous transparent circles for hover/click on the mini-map
-  const hitsG = document.getElementById("mini-hits");
-  if(hitsG){
-    updateByName(
-      hitsG, data,
-      (d) => {
-        const c = svgEl("circle", { class:"wf-mini-hit", r: 8 });
-        const name = d.name;
-        c.addEventListener("mouseenter", () => onHover(name));
-        c.addEventListener("mouseleave", () => onHover(null));
-        c.addEventListener("click",      () => onSelect(name));
-        return c;
-      },
-      (el, d) => {
-        const [x,y] = miniProject(d.lat, d.lon);
-        el.setAttribute("cx", x);
-        el.setAttribute("cy", y);
-      }
-    );
-  }
-
-  // Focus ring — stable single element
-  let focusEl = g.querySelector(".wf-mini-focus");
-  const focusName = STATE.active || STATE.hovered;
-  const fd = focusName ? data.find(x=>x.name===focusName) : null;
-  if(fd){
-    const [x,y] = miniProject(fd.lat, fd.lon);
-    if(!focusEl){
-      focusEl = svgEl("circle",{class:"wf-mini-focus", r:5});
-      g.appendChild(focusEl);
+    if (geom.type === "MultiPolygon") {
+      geom.coordinates.forEach(poly => {
+        miniLandEl.appendChild(svgEl("path", {
+          d: miniGeoJSONPolygonPath(poly),
+          class: "wf-mini-land"
+        }));
+      });
     }
-    focusEl.setAttribute("cx", x);
-    focusEl.setAttribute("cy", y);
-  } else if(focusEl){
-    focusEl.remove();
-  }
+  });
 }
 
 /* ────────── RIGHT-SIDE RANKING ────────── */
@@ -1596,7 +1689,9 @@ function openEntry(){
 function render(){
   const data = compute();
   lastData = data;
-  drawBasemap();
+  // Clear basemap — Europe outline is only shown in the mini map, not behind the radial plot
+  const gBasemap = document.getElementById("g-basemap");
+  if(gBasemap) gBasemap.innerHTML = "";
   // Rose removed — origin uses simple pulse ring; g-rose kept empty
   const gRose = document.getElementById("g-rose");
   if(gRose) gRose.innerHTML = "";
@@ -1785,8 +1880,10 @@ async function boot(){
   // works using each city's static fallback time/cost.
   try {
     if (typeof WF.loadDestinations === "function") {
-      await WF.loadDestinations();
-    }
+await Promise.all([
+  WF.loadDestinations(),
+  WF.loadEuropeGeoJSON("europe.geojson")
+]);    }
   } catch (err) {
     console.warn("[WhereToGo] Could not load destinations_all_months.json — running with static fallbacks.", err);
   }

@@ -864,7 +864,7 @@ svg{ display:block; }
   bottom: 18px; left: 18px;
   width: 264px;
   z-index: 5;
-  pointer-events: none;
+  pointer-events: auto;
   padding: 10px 12px 12px;
   background: linear-gradient(180deg, rgba(12,15,20,0) 0%, rgba(12,15,20,.55) 35%, rgba(12,15,20,.78) 100%);
   -webkit-backdrop-filter: blur(6px);
@@ -879,7 +879,7 @@ svg{ display:block; }
   margin-bottom: 6px;
   text-align: left;
 }
-.wf-mini-svg{ width: 240px; height: 216px; display:block; }
+.wf-mini-svg{ width: 240px; height: 216px; display:block; cursor: default; }
 .wf-mini-hit{ fill: rgba(0,0,0,0); pointer-events: all; cursor: pointer; }
 .wf-mini-dot{ pointer-events: none; }
 .wf-mini-origin, .wf-mini-origin-ring{ pointer-events: none; }
@@ -896,12 +896,14 @@ svg{ display:block; }
               cy .6s cubic-bezier(.2,.7,.2,1),
               r .2s, fill .2s;
 }
-.wf-mini-top{ fill: var(--wf-ink-2); }
+/* Tier colours — identical to radial map: top=wf-ink, mid=wf-ink-3, low=wf-ink-4 */
+.wf-mini-top{ fill: var(--wf-ink); }
 .wf-mini-mid{ fill: var(--wf-ink-3); }
 .wf-mini-low{ fill: var(--wf-ink-4); opacity:.7; }
+.wf-mini-is-focus{ fill: var(--wf-accent) !important; opacity: 1 !important; }
 .wf-mini-origin{ fill: var(--wf-accent); }
 .wf-mini-origin-ring{ fill: none; stroke: var(--wf-accent); stroke-width: .7; opacity: .6; }
-.wf-mini-focus{ fill: none; stroke: var(--wf-accent); stroke-width: 1.4; }
+.wf-mini-focus{ fill: none; stroke: var(--wf-accent); stroke-width: 1.6; opacity: .9; }
 .wf-mini-grat{ stroke: var(--wf-line); stroke-width: .35; fill: none; }
 
 /* ============================================================
