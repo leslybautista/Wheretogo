@@ -120,6 +120,8 @@
       "co2_flight": 62,
       "pop": 87,
       "photoId": "1560969090-c9512d1438ad",
+      "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3b/Brandenburg_Gate_-_Brandenburger_Tor_-_Berlin_-_Germany_-_02.jpg",
+
       "insight": "Germany's restless capital. 2.5 h by ICE from Dresden — the obvious first move.",
       "byOrigin": {
         "DRS": {
@@ -873,7 +875,9 @@
       "lon": 13.7373,
       "co2_flight": 18,
       "pop": 58,
-      "photoId": "1584249261816-c7a682b75179",
+      "photoId": "1584249261816-c7a682b75179",       
+      "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/1/19/Dresden%2C_die_Frauenkirche_Dm_IMG_8199_2018-08-14_18.27.jpg",
+
       "insight": "Baroque on the Elbe. Under 2.5 h from Berlin or Prague by direct train.",
       "byOrigin": {
         "BER": {
@@ -2612,6 +2616,7 @@
       "co2_flight": 17,
       "pop": 62,
       "photoId": "1552751753-0fc84ae45d76",
+      "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/5/54/Landungsbr%C3%BCcken_Hamburg.jpg",
       "insight": "Northern, maritime, understated. A short, light, reasoned trip.",
       "byOrigin": {
         "DRS": {
@@ -3616,6 +3621,8 @@
       "co2_flight": 16,
       "pop": 58,
       "photoId": "1577462281852-279f56bcc5fc",
+      "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Skyline_Frankfurt_am_Main_2015.jpg",
+
       "insight": "More transit hub than destination — but cheap, fast, and low-impact.",
       "byOrigin": {
         "DRS": {
@@ -4445,6 +4452,8 @@
       "co2_flight": 18,
       "pop": 60,
       "photoId": "1597531072931-8af557b9e1bc",
+      "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/b/be/Stadtbild_K%C3%B6ln_%2850MP%29.jpg",
+
       "insight": "Rhine-side ease. Quietly underrated for a weekend.",
       "byOrigin": {
         "DRS": {
@@ -6328,6 +6337,8 @@
       "co2_flight": 28,
       "pop": 88,
       "photoId": "1534351590666-13e3e96c5017",
+      "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/d/dd/Amsterdam_-_062.jpg",
+
       "insight": "Effortless to reach by rail. A balanced introduction to Northern Europe.",
       "byOrigin": {
         "DRS": {
@@ -10914,6 +10925,8 @@
       "co2_flight": 108,
       "pop": 78,
       "photoId": "1518005020951-eccb494ad742",
+      "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/5/56/Wicklow_Street_-_Dublin_-_geograph.org.uk_-_5947509.jpg",
+
       "insight": "Compact, walkable, warm. Pleasantly mid-priced across the board.",
       "byOrigin": {
         "DRS": {
@@ -19495,7 +19508,9 @@
       "lon": 14.2681,
       "co2_flight": 135,
       "pop": 72,
-      "photoId": "1583000186270-d3b0fec0d2c8",
+      "photoId": "1583000186270-d3b0fec0d2c8",      
+      "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Naples_from_the_Castello_Sant_Elmo_with_Abbazia_San_Martino_the_port_and_the_Vesuv.jpg",
+
       "insight": "Southern Italy without the polish. Loud, layered, alive.",
       "byOrigin": {
         "DRS": {
@@ -21528,7 +21543,9 @@
       "lon": 13.055,
       "co2_flight": 27,
       "pop": 64,
-      "photoId": "1527668752968-14dc70a27c95",
+      "photoId": "1527668752968-14dc70a27c95",       
+      "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/2/29/Salzburg_panorama.jpg",
+
       "insight": "Alpine intermission. Modest scale, generous atmosphere.",
       "byOrigin": {
         "DRS": {
@@ -22447,7 +22464,9 @@
       "lon": 8.5417,
       "co2_flight": 35,
       "pop": 70,
-      "photoId": "1515488764276-beab7607c1e6",
+      "photoId": "1515488764276-beab7607c1e6",       
+      "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/3/35/Zurich_reflection_on_the_Limmat_River.jpg",
+
       "insight": "Precise, expensive, quietly spectacular.",
       "byOrigin": {
         "DRS": {
@@ -33820,6 +33839,8 @@
       "co2_flight": 20,
       "pop": 54,
       "photoId": "1568797629192-d4eb6b35915a",
+      "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Bratislava_Panorama_R01.jpg/960px-Bratislava_Panorama_R01.jpg",
+
       "insight": "A discreet detour. Best paired with Vienna or Budapest.",
       "byOrigin": {
         "DRS": {
@@ -34703,7 +34724,9 @@
       "lon": 14.5058,
       "co2_flight": 31,
       "pop": 60,
-      "photoId": "1601370690183-1c7796ecec64",
+      "photoId": "1601370690183-1c7796ecec64",       
+      "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Gallusovo_nabrezje_in_Ljubljana_%282%29.jpg/960px-Gallusovo_nabrezje_in_Ljubljana_%282%29.jpg",
+
       "insight": "Small, green, articulate. A quiet recommendation that keeps surfacing.",
       "byOrigin": {
         "DRS": {
@@ -35878,6 +35901,8 @@
       "co2_flight": 38,
       "pop": 64,
       "photoId": "1591375372226-1c5e3c39a40f",
+      "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Zagreb_%2829255640143%29.jpg",
+
       "insight": "Gateway to the Adriatic. Underrated standalone, exceptional as a hinge.",
       "byOrigin": {
         "DRS": {

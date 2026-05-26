@@ -63,7 +63,8 @@ WF.loadDestinations = async function(url){
       lon:         d.lon,
       co2Flight:   d.co2_flight,
       pop:         d.pop,
-      photoId:     d.photoId,
+      photoId:     d.photoUrl ? null : d.photoId,
+      photoUrl:    d.photoUrl ?? null,
       insight:     d.insight,
       // ── Enrichment fields (present only when city_enrichment.json was merged) ──
       budget:      d.budget      ?? null,   // "Low" | "Medium" | "High"

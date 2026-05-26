@@ -885,9 +885,9 @@ svg{ display:block; }
 .wf-mini-origin, .wf-mini-origin-ring{ pointer-events: none; }
 .wf-mini-frame{ fill: rgba(255,255,255,.015); stroke: var(--wf-line-2); stroke-width: .5; }
 .wf-mini-land{
-  fill: rgba(220,228,242,.04);
+  fill: #191e33;
   stroke: var(--wf-ink-4);
-  stroke-width: .55;
+  stroke-width: .2;
   stroke-linejoin: round;
   opacity: .8;
 }
@@ -897,9 +897,9 @@ svg{ display:block; }
               r .2s, fill .2s;
 }
 /* Tier colours — identical to radial map: top=wf-ink, mid=wf-ink-3, low=wf-ink-4 */
-.wf-mini-top{ fill: var(--wf-ink); }
+.wf-mini-top{ fill:  #bec2d8; }
 .wf-mini-mid{ fill: var(--wf-ink-3); }
-.wf-mini-low{ fill: var(--wf-ink-4); opacity:.7; }
+.wf-mini-low{ fill: #6c7280; ; opacity:.7; }
 .wf-mini-is-focus{ fill: var(--wf-accent) !important; opacity: 1 !important; }
 .wf-mini-origin{ fill: var(--wf-accent); }
 .wf-mini-origin-ring{ fill: none; stroke: var(--wf-accent); stroke-width: .7; opacity: .6; }
@@ -985,7 +985,7 @@ svg{ display:block; }
   border-right: 1px solid var(--wf-line);
   overflow: hidden;
 }
-/* Img-based photo (replaces bg-image for reliable onerror) */
+/* Img-based photo  */
 .wf-rank-photo-img{
   position: absolute; inset: 0;
   width: 100%; height: 100%;

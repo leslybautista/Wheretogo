@@ -471,7 +471,7 @@ function drawMini(data){
   data.forEach(d => {
     const [x, y] = miniProject(d.lat, d.lon);
     const tier = d.rank <= 5 ? "top" : d.rank <= 12 ? "mid" : "low";
-    const r    = tier === "top" ? 3.5 : tier === "mid" ? 2.5 : 1.8;
+    const r    = tier === "top" ? 2.8 : tier === "mid" ? 2 : 1.5;
     const isFocus = focusName === d.name;
     const cls  = `wf-mini-dot wf-mini-${tier}${isFocus ? " wf-mini-is-focus" : ""}`;
     gDots.appendChild(svgEl("circle", { cx: x, cy: y, r, class: cls }));
@@ -919,8 +919,8 @@ function drawRanking(data){
     el.setAttribute("data-name", d.name);
     if(STATE.active === d.name) el.classList.add("is-active");
     if(STATE.hovered === d.name) el.classList.add("is-hover");
-
-    const primaryUrl  = photoURL(d.photoId, 240);
+    
+    const primaryUrl = d.photoUrl || photoURL(d.photoId, 240);
     const fallbackUrl = fallbackPhotoURL(d.iata || d.name, 240);
     const imgTag = `<img class="wf-rank-photo-img" src="${primaryUrl || fallbackUrl}" data-fb="${fallbackUrl}" alt="" loading="lazy" onerror="if(this.dataset.fb && this.src!==this.dataset.fb){this.src=this.dataset.fb;}else{this.style.display='none';}">`;
 
@@ -1202,7 +1202,6 @@ function openDetail(name){
   if(!overlay) return;
 
   // Hero image — use <img> so onerror fallback works.
-  // First try Unsplash, then Picsum (seeded by IATA) so we never show a blank hero.
   hero.style.backgroundImage = "";
   let heroImg = hero.querySelector(".wf-detail-hero-img");
   if(!heroImg){
@@ -1211,7 +1210,8 @@ function openDetail(name){
     heroImg.style.cssText = "position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;";
     hero.insertBefore(heroImg, hero.firstChild);
   }
-  const primary  = photoURL(d.photoId, 800);
+
+  const primary = d.photoUrl || photoURL(d.photoId, 800);  
   const fallback = fallbackPhotoURL(d.iata || d.name, 800);
   heroImg.src = primary || fallback;
   heroImg.style.display = "";
