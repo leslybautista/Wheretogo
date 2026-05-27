@@ -20,10 +20,11 @@ const STATE = {
   entryDone:  false,
 };
 
-/* Legend layer toggles — both OFF by default (dots only, no glyph/CO₂ colour) */
+/* Legend layer toggles — all OFF by default */
 const LEGEND = {
   transport: false,
   co2:       false,
+  pop:       false,
 };
 
 const MONTHS = [
@@ -230,7 +231,7 @@ let gLayer = null;
 let listEl = null;
 let tipEl  = null;
 let miniLandEl = null, miniDotsEl = null, miniGratEl = null, miniHitsEl = null;
-let presetTrayEl = null, originSelectEl = null;
+let presetTrayEl = null, originSelectEl = null, monthSelectEl = null;
 let insightEl=null, matchPctEl=null, matchNameEl=null, matchSubEl=null;
 let rankCountEl=null, rankPresetEl=null;
 
@@ -239,6 +240,7 @@ function captureRefs(){
     rings:    document.getElementById("g-rings"),
     bearings: document.getElementById("g-bearings"),
     cardinal: document.getElementById("g-cardinal"),
+    popGlow:  document.getElementById("g-pop-glow"),
     halos:    document.getElementById("g-halos"),
     dots:     document.getElementById("g-dots"),
     labels:   document.getElementById("g-labels"),
@@ -253,6 +255,7 @@ function captureRefs(){
   miniHitsEl   = document.getElementById("mini-hits");
   presetTrayEl = document.getElementById("preset-tray");
   originSelectEl = document.getElementById("origin-select");
+  monthSelectEl  = document.getElementById("month-select");
   insightEl    = document.getElementById("insight-line");
   matchPctEl   = document.getElementById("match-pct");
   matchNameEl  = document.getElementById("match-name");
@@ -282,7 +285,8 @@ function drawRings(){
       const t = svgEl("text",{
         x: CX + 4,
         y: CY - r - 4,
-        class:"wf-ring-label",
+        class: "wf-ring-label",
+    "text-anchor": "middle",
       });
       t.textContent = band.label.toUpperCase();
       g.appendChild(t);
@@ -343,8 +347,8 @@ function drawCardinal(){
   // Tip points inward; base sits outside the ring
   const triH   = 10;
   const triW   = triH * 2 / Math.sqrt(3);
-  const triTipY  = CY - R_TICK_IN;        // tip inside the ring
-  const triBaseY = CY - R_TICK_OUT;       // base outside the ring
+  const triTipY  = CY - R_TICK_OUT;  // tip outside the ring
+const triBaseY = CY - R_TICK_IN;       // base inside the ring
   g.appendChild(svgEl("polygon",{
     points:`${CX},${triTipY} ${CX-triW/2},${triBaseY} ${CX+triW/2},${triBaseY}`,
     fill:"var(--wf-accent)"
@@ -888,6 +892,217 @@ function drawMiniLand(){
       });
     }
   });
+}
+
+/* ────────── POPULARITY GLOW LAYER ────────── */
+/* Visual language: "elevation plateau" — violet-silver halo that only
+   appears for genuinely popular destinations (pop ≥ 35). Below that
+   threshold nothing renders so low-tourism spots stay invisible in this
+   layer, creating a clear hierarchy. The colour is --wf-violet so it
+   doesn't clash with the orange/red/green CO₂ palette. */
+function drawPopGlow(data){
+  const g = gLayer.popGlow;
+  if(!g) return;
+  g.innerHTML = "";
+  if(!LEGEND.pop) return;
+
+  /* Ensure a single <defs> + blur filter lives in the parent SVG. */
+  const svg = g.closest("svg");
+  let defs = svg.querySelector("defs");
+  if(!defs){ defs = svgEl("defs", {}); svg.insertBefore(defs, svg.firstChild); }
+
+  /* Soft diffuse glow filter */
+  const FBLUR_ID = "wf-pop-blur";
+  if(!defs.querySelector(`#${FBLUR_ID}`)){
+    const flt = svgEl("filter", {
+      id: FBLUR_ID, x:"-120%", y:"-120%", width:"340%", height:"340%",
+      colorInterpolationFilters: "sRGB",
+    });
+    const blur = svgEl("feGaussianBlur", { in:"SourceGraphic", stdDeviation:"9" });
+    flt.appendChild(blur);
+    defs.appendChild(flt);
+  }
+
+  /* Tight inner glow filter */
+  const FBLUR_TIGHT = "wf-pop-blur-tight";
+  if(!defs.querySelector(`#${FBLUR_TIGHT}`)){
+    const flt2 = svgEl("filter", {
+      id: FBLUR_TIGHT, x:"-80%", y:"-80%", width:"260%", height:"260%",
+      colorInterpolationFilters: "sRGB",
+    });
+    const blur2 = svgEl("feGaussianBlur", { in:"SourceGraphic", stdDeviation:"4" });
+    flt2.appendChild(blur2);
+    defs.appendChild(flt2);
+  }
+
+  /* Colour: violet-silver — harmonious with palette, unambiguously ≠ CO₂ */
+  const C = "var(--wf-violet)";     // #9d8fc7
+
+/* =========================================================
+ * POPULARITY ELEVATION LAYER
+ *
+ * Visual philosophy:
+ * - low popularity  -> almost invisible atmosphere
+ * - medium          -> visible soft elevation
+ * - high            -> structured prominence
+ * - elite           -> topographic peak
+ *
+ * IMPORTANT:
+ * Hierarchy comes from STRUCTURE,
+ * not just opacity.
+ * ========================================================= */
+
+data.forEach(d => {
+
+  const pop = d.pop ?? 0;
+
+  // Ignore weak destinations
+  if (pop < 55) return;
+
+  const tRaw = Math.max(
+    0,
+    Math.min(1, (pop - 55) / 45)
+  );
+
+  // Softer emphasis curve
+  // Keeps mid-tier destinations visible
+  const t = Math.pow(tRaw, 1.2);
+
+
+  /* =========================================================
+   * SUBTLE POSITION JITTER
+   *
+   * Prevents "perfect Photoshop glow" look.
+   * Tiny offsets only for outer atmospheres.
+   * ========================================================= */
+
+  const jx = (Math.random() - 0.5) * 1.2;
+  const jy = (Math.random() - 0.5) * 1.2;
+
+
+  /* =========================================================
+   * LAYER 1 — ATMOSPHERIC DIFFUSION
+   *
+   * Large soft halo.
+   * Creates regional presence.
+   * ========================================================= */
+
+  {
+    const r = 8 + t * 44;               // 8 → 52
+    const opacity = 0.05 + t * 0.22;   // 0.05 → 0.27
+
+    g.appendChild(svgEl("circle", {
+      cx: d.x + jx,
+      cy: d.y + jy,
+      r,
+      fill: C,
+      opacity,
+      class: "wf-pop-glow-outer",
+    }));
+  }
+
+
+  /* =========================================================
+   * LAYER 2 — ELEVATION MASS
+   *
+   * Main visible hotspot body.
+   * ========================================================= */
+
+  {
+    const r = 5 + t * 22;               // 5 → 27
+    const opacity = 0.08 + t * 0.30;   // 0.08 → 0.38
+
+    g.appendChild(svgEl("circle", {
+      cx: d.x,
+      cy: d.y,
+      r,
+      fill: C,
+      opacity,
+      class: "wf-pop-glow-inner",
+    }));
+  }
+
+
+  /* =========================================================
+   * LAYER 3 — INNER CORE
+   *
+   * Bright focal hotspot.
+   * ========================================================= */
+
+  if (pop >= 68) {
+
+    const tCore = Math.max(
+      0,
+      Math.min(1, (pop - 68) / 32)
+    );
+
+    const r = 1.6 + tCore * 3.2;        // 1.6 → 4.8
+    const opacity = 0.30 + tCore * 0.45;
+
+    g.appendChild(svgEl("circle", {
+      cx: d.x,
+      cy: d.y,
+      r,
+      fill: "#ffffff",
+      opacity,
+      class: "wf-pop-core",
+    }));
+  }
+
+
+  /* =========================================================
+   * LAYER 4 — PRIMARY TOPOGRAPHIC RING
+   *
+   * Analytical contour ring.
+   * ========================================================= */
+
+  if (pop >= 82) {
+
+    const tRing = Math.max(
+      0,
+      Math.min(1, (pop - 82) / 18)
+    );
+
+    g.appendChild(svgEl("circle", {
+      cx: d.x,
+      cy: d.y,
+      r: 10 + tRing * 4,                // 10 → 14
+      fill: "none",
+      stroke: C,
+      "stroke-width": 0.8 + tRing * 0.6,
+      opacity: 0.22 + tRing * 0.28,
+      class: "wf-pop-ring",
+    }));
+  }
+
+
+  /* =========================================================
+   * LAYER 5 — ELITE SECONDARY CONTOUR
+   *
+   * Reserved for top-tier destinations.
+   * ========================================================= */
+
+  if (pop >= 93) {
+
+    const tElite = Math.max(
+      0,
+      Math.min(1, (pop - 93) / 7)
+    );
+
+    g.appendChild(svgEl("circle", {
+      cx: d.x,
+      cy: d.y,
+      r: 18 + tElite * 5,               // 18 → 23
+      fill: "none",
+      stroke: "#ffffff",
+      "stroke-width": 0.5,
+      opacity: 0.12 + tElite * 0.18,
+      class: "wf-pop-ring wf-pop-ring--outer",
+    }));
+  }
+
+});
+
 }
 
 /* ────────── RIGHT-SIDE RANKING ────────── */
@@ -1519,6 +1734,23 @@ function drawOriginSelect(){
   });
 }
 
+function drawMonthSelect(){
+  if(!monthSelectEl) return;
+  monthSelectEl.innerHTML = "";
+  MONTHS.forEach(([label], i)=>{
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = label;
+    if(i === (STATE.month ?? 0)) opt.selected = true;
+    monthSelectEl.appendChild(opt);
+  });
+  monthSelectEl.addEventListener("change", e=>{
+    STATE.month = parseInt(e.target.value, 10);
+    STATE.active = null;
+    render();
+  });
+}
+
 /* ────────── ENTRY SCREEN ────────── */
 function drawEntry(){
   // Origin select
@@ -1706,6 +1938,7 @@ function render(){
   drawBearings();
   drawCardinal();
   drawOrigin();
+  drawPopGlow(data);
   drawDots(data);
   drawLabels(data);
   drawOverlay(data);
@@ -1713,6 +1946,8 @@ function render(){
   drawRanking(data);
   drawHeadline(data);
   syncUrlFromState();
+  if(originSelectEl) originSelectEl.value = STATE.originKey;
+  if(monthSelectEl)  monthSelectEl.value  = String(STATE.month ?? 0);
 }
 
 /* ────────── URL STATE ────────── */
@@ -1768,10 +2003,14 @@ function wireLegend(){
         strip.setAttribute("aria-hidden", String(!LEGEND[layer]));
       }
     }
+    if(layer === "pop" && lastData && lastData.length){
+      drawPopGlow(lastData);
+      return;
+    }
     if(lastData && lastData.length) drawDots(lastData);
   }
 
-  ["transport","co2"].forEach(layer=>{
+  ["transport","co2","pop"].forEach(layer=>{
     const el = document.getElementById(`legend-${layer}`);
     if(!el) return;
     el.addEventListener("click", ()=> toggleLayer(layer));
@@ -1851,6 +2090,7 @@ function bootApp(){
   }
   appBooted = true;
   drawOriginSelect();
+  drawMonthSelect();
   drawPresetTray();
   wireAdvanced();
   wireAbout();

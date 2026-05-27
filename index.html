@@ -46,7 +46,6 @@ window.__WF_TWEAKS = /*EDITMODE-BEGIN*/{
       </div>
       <div class="wf-brand-text">
         <h1>WhereToGo</h1>
-        <div class="wf-brand-sub">Spatial · Travel · Intelligence</div>
       </div>
     </div>
     <div class="wf-entry-step"><b>Step 1</b> · Set the brief</div>
@@ -196,7 +195,6 @@ window.__WF_TWEAKS = /*EDITMODE-BEGIN*/{
       </div>
       <div class="wf-brand-text">
         <h1>WhereToGo</h1>
-        <div class="wf-brand-sub">Spatial · Travel · Intelligence</div>
       </div>
     </div>
 
@@ -204,6 +202,10 @@ window.__WF_TWEAKS = /*EDITMODE-BEGIN*/{
       <div class="wf-origin-pill" title="Choose your origin city">
         <span class="wf-origin-prefix">From</span>
         <select id="origin-select"></select>
+      </div>
+      <div class="wf-origin-pill" id="month-pill" title="Change travel month">
+        <span class="wf-origin-prefix">Month</span>
+        <select id="month-select"></select>
       </div>
       <div class="wf-preset-tray" id="preset-tray"></div>
     </div>
@@ -217,9 +219,8 @@ window.__WF_TWEAKS = /*EDITMODE-BEGIN*/{
         <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><line x1="6" y1="9" x2="6" y2="22"/><line x1="18" y1="2" x2="18" y2="15"/></svg>
         <span class="wf-pill-btn-label">Advanced</span>
       </button>
-      <button class="wf-pill-btn" id="btn-about" title="About WhereToGo">
+      <button class="wf-pill-btn wf-pill-btn-icon" id="btn-about" title="About WhereToGo">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><circle cx="12" cy="8" r=".8" fill="currentColor" stroke="none"/></svg>
-        <span class="wf-pill-btn-label">About</span>
       </button>
     </div>
   </header>
@@ -263,6 +264,7 @@ window.__WF_TWEAKS = /*EDITMODE-BEGIN*/{
             <g id="g-bearings"></g>
             <g id="g-cardinal"></g>
             <g id="g-rose"></g>
+            <g id="g-pop-glow"></g>
             <g id="g-halos"></g>
             <g id="g-dots"></g>
             <g id="g-labels"></g>
@@ -316,6 +318,18 @@ window.__WF_TWEAKS = /*EDITMODE-BEGIN*/{
               <span class="wf-legend-co2-grad"></span>
             </span>
             <span class="wf-legend-co2-labels"><b>Low</b><span>kg / traveller</span><b>High</b></span>
+          </div>
+          <div class="wf-legend-toggle-row" id="legend-pop" role="button" aria-pressed="false" tabindex="0" title="Popularity glow — halo size reflects how visited the destination is">
+            <span class="wf-legend-sym">
+              <svg viewBox="0 0 18 18" width="18" height="18">
+                <circle cx="9" cy="9" r="9"   fill="#9d8fc7" fill-opacity=".08"/>
+                <circle cx="9" cy="9" r="6.5" fill="#9d8fc7" fill-opacity=".18"/>
+                <circle cx="9" cy="9" r="4.2" fill="#9d8fc7" fill-opacity=".38"/>
+                <circle cx="9" cy="9" r="2.2" fill="#cbbcff" fill-opacity=".95"/>
+              </svg>
+            </span>
+            <span class="wf-legend-layer-label">Popularity</span>
+            <span class="wf-legend-switch" aria-hidden="true"><span class="wf-legend-switch-dot"></span></span>
           </div>
         </div>
       </div>
@@ -499,14 +513,14 @@ window.__WF_TWEAKS = /*EDITMODE-BEGIN*/{
     function syncSelFromButtons(){
       var btns = container.querySelectorAll('.wf-month');
       btns.forEach(function(btn, i){
-        if(btn.classList.contains('is-active')) sel.value = String(i);
+        if(btn.classList.contains('is-active')) sel.value = String(i + 1);
       });
     }
 
     syncSelFromButtons();
 
     sel.addEventListener('change', function(){
-      var idx = parseInt(this.value, 10);
+      var idx = parseInt(this.value, 10) - 1;
       var btns = container.querySelectorAll('.wf-month');
       if(btns[idx]) btns[idx].click();
     });
