@@ -1504,6 +1504,7 @@ function buildDetailModalBody(d, cell){
 function openDetail(name){
   const d = lastData.find(x=>x.name===name);
   if(!d) return;
+  window.logEvent?.("CARD_DETAIL_OPEN", { dest: name, rank: d.rank, score: d.score });
   STATE.active = name;
   drawOverlay(lastData);
   drawMini(lastData);
@@ -1563,6 +1564,7 @@ function openDetail(name){
 }
 
 function closeDetail(){
+  window.logEvent?.("CARD_DETAIL_CLOSE", { dest: STATE.active || null });
   const overlay = document.getElementById("detail-overlay");
   if(!overlay) return;
   overlay.classList.remove("is-open");
@@ -1728,6 +1730,8 @@ function drawHeadline(data){
 let lastData = [];
 function onHover(name){
   if(STATE.hovered === name) return;
+  if(STATE.hovered) window.hoverEnd?.(STATE.hovered);
+  if(name)          window.hoverStart?.(name, "map_or_card");
   STATE.hovered = name;
   drawOverlay(lastData);
   // Hide the g-labels text for whichever city now has the overlay label,
@@ -1814,6 +1818,7 @@ function showDotPopup(d, clickEvent){
 }
 
 function onSelect(name){
+  window.logEvent?.("MAP_POINT_CLICK", { dest: name });
   STATE.active = (STATE.active === name) ? null : name;
   drawOverlay(lastData);
   _syncLabelVisibility();
@@ -1898,8 +1903,14 @@ function readAdvanced(){
   document.querySelector('[data-vw="cost"]').textContent = c + "%";
   document.querySelector('[data-vw="co2"]').textContent  = e + "%";
   document.querySelector('[data-vw="pop"]').textContent  = p + "%";
-  STATE.presetId = "custom";
+   STATE.presetId = "custom";
   if(presetTrayEl) presetTrayEl.querySelectorAll(".wf-preset").forEach(b=>b.classList.remove("is-active"));
+  window.logEvent?.("WEIGHT_CHANGE", {
+    time: Math.round(STATE.weights.time*100),
+    cost: Math.round(STATE.weights.cost*100),
+    co2:  Math.round(STATE.weights.co2*100),
+    pop:  Math.round(STATE.weights.pop*100)
+  });
 }
 
 function drawOriginSelect(){
