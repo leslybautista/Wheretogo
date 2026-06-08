@@ -878,12 +878,13 @@ svg{ display:block; }
   stroke: var(--wf-bg);
   stroke-width: 4px;
   stroke-linejoin: round;
-  pointer-events: none;
+  pointer-events: all;
+  cursor: pointer;
   font-style: normal;
 }
 .wf-label-major{ font-size: 21px; }
 .wf-label-dim{ fill: var(--wf-ink-3); font-size: 14px; }
-.wf-label-focus{ fill: var(--wf-accent); font-style: normal; font-size: 20px; }
+.wf-label-focus{ fill: var(--wf-accent); font-style: normal; font-size: 20px; pointer-events: all; cursor: pointer; }
 
 /* Focus overlay */
 .wf-connector{ stroke: var(--wf-accent); stroke-width: .8; stroke-dasharray: 2 4; opacity: .7; }
@@ -903,6 +904,128 @@ svg{ display:block; }
   transition: opacity .15s;
   z-index: 30;
 }
+
+/* ─── Dot popup (rank 11+) ─── */
+.wf-dot-popup{
+  position: absolute;
+  z-index: 40;
+  width: 220px;
+  background: rgba(14,18,26,.96);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--wf-line-3);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,.55);
+  animation: popupIn .18s ease;
+  pointer-events: auto;
+}
+.wf-dot-popup[hidden]{ display: none !important; }
+@keyframes popupIn{
+  from{ opacity:0; transform:scale(.93) translateY(6px); }
+  to  { opacity:1; transform:scale(1)   translateY(0); }
+}
+.wf-dot-popup-close{
+  position: absolute; top: 6px; right: 8px;
+  background: rgba(255,255,255,.08);
+  border: none; color: var(--wf-ink-2);
+  font-size: 15px; line-height: 1;
+  width: 20px; height: 20px;
+  border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2;
+  transition: background .15s, color .15s;
+}
+.wf-dot-popup-close:hover{ background: rgba(255,255,255,.16); color: var(--wf-ink); }
+.wf-dot-popup-photo-wrap{
+  width: 100%; height: 90px; overflow: hidden;
+  background: rgba(255,255,255,.04);
+}
+.wf-dot-popup-photo{
+  width: 100%; height: 100%; object-fit: cover;
+  display: block;
+}
+.wf-dot-popup-body{
+  padding: 10px 12px 12px;
+}
+.wf-dot-popup-header{
+  display: flex; align-items: flex-start; gap: 8px;
+  margin-bottom: 8px;
+}
+.wf-dot-popup-rank{
+  flex-shrink: 0;
+  font-family: var(--wf-mono);
+  font-size: 10px;
+  color: var(--wf-ink-3);
+  background: rgba(255,255,255,.06);
+  border: 1px solid var(--wf-line);
+  border-radius: 5px;
+  padding: 2px 5px;
+  margin-top: 1px;
+}
+.wf-dot-popup-name{
+  font-size: 13px; font-weight: 600;
+  color: var(--wf-ink); line-height: 1.2;
+}
+.wf-dot-popup-country{
+  font-size: 10px; color: var(--wf-ink-3);
+  margin-top: 1px;
+}
+.wf-dot-popup-match{
+  margin-left: auto; flex-shrink: 0;
+  font-family: var(--wf-mono);
+  font-size: 11px; font-weight: 700;
+  color: var(--wf-highlight);
+  background: rgba(var(--wf-highlight-rgb, 94,210,172),.12);
+  border: 1px solid rgba(var(--wf-highlight-rgb, 94,210,172),.25);
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+.wf-dot-popup-metrics{
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 4px; margin-bottom: 8px;
+}
+.wf-dot-popup-metric{
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--wf-line);
+  border-radius: 7px;
+  padding: 5px 4px 4px;
+  text-align: center;
+}
+.wf-dot-popup-metric-v{
+  display: block;
+  font-family: var(--wf-mono);
+  font-size: 11px; font-weight: 600;
+  color: var(--wf-ink); line-height: 1;
+  margin-bottom: 2px;
+}
+.wf-dot-popup-metric-l{
+  display: block;
+  font-size: 9px; color: var(--wf-ink-3);
+  text-transform: uppercase; letter-spacing: .04em;
+}
+.wf-dot-popup-tags{
+  display: flex; flex-wrap: wrap; gap: 4px;
+  margin-bottom: 7px;
+}
+.wf-dot-popup-tag{
+  font-size: 9px; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--wf-ink-3);
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--wf-line);
+  border-radius: 4px;
+  padding: 2px 5px;
+}
+.wf-dot-popup-tag.is-good{ color: #5ed2ac; border-color: rgba(94,210,172,.3); background: rgba(94,210,172,.08); }
+.wf-dot-popup-tag.is-mid { color: #e8b84b; border-color: rgba(232,184,75,.3);  background: rgba(232,184,75,.08); }
+.wf-dot-popup-insight{
+  font-size: 10px; color: var(--wf-ink-2); line-height: 1.5;
+  border-top: 1px solid var(--wf-line);
+  padding-top: 7px;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.wf-dot-popup-insight:empty{ display: none; }
 
 /* ─── Mini Europe map ─── */
 .wf-mini{
@@ -1241,7 +1364,7 @@ input[type=range].wf-range::-moz-range-thumb{
 @keyframes wfFadeIn{ from{ opacity: 0; transform: translateY(6px); } to{ opacity: 1; transform: none; } }
 
 /* Map zoom wrapper */
-#map-zoom{ transform-origin: 500px 500px; transition: transform .08s linear; }
+#map-zoom{ transition: none; }
 
 /* Zoom controls — top-right of the map area, well clear of the bottom-right
    legend. Pill-shaped, four stacked buttons + a level readout in the middle. */
@@ -1313,8 +1436,9 @@ input[type=range].wf-range::-moz-range-thumb{
 .wf-rank-photo .rank-num-badge,
 .wf-rank-photo .rank-medal{ display: none !important; }
 
-/* Inline medal disc that sits next to the city name. Top-right of the
-   title row, gold / silver / bronze for ranks 1–3, neutral grey afterwards. */
+/* Inline rank badge next to the city name.
+   Ranks 1–3: filled medal disc with a subtle ribbon notch.
+   Ranks 4–10: ghost disc (outlined, no fill) — visible but unobtrusive. */
 .wf-rank-medal-inline{
   flex-shrink: 0;
   margin-left: 8px;
@@ -1322,35 +1446,63 @@ input[type=range].wf-range::-moz-range-thumb{
   display: inline-flex; align-items: center; justify-content: center;
   position: relative;
 }
+/* ── Ranks 1–3: filled medal discs ── */
 .wf-rank-medal-inline .medal-disc{
   width: 22px; height: 22px;
   border-radius: 50%;
   display: inline-flex; align-items: center; justify-content: center;
-  font: 600 11px var(--wf-mono);
+  font: 700 11px var(--wf-mono);
   letter-spacing: 0;
-  color: #1a1a1a;
-  background: linear-gradient(135deg, #f5d27a, #d9a440);
+  color: #1c1a0f;
+  background: linear-gradient(145deg, #f7dc82, #d4982c);
   box-shadow:
-    0 2px 6px -2px rgba(0,0,0,.6),
-    inset 0 0 0 1px rgba(255,255,255,.28),
-    inset 0 -3px 4px rgba(0,0,0,.18);
+    0 2px 8px -2px rgba(0,0,0,.55),
+    inset 0 1px 0 rgba(255,255,255,.45),
+    inset 0 -2px 4px rgba(0,0,0,.20);
 }
 .wf-rank-medal-inline.is-rank-2 .medal-disc{
-  background: linear-gradient(135deg, #e8ebee, #adb4be);
+  color: #1c1c1e;
+  background: linear-gradient(145deg, #eef0f3, #9ea8b3);
+  box-shadow:
+    0 2px 8px -2px rgba(0,0,0,.5),
+    inset 0 1px 0 rgba(255,255,255,.55),
+    inset 0 -2px 4px rgba(0,0,0,.15);
 }
 .wf-rank-medal-inline.is-rank-3 .medal-disc{
-  background: linear-gradient(135deg, #e6a574, #b06b35);
-  color: #fff;
+  color: #1c1409;
+  background: linear-gradient(145deg, #eec98a, #b87833);
+  box-shadow:
+    0 2px 8px -2px rgba(0,0,0,.5),
+    inset 0 1px 0 rgba(255,255,255,.38),
+    inset 0 -2px 4px rgba(0,0,0,.20);
 }
-/* Tiny ribbon notch under the disc for the medal feel */
-.wf-rank-medal-inline::after{
+/* Tiny ribbon notch under the disc for medals 1–3 */
+.wf-rank-medal-inline.is-rank-1::after,
+.wf-rank-medal-inline.is-rank-2::after,
+.wf-rank-medal-inline.is-rank-3::after{
   content:"";
   position: absolute;
-  left: 50%; bottom: -3px;
+  left: 50%; bottom: -4px;
   transform: translateX(-50%) rotate(45deg);
-  width: 4px; height: 4px;
+  width: 5px; height: 5px;
+  border-radius: 1px;
   background: inherit;
-  opacity: .35;
+  opacity: .40;
+}
+
+/* ── Ranks 4–10: ghost disc — position visible, never dominant ── */
+.wf-rank-medal-inline.is-rank-4  .medal-disc,
+.wf-rank-medal-inline.is-rank-5  .medal-disc,
+.wf-rank-medal-inline.is-rank-6  .medal-disc,
+.wf-rank-medal-inline.is-rank-7  .medal-disc,
+.wf-rank-medal-inline.is-rank-8  .medal-disc,
+.wf-rank-medal-inline.is-rank-9  .medal-disc,
+.wf-rank-medal-inline.is-rank-10 .medal-disc{
+  width: 19px; height: 19px;
+  font: 500 10px var(--wf-mono);
+  color: rgba(255,255,255,.38);
+  background: transparent;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.15);
 }
 
 /* Click-affordance hover stamp — trimmed back so it doesn't fight the medal */
@@ -1475,8 +1627,8 @@ input[type=range].wf-range::-moz-range-thumb{
 .wf-detail-badge{ display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
 .wf-detail-badge-label{ font: 500 10px var(--wf-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--wf-ink-3); }
 .wf-detail-badge-pill{ display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; font: 500 12px var(--wf-sans); letter-spacing: .02em; }
-.wf-detail-badge-pill.is-pure  { background: rgba(125,211,192,.18); color: var(--wf-accent); }
-.wf-detail-badge-pill.is-tight { background: rgba(212,165,116,.18); color: var(--wf-highlight); }
+.wf-detail-badge-pill.is-pure  { background: rgba(79,158,212,.18); color: #4f9ed4; }
+.wf-detail-badge-pill.is-tight { background: rgba(154,96,32,.18); color: #c07830; }
 .wf-detail-badge-pill.is-serene{ background: rgba(157,143,199,.18); color: var(--wf-violet); }
 .wf-detail-badge-pill.is-neutral{ background: var(--wf-surface-2); color: var(--wf-ink-2); }
 .wf-detail-badge-pill .pip{ width: 10px; height: 10px; border-radius: 50%; background: currentColor; opacity: .85; }
@@ -1504,9 +1656,9 @@ input[type=range].wf-range::-moz-range-thumb{
 .wf-transport-main{ display: flex; flex-direction: column; gap: 3px; }
 .wf-transport-co2{ font: 500 14px var(--wf-sans); color: var(--wf-ink); letter-spacing: -.01em; display: inline-flex; align-items: center; gap: 8px; }
 .wf-transport-co2 .co2-dot{ width: 10px; height: 10px; border-radius: 50%; background: var(--wf-ink-4); display: inline-block; }
-.wf-transport-co2 .co2-dot.low { background: var(--wf-accent); }
+.wf-transport-co2 .co2-dot.low { background: #4f9ed4; }
 .wf-transport-co2 .co2-dot.mid { background: var(--wf-highlight); }
-.wf-transport-co2 .co2-dot.high{ background: #e07a7a; }
+.wf-transport-co2 .co2-dot.high{ background: #9a6020; }
 .wf-transport-mode{ font: 500 10px var(--wf-mono); letter-spacing: .15em; text-transform: uppercase; color: var(--wf-ink-3); }
 .wf-transport-side{ text-align: right; display: flex; flex-direction: column; gap: 3px; }
 .wf-transport-time{ font-size: 13px; color: var(--wf-ink-2); }
@@ -1750,9 +1902,9 @@ input[type=range].wf-range::-moz-range-thumb{
   height: 5px;
   border-radius: 2px;
   background: linear-gradient(90deg,
-    rgba(80,190,158,.95) 0%,
+    rgba(79,158,212,.95) 0%,
     rgba(210,165,75,.95) 50%,
-    rgba(195,90,90,.95) 100%);
+    rgba(154,96,32,.95) 100%);
 }
 .wf-legend-co2-labels{
   display: flex; justify-content: space-between; align-items: baseline;

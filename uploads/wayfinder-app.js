@@ -5,7 +5,7 @@
 
 (function(){
 
-const { ORIGINS, CITIES, PRESETS, EUROPE } = window.WF;
+const { ORIGINS, CITIES, PRESETS } = window.WF;
 
 /* ────────── STATE ────────── */
 const STATE = {
@@ -20,10 +20,11 @@ const STATE = {
   entryDone:  false,
 };
 
-/* Legend layer toggles — both OFF by default (dots only, no glyph/CO₂ colour) */
+/* Legend layer toggles — all OFF by default */
 const LEGEND = {
   transport: false,
   co2:       false,
+  pop:       false,
 };
 
 const MONTHS = [
@@ -37,13 +38,14 @@ const CX = VB/2, CY = VB/2;
 const R_MIN = 90;
 const R_MAX = 430;
 
-/* Match-band labels for the rings (best inner → worst outer). */
+/* Match-band labels for the rings (best inner → worst outer).
+   Outermost ring is the cartographic boundary — no label needed. */
 const RING_BANDS = [
   { t:0.00, label:"Best match" },
   { t:0.25, label:"Strong" },
   { t:0.50, label:"Fair" },
   { t:0.75, label:"Stretch" },
-  { t:1.00, label:"Outer band" },
+  { t:1.00, label:null },
 ];
 
 /* ────────── HELPERS ────────── */
@@ -116,8 +118,21 @@ function normalize(arr,key,inverse=false){
     d["n_"+key]= inverse ? 1-n : n;
   });
 }
+/* Known broken Unsplash IDs — some photoIds in destinations.json point to
+   unrelated stock photos (Naples → a space photo, etc). These force a
+   direct fallback to the deterministic IATA-seeded Picsum image. */
+const BAD_PHOTOS = new Set([
+  "1583000186270-d3b0fec0d2c8", // Naples → was a space photo
+]);
 function photoURL(id,w=640){
-  return id ? `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70` : null;
+  if(!id || BAD_PHOTOS.has(id)) return null;
+  return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70`;
+}
+/* Deterministic fallback image (Picsum seed) — always resolves to a real photo,
+   so cards never show empty grey rectangles when Unsplash IDs 404. */
+function fallbackPhotoURL(seed, w=240){
+  const s = encodeURIComponent(String(seed || "city").toLowerCase());
+  return `https://picsum.photos/seed/${s}/${w}/${Math.round(w*0.72)}`;
 }
 
 function currentMonthKey(){
@@ -215,16 +230,20 @@ function compute(){
 let gLayer = null;
 let listEl = null;
 let tipEl  = null;
-let miniLandEl = null, miniDotsEl = null, miniGratEl = null;
-let presetTrayEl = null, originSelectEl = null;
+let miniLandEl = null, miniDotsEl = null, miniGratEl = null, miniHitsEl = null;
+let presetTrayEl = null, originSelectEl = null, monthSelectEl = null;
 let insightEl=null, matchPctEl=null, matchNameEl=null, matchSubEl=null;
 let rankCountEl=null, rankPresetEl=null;
+let dotPopupEl=null, dotPopupNameEl=null, dotPopupCountryEl=null,
+    dotPopupRankEl=null, dotPopupMatchEl=null, dotPopupPhotoEl=null,
+    dotPopupMetricsEl=null, dotPopupTagsEl=null, dotPopupInsightEl=null;
 
 function captureRefs(){
   gLayer = {
     rings:    document.getElementById("g-rings"),
     bearings: document.getElementById("g-bearings"),
     cardinal: document.getElementById("g-cardinal"),
+    popGlow:  document.getElementById("g-pop-glow"),
     halos:    document.getElementById("g-halos"),
     dots:     document.getElementById("g-dots"),
     labels:   document.getElementById("g-labels"),
@@ -236,38 +255,47 @@ function captureRefs(){
   miniLandEl   = document.getElementById("mini-land");
   miniDotsEl   = document.getElementById("mini-dots");
   miniGratEl   = document.getElementById("mini-grat");
+  miniHitsEl   = document.getElementById("mini-hits");
   presetTrayEl = document.getElementById("preset-tray");
   originSelectEl = document.getElementById("origin-select");
+  monthSelectEl  = document.getElementById("month-select");
   insightEl    = document.getElementById("insight-line");
   matchPctEl   = document.getElementById("match-pct");
   matchNameEl  = document.getElementById("match-name");
   matchSubEl   = document.getElementById("match-sub");
   rankCountEl  = document.getElementById("rank-count");
   rankPresetEl = document.getElementById("rank-preset");
+  dotPopupEl        = document.getElementById("dot-popup");
+  dotPopupNameEl    = document.getElementById("dot-popup-name");
+  dotPopupCountryEl = document.getElementById("dot-popup-country");
+  dotPopupRankEl    = document.getElementById("dot-popup-rank");
+  dotPopupMatchEl   = document.getElementById("dot-popup-match");
+  dotPopupPhotoEl   = document.getElementById("dot-popup-photo");
+  dotPopupMetricsEl = document.getElementById("dot-popup-metrics");
+  dotPopupTagsEl    = document.getElementById("dot-popup-tags");
+  dotPopupInsightEl = document.getElementById("dot-popup-insight");
+  if(dotPopupEl){
+    document.getElementById("dot-popup-close").addEventListener("click", closeDotPopup);
+  }
 }
 
 /* ────────── DRAW: RINGS, BEARING LINES, CARDINALS ────────── */
 function drawRings(){
   const g = gLayer.rings;
   g.innerHTML = "";
-  // 5 rings — inner is highlighted, outer is solid.
+  // Inner rings only — the outermost ring is owned by the static compass layer.
   RING_BANDS.forEach((band, i) => {
+    if(i === RING_BANDS.length - 1) return; // outer ring drawn in drawCardinal (static)
     const r = R_MIN + band.t * (R_MAX - R_MIN);
-    const isOuter = i === RING_BANDS.length-1;
     const isInner = i === 0;
-    const cls = isOuter ? "wf-ring wf-ring-outer"
-              : isInner ? "wf-ring wf-ring-emph"
-              : "wf-ring";
-    g.appendChild(svgEl("circle",{
-      cx:CX, cy:CY, r,
-      class: cls,
-    }));
-    // band label, placed at top edge of each ring
+    const cls = isInner ? "wf-ring wf-ring-emph" : "wf-ring";
+    g.appendChild(svgEl("circle",{ cx:CX, cy:CY, r, class: cls }));
     if(band.label){
       const t = svgEl("text",{
         x: CX + 4,
         y: CY - r - 4,
-        class:"wf-ring-label",
+        class: "wf-ring-label",
+        "text-anchor": "middle",
       });
       t.textContent = band.label.toUpperCase();
       g.appendChild(t);
@@ -283,8 +311,8 @@ function drawBearings(){
     const θ = toRad(a-90);
     const x1 = CX + R_MIN * Math.cos(θ);
     const y1 = CY + R_MIN * Math.sin(θ);
-    const x2 = CX + (R_MAX + 16) * Math.cos(θ);
-    const y2 = CY + (R_MAX + 16) * Math.sin(θ);
+    const x2 = CX + R_MAX * Math.cos(θ);
+    const y2 = CY + R_MAX * Math.sin(θ);
     g.appendChild(svgEl("line",{x1,y1,x2,y2,class:"wf-bearing-line"}));
   }
 }
@@ -292,56 +320,53 @@ function drawCardinal(){
   const g = gLayer.cardinal;
   g.innerHTML = "";
 
-  const R_BEZEL          = 470;   // main compass ring
-  const R_MAJOR_INNER    = 462;   // major tick inner end
-  const R_MAJOR_OUTER    = 476;   // major tick outer end
-  const R_MINOR_INNER    = 465;   // minor tick inner end
-  const R_MINOR_OUTER    = 472;   // minor tick outer end
-  const R_LABEL          = 490;   // label radius
-  const R_DECO_1         = 458;
-  const R_DECO_2         = 454;
+  /* ── g-cardinal is now in the static layer (never zooms/pans).
+     It owns the outer ring circle so the bezel is always fully visible. ── */
+  const R_TICK_IN      = R_MAX - 9;
+  const R_TICK_OUT     = R_MAX + 9;
+  const R_MINOR_IN     = R_MAX - 5;
+  const R_MINOR_OUT    = R_MAX + 5;
+  const R_LABEL        = R_MAX + 34;
 
-  // Main bezel circle
+  // Outer boundary ring (the compass bezel frame)
   g.appendChild(svgEl("circle",{
-    cx:CX, cy:CY, r:R_BEZEL,
-    stroke:"rgba(255,255,255,0.07)", "stroke-width":1.5, fill:"none"
+    cx:CX, cy:CY, r:R_MAX,
+    class:"wf-ring wf-ring-outer"
   }));
 
-  // Two decorative inner rings
-  [R_DECO_1, R_DECO_2].forEach(r=>{
-    g.appendChild(svgEl("circle",{
-      cx:CX, cy:CY, r,
-      stroke:"rgba(255,255,255,0.04)", "stroke-width":0.8, fill:"none"
-    }));
-  });
+  // One subtle inner deco ring for compass depth
+  g.appendChild(svgEl("circle",{
+    cx:CX, cy:CY, r: R_MAX - 16,
+    stroke:"rgba(255,255,255,0.05)", "stroke-width":0.8, fill:"none"
+  }));
 
-  // 16 tick marks: major at every 45° (8 positions), minor at every 22.5° (intermediate 8)
+  // 16 tick marks: major at every 45° (8), minor at every 22.5° (8 intermediate)
   for(let i=0;i<16;i++){
     const a = i*22.5;
     const θ = toRad(a-90);
     const isMajor = (i%2===0);
-    const r1 = isMajor ? R_MAJOR_INNER : R_MINOR_INNER;
-    const r2 = isMajor ? R_MAJOR_OUTER : R_MINOR_OUTER;
+    const r1 = isMajor ? R_TICK_IN  : R_MINOR_IN;
+    const r2 = isMajor ? R_TICK_OUT : R_MINOR_OUT;
     g.appendChild(svgEl("line",{
       x1: CX+r1*Math.cos(θ), y1: CY+r1*Math.sin(θ),
       x2: CX+r2*Math.cos(θ), y2: CY+r2*Math.sin(θ),
-      stroke: isMajor ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.15)",
-      "stroke-width": isMajor ? 1.5 : 1,
+      stroke: isMajor ? "rgba(255,255,255,0.50)" : "rgba(255,255,255,0.20)",
+      "stroke-width": isMajor ? 1.6 : 1,
     }));
   }
 
-  // North triangle: filled accent triangle at N, pointing inward toward centre
-  // N is at bearing 0° → angle θ = toRad(0-90) = -π/2 → (CX, CY-r)
-  const triH = 8;
-  const triW = triH * 2 / Math.sqrt(3); // equilateral base
-  const triTipY  = CY - R_MAJOR_INNER;        // tip points inward (down from bezel)
-  const triBaseY = CY - R_MAJOR_OUTER;        // base sits at outer tick end
+  // North triangle — accent-filled, straddles the outer ring at bearing 0°
+  // Tip points inward; base sits outside the ring
+  const triH   = 10;
+  const triW   = triH * 2 / Math.sqrt(3);
+  const triTipY  = CY - R_TICK_OUT;  // tip outside the ring
+const triBaseY = CY - R_TICK_IN;       // base inside the ring
   g.appendChild(svgEl("polygon",{
     points:`${CX},${triTipY} ${CX-triW/2},${triBaseY} ${CX+triW/2},${triBaseY}`,
     fill:"var(--wf-accent)"
   }));
 
-  // Cardinal labels N/S/E/W — larger, primary colour
+  // Cardinal labels N/S/E/W
   [["N",0],["E",90],["S",180],["W",270]].forEach(([l,a])=>{
     const θ = toRad(a-90);
     const t = svgEl("text",{
@@ -353,7 +378,7 @@ function drawCardinal(){
     g.appendChild(t);
   });
 
-  // Intercardinal labels NE/SE/SW/NW — smaller, tertiary colour
+  // Intercardinal labels NE/SE/SW/NW
   [["NE",45],["SE",135],["SW",225],["NW",315]].forEach(([l,a])=>{
     const θ = toRad(a-90);
     const t = svgEl("text",{
@@ -392,23 +417,159 @@ function azPolygonPath(latLonArr, oLat, oLon){
     return (i===0?"M":"L") + x.toFixed(1) + "," + y.toFixed(1);
   }).join(" ") + " Z";
 }
+
+function geoJSONPolygonPath(coords, oLat, oLon){
+  return coords.map(ring => {
+    return ring.map(([lon, lat], i) => {
+      const [x, y] = azProject(lat, lon, oLat, oLon);
+      return `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(" ") + " Z";
+  }).join(" ");
+}
+
 function drawBasemap(){
   const g = document.getElementById("g-basemap");
-  if(!g) return;
+  if (!g) return;
   g.innerHTML = "";
-  const O = ORIGINS[STATE.originKey];
 
-  // Faint distance graticule: 1000, 2000, 3000, 4000 km circles
+  const O = ORIGINS[STATE.originKey];
+  const geo = window.WF.EUROPE_GEOJSON;
+  if (!geo || !geo.features) return;
+
   [1000, 2000, 3000, 4000].forEach(km => {
-    const r = (km / BASEMAP_KM_REACH) * BASEMAP_PX_REACH;
+    const r = km / BASEMAP_KM_REACH * BASEMAP_PX_REACH;
     g.appendChild(svgEl("circle", {
-      cx: CX, cy: CY, r,
-      class: "wf-basemap-graticule",
+      cx: CX,
+      cy: CY,
+      r,
+      class: "wf-basemap-graticule"
     }));
   });
 
-  // Coastline polygons removed — the bearing lines and rings carry enough structure.
+  geo.features.forEach(f => {
+    const geom = f.geometry;
+    if (!geom) return;
+
+    if (geom.type === "Polygon") {
+      g.appendChild(svgEl("path", {
+        d: geoJSONPolygonPath(geom.coordinates, O.lat, O.lon),
+        class: "wf-basemap-land"
+      }));
+    }
+
+    if (geom.type === "MultiPolygon") {
+      geom.coordinates.forEach(poly => {
+        g.appendChild(svgEl("path", {
+          d: geoJSONPolygonPath(poly, O.lat, O.lon),
+          class: "wf-basemap-land"
+        }));
+      });
+    }
+  });
 }
+
+function drawMini(data){
+  if (!miniDotsEl) return;
+
+  const O = ORIGINS[STATE.originKey];
+  const focusName = STATE.active || STATE.hovered;
+
+  /* ── Dots layer: same tier/size/color logic as the radial map ── */
+  const gDots = miniDotsEl;
+  gDots.innerHTML = "";
+
+  // Origin dot
+  const [ox, oy] = miniProject(O.lat, O.lon);
+  gDots.appendChild(svgEl("circle", { cx: ox, cy: oy, r: 4.5, class: "wf-mini-origin" }));
+  gDots.appendChild(svgEl("circle", { cx: ox, cy: oy, r: 7,   class: "wf-mini-origin-ring" }));
+
+  // Destination dots — same tier colour as radial (top/mid/low)
+  data.forEach(d => {
+    const [x, y] = miniProject(d.lat, d.lon);
+    const tier = d.rank <= 5 ? "top" : d.rank <= 12 ? "mid" : "low";
+    const r    = tier === "top" ? 2.8 : tier === "mid" ? 2 : 1.5;
+    const isFocus = focusName === d.name;
+    const cls  = `wf-mini-dot wf-mini-${tier}${isFocus ? " wf-mini-is-focus" : ""}`;
+    gDots.appendChild(svgEl("circle", { cx: x, cy: y, r, class: cls }));
+  });
+
+  // Focus accent ring on active/hovered city
+  if(focusName){
+    const fd = data.find(x => x.name === focusName);
+    if(fd){
+      const [fx, fy] = miniProject(fd.lat, fd.lon);
+      gDots.appendChild(svgEl("circle", { cx: fx, cy: fy, r: 6.5, class: "wf-mini-focus" }));
+    }
+  }
+
+  /* ── Hit targets layer: transparent circles that receive clicks/hovers ── */
+  if (!miniHitsEl) return;
+  const gHits = miniHitsEl;
+  gHits.innerHTML = "";
+
+  data.forEach(d => {
+    const [x, y] = miniProject(d.lat, d.lon);
+    const hit = svgEl("circle", { cx: x, cy: y, r: 9, class: "wf-mini-hit" });
+    hit.addEventListener("mouseenter", () => {
+      STATE.hovered = d.name;
+      drawOverlay(lastData);
+      drawMini(lastData);
+      drawHeadline(lastData);
+      _syncLabelVisibility();
+      gLayer.dots.classList.add("has-focus");
+      gLayer.dots.querySelectorAll(".wf-dot-g").forEach(g => {
+        const dot = g.querySelector(".wf-dot");
+        if(dot) dot.classList.toggle("is-focus", g.getAttribute("data-name") === d.name);
+      });
+      if(listEl) listEl.querySelectorAll(".wf-rank-card").forEach(el => {
+        el.classList.toggle("is-hover", el.getAttribute("data-name") === d.name);
+      });
+    });
+    hit.addEventListener("mouseleave", () => {
+      STATE.hovered = null;
+      drawOverlay(lastData);
+      drawMini(lastData);
+      drawHeadline(lastData);
+      _syncLabelVisibility();
+      gLayer.dots.classList.toggle("has-focus", !!STATE.active);
+      gLayer.dots.querySelectorAll(".wf-dot-g").forEach(g => {
+        const dot = g.querySelector(".wf-dot");
+        if(dot) dot.classList.toggle("is-focus", g.getAttribute("data-name") === STATE.active);
+      });
+      if(listEl) listEl.querySelectorAll(".wf-rank-card").forEach(el => {
+        el.classList.remove("is-hover");
+      });
+    });
+    hit.addEventListener("click", () => {
+      STATE.active = (STATE.active === d.name) ? null : d.name;
+      drawOverlay(lastData);
+      _syncLabelVisibility();
+      drawMini(lastData);
+      drawHeadline(lastData);
+      gLayer.dots.classList.toggle("has-focus", !!(STATE.active || STATE.hovered));
+      gLayer.dots.querySelectorAll(".wf-dot-g").forEach(g => {
+        const dot = g.querySelector(".wf-dot");
+        if(dot) dot.classList.toggle("is-focus", g.getAttribute("data-name") === (STATE.active || STATE.hovered));
+      });
+      if(listEl){
+        listEl.querySelectorAll(".wf-rank-card").forEach(el => {
+          el.classList.toggle("is-active", el.getAttribute("data-name") === STATE.active);
+        });
+        if(STATE.active){
+          const cardEl = listEl.querySelector(`.wf-rank-card[data-name="${CSS.escape(STATE.active)}"]`);
+          if(cardEl){
+            const top = cardEl.offsetTop - listEl.offsetTop - 12;
+            listEl.scrollTo({ top, behavior: "smooth" });
+          }
+        }
+      }
+      if(STATE.active) openDetail(STATE.active);
+    });
+    gHits.appendChild(hit);
+  });
+}
+
+
 
 /* ────────── DRAW: COMPASS ROSE ──────────
    Subtle 8-petal rose behind the origin marker. Pure decoration but it
@@ -496,21 +657,22 @@ function updateByName(g, items, makeFn, updateFn){
 
 function _co2Color(co2){
   if(co2 == null) return null;
-  if(co2 < 15)  return "rgba(80,190,158,.85)";   // muted green
+  if(co2 < 15)  return "rgba(79,158,212,.85)";   // steel blue
   if(co2 < 60)  return "rgba(210,165,75,.85)";   // muted amber
-  return          "rgba(195,90,90,.85)";          // muted red
+  return          "rgba(154,96,32,.85)";          // dark amber-brown
 }
 
 function drawDots(data){
-  // Halos for top tier
-  const topData = data.filter(d => d.rank <= 5);
+  // Halos: top 5 always; extend to top 8 when zoomed in for added legibility
+  const haloThreshold = ZOOM.scale > 1.8 ? 8 : 5;
+  const topData = data.filter(d => d.rank <= haloThreshold);
   updateByName(
     gLayer.halos, topData,
     () => svgEl("circle", { class:"wf-halo-top" }),
     (el, d) => {
       el.setAttribute("cx", d.x);
       el.setAttribute("cy", d.y);
-      el.setAttribute("r", 15);
+      el.setAttribute("r", 15 / Math.pow(ZOOM.scale, 1.5));
     }
   );
 
@@ -524,12 +686,28 @@ function drawDots(data){
       const name = d.name;
       g.addEventListener("mouseenter", () => onHover(name));
       g.addEventListener("mouseleave", () => onHover(null));
-      g.addEventListener("click",      () => onSelect(name));
+      g.addEventListener("click", (e) => {
+        if(d.rank > 10){
+          e.stopPropagation();
+          const currentData = lastData ? lastData.find(x => x.name === name) : null;
+          if(currentData) showDotPopup(currentData, e);
+        } else {
+          closeDotPopup();
+          onSelect(name);
+        }
+      });
       return g;
     },
     (el, d) => {
       const tier    = d.rank<=5 ? "top" : d.rank<=12 ? "mid" : "low";
-      const r       = tier==="top" ? 6.0 : tier==="mid" ? 4.5 : 3.4;
+      // Zoom-aware radius: top cities grow on screen (prominence), mid stays stable,
+      // low shrinks at overview zoom to reduce visual noise.
+      const s = ZOOM.scale;
+      const baseR = tier==="top" ? 6.0 : tier==="mid" ? 4.5 : 3.4;
+      // Dots shrink as zoom increases: divide by s^1.5 so on-screen size = baseR / √s
+      // (at zoom=2 → ~71% of original, at zoom=4 → 50%). Low tier shrinks faster.
+      const exp = tier==="low" ? 1.8 : 1.5;
+      const r = baseR / Math.pow(s, exp);
       const isTrain = d.transport === "train";
       const focusName = STATE.active || STATE.hovered;
       const isFocus   = focusName === d.name;
@@ -542,7 +720,7 @@ function drawDots(data){
       const hit = el.querySelector(".wf-dot-hit");
       hit.setAttribute("cx", d.x);
       hit.setAttribute("cy", d.y);
-      hit.setAttribute("r", 14);
+      hit.setAttribute("r", 14 / Math.pow(ZOOM.scale, 1.5));
 
       // Shape — replace element if glyph type changed (circle ↔ rect)
       let shape = el.querySelector(".wf-dot-shape");
@@ -593,43 +771,94 @@ function drawDots(data){
 }
 function drawLabels(data){
   const g = gLayer.labels;
-  // semantic zoom: at higher zoom show more labels, at lower zoom fewer.
-  const baseLimit = STATE.density==="rich" ? 14 : 7;
-  const limit = Math.min(
-    data.length,
-    Math.max(4, Math.round(baseLimit + (ZOOM.scale - 1) * 6))
-  );
-  const top = data.slice(0, limit);
+  const baseLimit = STATE.density==="rich" ? 12 : 6;
+  const zoomBonus = Math.round(Math.pow(ZOOM.scale - 1, 0.8) * 14);
+  const limit = Math.min(data.length, Math.max(4, baseLimit + zoomBonus));
+
+  // Only label cities whose dot is currently inside the clip circle.
+  // Transform dot position to SVG viewport space and check against R_MAX.
+  const s = ZOOM.scale;
+  function dotInView(d){
+    const dx = s * (d.x - CX) + ZOOM.tx;
+    const dy = s * (d.y - CY) + ZOOM.ty;
+    return Math.hypot(dx, dy) < R_MAX - 4;
+  }
+
+  const top = data.slice(0, limit).filter(dotInView);
   const focusName = STATE.active || STATE.hovered;
 
-  // Greedy de-overlap: keep estimated bounding boxes of already-placed labels
-  // and push new ones outward if they'd collide. Labels are sorted by rank,
-  // so the most important always wins.
   const placed = [];
   const approxCharW = 7.5;
   const approxH = 18;
 
+  // Candidate placement angles: bearing direction first, then perpendiculars,
+  // then opposite — gives us 8 distinct positions to try before giving up.
+  function candidateAngles(bearingDeg){
+    const b = bearingDeg - 90; // SVG angle
+    return [b, b+90, b-90, b+45, b-45, b+135, b-135, b+180].map(toRad);
+  }
+
   updateByName(
     g, top,
-    (d) => svgEl("text", { class:"wf-label", "data-name": d.name }),
+    (d) => {
+      const el = svgEl("text", { class:"wf-label", "data-name": d.name });
+      el.addEventListener("mouseenter", () => onHover(d.name));
+      el.addEventListener("mouseleave", () => onHover(null));
+      el.addEventListener("click",      () => onSelect(d.name));
+      return el;
+    },
     (el, d) => {
-      const θ = toRad(d.bearingDeg-90);
-      let offset = 16;
+      const candidates = candidateAngles(d.bearingDeg);
       let lx, ly, bx, by, w, anchor;
-      // try a few offsets to avoid collisions
-      for(let tries=0; tries<6; tries++){
-        lx = d.x + offset*Math.cos(θ);
-        ly = d.y + offset*Math.sin(θ);
-        anchor = Math.cos(θ) > 0.25 ? "start" : Math.cos(θ) < -0.25 ? "end" : "middle";
-        w = (d.name.length) * approxCharW;
-        bx = anchor==="start" ? lx : anchor==="end" ? lx - w : lx - w/2;
-        by = ly - approxH/2;
-        const hit = placed.some(p =>
-          bx < p.bx + p.w && bx + w > p.bx &&
-          by < p.by + p.h && by + p.h > p.by
+      const baseOffset = 16;
+      let placed_ok = false;
+
+      // Effective clip radius in local map-zoom coordinates.
+      // A label corner at local (x,y) is inside if Math.hypot(x-CX, y-CY) < R_CLIP_LOCAL.
+      const R_CLIP_LOCAL = (R_MAX - 6) / ZOOM.scale;
+      function boxFitsInClip(bx2, by2, w2, h2){
+        const corners = [
+          [bx2,      by2     ],
+          [bx2 + w2, by2     ],
+          [bx2,      by2 + h2],
+          [bx2 + w2, by2 + h2],
+        ];
+        return corners.every(([cx3, cy3]) =>
+          Math.hypot(cx3 - CX, cy3 - CY) < R_CLIP_LOCAL
         );
-        if(!hit) break;
-        offset += 14;
+      }
+
+      outer:
+      for(let offStep = 0; offStep < 4; offStep++){
+        const offset = baseOffset + offStep * 12;
+        for(const θ of candidates){
+          const cx2 = d.x + offset * Math.cos(θ);
+          const cy2 = d.y + offset * Math.sin(θ);
+          const anc  = Math.cos(θ) > 0.25 ? "start" : Math.cos(θ) < -0.25 ? "end" : "middle";
+          w  = d.name.length * approxCharW;
+          bx = anc === "start" ? cx2 : anc === "end" ? cx2 - w : cx2 - w/2;
+          by = cy2 - approxH/2;
+          const overlap = placed.some(p =>
+            bx < p.bx + p.w + 4 && bx + w > p.bx - 4 &&
+            by < p.by + p.h + 2 && by + p.h > p.by - 2
+          );
+          if(!overlap && boxFitsInClip(bx, by, w, approxH)){
+            lx = cx2; ly = cy2; anchor = anc;
+            placed_ok = true;
+            break outer;
+          }
+        }
+      }
+      if(!placed_ok){
+        // Fallback: place toward center (inward) so it stays inside the clip.
+        const inwardθ = Math.atan2(CY - d.y, CX - d.x);
+        const offset = baseOffset + 4;
+        lx = d.x + offset * Math.cos(inwardθ);
+        ly = d.y + offset * Math.sin(inwardθ);
+        anchor = Math.cos(inwardθ) > 0.25 ? "start" : Math.cos(inwardθ) < -0.25 ? "end" : "middle";
+        w  = d.name.length * approxCharW;
+        bx = anchor === "start" ? lx : anchor === "end" ? lx - w : lx - w/2;
+        by = ly - approxH/2;
       }
       placed.push({ bx, by, w, h: approxH });
 
@@ -642,8 +871,6 @@ function drawLabels(data){
       el.setAttribute("dominant-baseline", "middle");
       el.textContent = d.name;
 
-      // Hide this label if it's the focused city — the overlay
-      // group renders an accent-styled label for the focus.
       el.style.display = (focusName && focusName === d.name) ? "none" : "";
     }
   );
@@ -663,15 +890,41 @@ function drawOverlay(data){
     class:"wf-connector"
   }));
   // 2) ring at destination
-  g.appendChild(svgEl("circle",{cx:d.x,cy:d.y,r:12,class:"wf-focus-ring"}));
-  // 3) label
-  const θ = toRad(d.bearingDeg-90);
-  const lx = d.x + 20*Math.cos(θ);
-  const ly = d.y + 20*Math.sin(θ);
-  const anchor = Math.cos(θ) > 0.25 ? "start" : Math.cos(θ) < -0.25 ? "end" : "middle";
+  g.appendChild(svgEl("circle",{cx:d.x,cy:d.y,r:12/Math.pow(ZOOM.scale,1.5),class:"wf-focus-ring"}));
+  // 3) label — placed using the same clip-aware logic as drawLabels
+  const approxCharW = 7.5, approxH = 20;
+  const R_CLIP_LOCAL = (R_MAX - 6) / ZOOM.scale;
+  function fitsInClip(bx2, by2, w2, h2){
+    return [[bx2,by2],[bx2+w2,by2],[bx2,by2+h2],[bx2+w2,by2+h2]]
+      .every(([cx3,cy3]) => Math.hypot(cx3-CX, cy3-CY) < R_CLIP_LOCAL);
+  }
+  const w = d.name.length * approxCharW;
+  // Try bearing direction first, then inward, then the 6 other candidates
+  const bearingθ = toRad(d.bearingDeg - 90);
+  const inwardθ  = Math.atan2(CY - d.y, CX - d.x);
+  const tryAngles = [bearingθ, inwardθ,
+    bearingθ+Math.PI/2, bearingθ-Math.PI/2,
+    bearingθ+Math.PI/4, bearingθ-Math.PI/4, bearingθ+Math.PI];
+  let lx = d.x + 20*Math.cos(bearingθ);
+  let ly = d.y + 20*Math.sin(bearingθ);
+  let anchor = Math.cos(bearingθ) > 0.25 ? "start" : Math.cos(bearingθ) < -0.25 ? "end" : "middle";
+  for(const a of tryAngles){
+    const cx2 = d.x + 20*Math.cos(a);
+    const cy2 = d.y + 20*Math.sin(a);
+    const anc  = Math.cos(a) > 0.25 ? "start" : Math.cos(a) < -0.25 ? "end" : "middle";
+    const bx2  = anc==="start" ? cx2 : anc==="end" ? cx2-w : cx2-w/2;
+    const by2  = cy2 - approxH/2;
+    if(fitsInClip(bx2, by2, w, approxH)){ lx=cx2; ly=cy2; anchor=anc; break; }
+  }
   const t = svgEl("text",{x:lx,y:ly,class:"wf-label wf-label-focus","text-anchor":anchor,"dominant-baseline":"middle"});
   t.textContent = d.name;
+  t.addEventListener("mouseenter", () => onHover(focus));
+  t.addEventListener("mouseleave", () => onHover(null));
+  t.addEventListener("click",      () => onSelect(focus));
   g.appendChild(t);
+  // Apply current zoom scale so the focus label is always the right screen size
+  const sqrtS = Math.sqrt(ZOOM.scale);
+  t.style.fontSize = (20 / sqrtS) + "px";
 }
 
 /* ────────── MINI EUROPE MAP (real coastline) ────────── */
@@ -691,100 +944,269 @@ function polygonPath(latLonArr){
     return (i===0?"M":"L") + x.toFixed(1) + "," + y.toFixed(1);
   }).join(" ") + " Z";
 }
+
+function miniGeoJSONPolygonPath(coords){
+  return coords.map(ring => {
+    return ring.map(([lon, lat], i) => {
+      const [x, y] = miniProject(lat, lon);
+      return `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(" ") + " Z";
+  }).join(" ");
+}
+
 function drawMiniLand(){
-  if(!miniLandEl) return;
+  if (!miniLandEl) return;
   miniLandEl.innerHTML = "";
-  // graticule — every 10° lat & lon, very faint
   miniGratEl.innerHTML = "";
-  for(let la = Math.ceil(MINI.latMin/10)*10; la <= MINI.latMax; la += 10){
+
+  for (let la = Math.ceil(MINI.latMin / 10) * 10; la <= MINI.latMax; la += 10) {
     const [, y1] = miniProject(la, MINI.lonMin);
-    const [, y2] = miniProject(la, MINI.lonMax);
-    miniGratEl.appendChild(svgEl("line",{x1:0,y1,x2:MINI.W,y2,class:"wf-mini-grat"}));
+    miniGratEl.appendChild(svgEl("line", {
+      x1: 0, y1, x2: MINI.W, y2: y1, class: "wf-mini-grat"
+    }));
   }
-  for(let lo = Math.ceil(MINI.lonMin/10)*10; lo <= MINI.lonMax; lo += 10){
+
+  for (let lo = Math.ceil(MINI.lonMin / 10) * 10; lo <= MINI.lonMax; lo += 10) {
     const [x1] = miniProject(MINI.latMin, lo);
-    const [x2] = miniProject(MINI.latMax, lo);
-    miniGratEl.appendChild(svgEl("line",{x1,y1:0,x2,y2:MINI.H,class:"wf-mini-grat"}));
+    miniGratEl.appendChild(svgEl("line", {
+      x1, y1: 0, x2: x1, y2: MINI.H, class: "wf-mini-grat"
+    }));
   }
-  // landmasses (italy added for the recognisable boot shape)
-  ["mainland","italy","scandinavia","britain","ireland","iceland"].forEach(k=>{
-    const poly = EUROPE[k];
-    if(!poly) return;
-    const path = svgEl("path",{
-      d: polygonPath(poly),
-      class: "wf-mini-land",
-    });
-    miniLandEl.appendChild(path);
+
+  const geo = window.WF.EUROPE_GEOJSON;
+  if (!geo || !geo.features) return;
+
+  geo.features.forEach(f => {
+    const geom = f.geometry;
+    if (!geom) return;
+
+    if (geom.type === "Polygon") {
+      miniLandEl.appendChild(svgEl("path", {
+        d: miniGeoJSONPolygonPath(geom.coordinates),
+        class: "wf-mini-land"
+      }));
+    }
+
+    if (geom.type === "MultiPolygon") {
+      geom.coordinates.forEach(poly => {
+        miniLandEl.appendChild(svgEl("path", {
+          d: miniGeoJSONPolygonPath(poly),
+          class: "wf-mini-land"
+        }));
+      });
+    }
   });
 }
-function drawMini(data){
-  if(!miniDotsEl) return;
-  const g = miniDotsEl;
-  const O = ORIGINS[STATE.originKey];
-  const [ox,oy] = miniProject(O.lat, O.lon);
 
-  // Origin pin — one ring + one fill, stable identity
-  let originRing = g.querySelector(".wf-mini-origin-ring");
-  let originDot  = g.querySelector(".wf-mini-origin");
-  if(!originRing){
-    originRing = svgEl("circle",{class:"wf-mini-origin-ring", r:8});
-    originDot  = svgEl("circle",{class:"wf-mini-origin", r:3.5});
-    g.appendChild(originRing);
-    g.appendChild(originDot);
+/* ────────── POPULARITY GLOW LAYER ────────── */
+/* Visual language: "elevation plateau" — violet-silver halo that only
+   appears for genuinely popular destinations (pop ≥ 35). Below that
+   threshold nothing renders so low-tourism spots stay invisible in this
+   layer, creating a clear hierarchy. The colour is --wf-violet so it
+   doesn't clash with the orange/red/green CO₂ palette. */
+function drawPopGlow(data){
+  const g = gLayer.popGlow;
+  if(!g) return;
+  g.innerHTML = "";
+  if(!LEGEND.pop) return;
+
+  /* Ensure a single <defs> + blur filter lives in the parent SVG. */
+  const svg = g.closest("svg");
+  let defs = svg.querySelector("defs");
+  if(!defs){ defs = svgEl("defs", {}); svg.insertBefore(defs, svg.firstChild); }
+
+  /* Soft diffuse glow filter */
+  const FBLUR_ID = "wf-pop-blur";
+  if(!defs.querySelector(`#${FBLUR_ID}`)){
+    const flt = svgEl("filter", {
+      id: FBLUR_ID, x:"-120%", y:"-120%", width:"340%", height:"340%",
+      colorInterpolationFilters: "sRGB",
+    });
+    const blur = svgEl("feGaussianBlur", { in:"SourceGraphic", stdDeviation:"9" });
+    flt.appendChild(blur);
+    defs.appendChild(flt);
   }
-  originRing.setAttribute("cx", ox); originRing.setAttribute("cy", oy);
-  originDot.setAttribute("cx", ox);  originDot.setAttribute("cy", oy);
 
-  // City dots — update by name
-  updateByName(
-    g, data,
-    () => svgEl("circle", { class:"wf-mini-dot" }),
-    (el, d) => {
-      const [x,y] = miniProject(d.lat, d.lon);
-      const tier = d.rank<=5 ? "top" : d.rank<=12 ? "mid" : "low";
-      el.setAttribute("cx", x);
-      el.setAttribute("cy", y);
-      el.setAttribute("r", tier==="top" ? 3 : 2);
-      el.setAttribute("class", `wf-mini-dot wf-mini-${tier}`);
-    }
+  /* Tight inner glow filter */
+  const FBLUR_TIGHT = "wf-pop-blur-tight";
+  if(!defs.querySelector(`#${FBLUR_TIGHT}`)){
+    const flt2 = svgEl("filter", {
+      id: FBLUR_TIGHT, x:"-80%", y:"-80%", width:"260%", height:"260%",
+      colorInterpolationFilters: "sRGB",
+    });
+    const blur2 = svgEl("feGaussianBlur", { in:"SourceGraphic", stdDeviation:"4" });
+    flt2.appendChild(blur2);
+    defs.appendChild(flt2);
+  }
+
+  /* Colour: violet-silver — harmonious with palette, unambiguously ≠ CO₂ */
+  const C = "var(--wf-violet)";     // #9d8fc7
+
+/* =========================================================
+ * POPULARITY ELEVATION LAYER
+ *
+ * Visual philosophy:
+ * - low popularity  -> almost invisible atmosphere
+ * - medium          -> visible soft elevation
+ * - high            -> structured prominence
+ * - elite           -> topographic peak
+ *
+ * IMPORTANT:
+ * Hierarchy comes from STRUCTURE,
+ * not just opacity.
+ * ========================================================= */
+
+data.forEach(d => {
+
+  const pop = d.pop ?? 0;
+
+  // Ignore weak destinations
+  if (pop < 55) return;
+
+  const tRaw = Math.max(
+    0,
+    Math.min(1, (pop - 55) / 45)
   );
 
-  // Hit targets — generous transparent circles for hover/click on the mini-map
-  const hitsG = document.getElementById("mini-hits");
-  if(hitsG){
-    updateByName(
-      hitsG, data,
-      (d) => {
-        const c = svgEl("circle", { class:"wf-mini-hit", r: 8 });
-        const name = d.name;
-        c.addEventListener("mouseenter", () => onHover(name));
-        c.addEventListener("mouseleave", () => onHover(null));
-        c.addEventListener("click",      () => onSelect(name));
-        return c;
-      },
-      (el, d) => {
-        const [x,y] = miniProject(d.lat, d.lon);
-        el.setAttribute("cx", x);
-        el.setAttribute("cy", y);
-      }
-    );
+  // Softer emphasis curve
+  // Keeps mid-tier destinations visible
+  const t = Math.pow(tRaw, 1.2);
+
+
+  /* =========================================================
+   * SUBTLE POSITION JITTER
+   *
+   * Prevents "perfect Photoshop glow" look.
+   * Tiny offsets only for outer atmospheres.
+   * ========================================================= */
+
+  const jx = (Math.random() - 0.5) * 1.2;
+  const jy = (Math.random() - 0.5) * 1.2;
+
+
+  /* =========================================================
+   * LAYER 1 — ATMOSPHERIC DIFFUSION
+   *
+   * Large soft halo.
+   * Creates regional presence.
+   * ========================================================= */
+
+  {
+    const r = 8 + t * 44;               // 8 → 52
+    const opacity = 0.05 + t * 0.22;   // 0.05 → 0.27
+
+    g.appendChild(svgEl("circle", {
+      cx: d.x + jx,
+      cy: d.y + jy,
+      r,
+      fill: C,
+      opacity,
+      class: "wf-pop-glow-outer",
+    }));
   }
 
-  // Focus ring — stable single element
-  let focusEl = g.querySelector(".wf-mini-focus");
-  const focusName = STATE.active || STATE.hovered;
-  const fd = focusName ? data.find(x=>x.name===focusName) : null;
-  if(fd){
-    const [x,y] = miniProject(fd.lat, fd.lon);
-    if(!focusEl){
-      focusEl = svgEl("circle",{class:"wf-mini-focus", r:5});
-      g.appendChild(focusEl);
-    }
-    focusEl.setAttribute("cx", x);
-    focusEl.setAttribute("cy", y);
-  } else if(focusEl){
-    focusEl.remove();
+
+  /* =========================================================
+   * LAYER 2 — ELEVATION MASS
+   *
+   * Main visible hotspot body.
+   * ========================================================= */
+
+  {
+    const r = 5 + t * 22;               // 5 → 27
+    const opacity = 0.08 + t * 0.30;   // 0.08 → 0.38
+
+    g.appendChild(svgEl("circle", {
+      cx: d.x,
+      cy: d.y,
+      r,
+      fill: C,
+      opacity,
+      class: "wf-pop-glow-inner",
+    }));
   }
+
+
+  /* =========================================================
+   * LAYER 3 — INNER CORE
+   *
+   * Bright focal hotspot.
+   * ========================================================= */
+
+  if (pop >= 68) {
+
+    const tCore = Math.max(
+      0,
+      Math.min(1, (pop - 68) / 32)
+    );
+
+    const r = 1.6 + tCore * 3.2;        // 1.6 → 4.8
+    const opacity = 0.30 + tCore * 0.45;
+
+    g.appendChild(svgEl("circle", {
+      cx: d.x,
+      cy: d.y,
+      r,
+      fill: "#ffffff",
+      opacity,
+      class: "wf-pop-core",
+    }));
+  }
+
+
+  /* =========================================================
+   * LAYER 4 — PRIMARY TOPOGRAPHIC RING
+   *
+   * Analytical contour ring.
+   * ========================================================= */
+
+  if (pop >= 82) {
+
+    const tRing = Math.max(
+      0,
+      Math.min(1, (pop - 82) / 18)
+    );
+
+    g.appendChild(svgEl("circle", {
+      cx: d.x,
+      cy: d.y,
+      r: 10 + tRing * 4,                // 10 → 14
+      fill: "none",
+      stroke: C,
+      "stroke-width": 0.8 + tRing * 0.6,
+      opacity: 0.22 + tRing * 0.28,
+      class: "wf-pop-ring",
+    }));
+  }
+
+
+  /* =========================================================
+   * LAYER 5 — ELITE SECONDARY CONTOUR
+   *
+   * Reserved for top-tier destinations.
+   * ========================================================= */
+
+  if (pop >= 93) {
+
+    const tElite = Math.max(
+      0,
+      Math.min(1, (pop - 93) / 7)
+    );
+
+    g.appendChild(svgEl("circle", {
+      cx: d.x,
+      cy: d.y,
+      r: 18 + tElite * 5,               // 18 → 23
+      fill: "none",
+      stroke: "#ffffff",
+      "stroke-width": 0.5,
+      opacity: 0.12 + tElite * 0.18,
+      class: "wf-pop-ring wf-pop-ring--outer",
+    }));
+  }
+
+});
+
 }
 
 /* ────────── RIGHT-SIDE RANKING ────────── */
@@ -792,6 +1214,9 @@ const MEDAL = {
   1: { icon: "🏆", label: "Best match"   },
   2: { icon: "🥈", label: "Silver pick"  },
   3: { icon: "🥉", label: "Bronze pick"  },
+  4: { label: "4th"  }, 5: { label: "5th"  }, 6: { label: "6th"  },
+  7: { label: "7th"  }, 8: { label: "8th"  }, 9: { label: "9th"  },
+  10:{ label: "10th" },
 };
 
 function drawRanking(data){
@@ -816,35 +1241,30 @@ function drawRanking(data){
     el.setAttribute("data-name", d.name);
     if(STATE.active === d.name) el.classList.add("is-active");
     if(STATE.hovered === d.name) el.classList.add("is-hover");
-
-    const url = photoURL(d.photoId, 240);
-    const imgTag = url
-      ? `<img class="wf-rank-photo-img" src="${url}" alt="" loading="lazy" onerror="this.style.display='none'">`
-      : "";
+    
+    const primaryUrl = d.photoUrl || photoURL(d.photoId, 240);
+    const fallbackUrl = fallbackPhotoURL(d.iata || d.name, 240);
+    const imgTag = `<img class="wf-rank-photo-img" src="${primaryUrl || fallbackUrl}" data-fb="${fallbackUrl}" alt="" loading="lazy" onerror="if(this.dataset.fb && this.src!==this.dataset.fb){this.src=this.dataset.fb;}else{this.style.display='none';}">`;
 
     const medal = MEDAL[d.rank];
-    const medalHTML = medal
-      ? `<div class="rank-medal"><div class="medal-pill"><span class="medal-icon">${medal.icon}</span>${medal.label}</div></div>`
+    /* Rank badge for all top-10 cards. Ranks 1–3 get a filled medal disc;
+       ranks 4–10 get a subtle ghost disc so position is still readable. */
+    const medalInline = medal
+      ? `<span class="wf-rank-medal-inline is-rank-${d.rank}" title="${medal.label}" aria-label="${medal.label}"><span class="medal-disc">${d.rank}</span></span>`
       : "";
-    const tagText = medal ? medal.label : "Top pick";
 
     el.innerHTML = `
       <div class="wf-rank-photo">
         ${imgTag}
-        <div class="rank-num-badge">${d.rank}</div>
-        ${medalHTML}
         <div class="match-pill"><span class="match-num">${d.matchPct}</span><span class="match-unit">match</span></div>
       </div>
       <div class="wf-rank-body">
         <div class="wf-rank-title-row">
-          <span class="wf-rank-ord">${d.rank}</span>
           <h4 class="wf-rank-name">${d.name}</h4>
-          <span class="wf-rank-tag">${tagText}</span>
+          ${medalInline}
         </div>
         <div class="wf-rank-sub">
           <span>${d.country}</span>
-          <span class="sep">·</span>
-          <span class="rank-bearing">${d.bearingDeg.toFixed(0)}° ${bearingLabel(d.bearingDeg)}</span>
         </div>
         <div class="wf-rank-metrics">
           <div class="wf-rank-m"><span class="wf-rank-m-v">${(()=>{const hh=Math.floor(d.time),mm=Math.round((d.time-hh)*60);return mm>0?`${hh}h ${mm}m`:`${hh}h`;})()}</span><span class="wf-rank-m-l">Travel</span></div>
@@ -1103,7 +1523,7 @@ function openDetail(name){
   const bodyEl  = document.getElementById("detail-body");
   if(!overlay) return;
 
-  // Hero image — use <img> so onerror fallback works
+  // Hero image — use <img> so onerror fallback works.
   hero.style.backgroundImage = "";
   let heroImg = hero.querySelector(".wf-detail-hero-img");
   if(!heroImg){
@@ -1112,10 +1532,15 @@ function openDetail(name){
     heroImg.style.cssText = "position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;";
     hero.insertBefore(heroImg, hero.firstChild);
   }
-  const url = photoURL(d.photoId, 800);
-  heroImg.src = url || "";
-  heroImg.onerror = () => { heroImg.style.display = "none"; };
-  heroImg.onload  = () => { heroImg.style.display = ""; };
+
+  const primary = d.photoUrl || photoURL(d.photoId, 800);  
+  const fallback = fallbackPhotoURL(d.iata || d.name, 800);
+  heroImg.src = primary || fallback;
+  heroImg.style.display = "";
+  heroImg.onerror = () => {
+    if(heroImg.src !== fallback){ heroImg.src = fallback; }
+    else { heroImg.style.display = "none"; }
+  };
 
   // Rank pill (medal style for top 3)
   rankEl.className = "wf-detail-hero-rank" + (d.rank <= 3 ? ` is-medal-${d.rank}` : "");
@@ -1127,7 +1552,7 @@ function openDetail(name){
   // Name + meta
   nameEl.firstChild.nodeValue = d.name;
   countryEl.textContent = ` ${d.country}`;
-  subEl.textContent = `${d.bearingDeg.toFixed(0)}° ${bearingLabel(d.bearingDeg)} · ${d.matchPct}% composite match`;
+  subEl.textContent = `${d.matchPct}% composite match · ${currentMonthKey() || "—"}`;
 
   // Body
   const cell = getCellFor(d);
@@ -1183,26 +1608,32 @@ function applyZoom(){
   const lvl = document.getElementById("zoom-level");
   if(lvl) lvl.textContent = Math.round(ZOOM.scale * 100) + "%";
   // Re-render labels: counter-scale font + adjust semantic-zoom limit.
-  if(lastData && lastData.length) drawLabels(lastData);
+  if(lastData && lastData.length){ drawDots(lastData); drawLabels(lastData); }
   // Counter-scale label font so text stays readable at high zoom,
   // while preserving the major/normal/dim tier sizes.
+  // Counter-scale by sqrt(zoom) so labels grow visibly when zooming in
+  // (full 1/zoom would keep them constant; no division would make them huge).
+  const sqrtScale = Math.sqrt(ZOOM.scale);
   const sizeFor = (cls)=>
     !cls ? 17 :
     cls.indexOf("wf-label-major") >= 0 ? 21 :
     cls.indexOf("wf-label-dim")   >= 0 ? 14 :
     17;
   g.querySelectorAll(".wf-label").forEach(el => {
-    el.style.fontSize = (sizeFor(el.getAttribute("class")) / ZOOM.scale) + "px";
+    el.style.fontSize = (sizeFor(el.getAttribute("class")) / sqrtScale) + "px";
   });
-  // Also counter-scale ring band labels, cardinals
+  // Counter-scale inner structural labels (inside zoom group)
   g.querySelectorAll(".wf-ring-label").forEach(el => el.style.fontSize = (11 / ZOOM.scale) + "px");
-  g.querySelectorAll(".wf-cardinal").forEach(el => el.style.fontSize = (13 / ZOOM.scale) + "px");
-  g.querySelectorAll(".wf-intercardinal").forEach(el => el.style.fontSize = (10 / ZOOM.scale) + "px");
   g.querySelectorAll(".wf-origin-label").forEach(el => el.style.fontSize = (20 / ZOOM.scale) + "px");
   g.querySelectorAll(".wf-origin-sub").forEach(el => el.style.fontSize = (9 / ZOOM.scale) + "px");
+  // Cardinals are in the static layer — no counter-scale needed
 }
 function setZoom(s){
   ZOOM.scale = Math.max(ZOOM.min, Math.min(ZOOM.max, s));
+  // Re-clamp pan whenever scale changes so tx/ty stay within the new bound.
+  const maxPan = R_MAX * (ZOOM.scale - 1) / ZOOM.scale;
+  ZOOM.tx = Math.max(-maxPan, Math.min(maxPan, ZOOM.tx));
+  ZOOM.ty = Math.max(-maxPan, Math.min(maxPan, ZOOM.ty));
   applyZoom();
 }
 function resetView(){
@@ -1220,11 +1651,17 @@ function wireZoom(){
     const factor = Math.exp(-e.deltaY * 0.0015);
     setZoom(ZOOM.scale * factor);
     const hint = document.getElementById("zoom-hint");
-    if(hint) hint.style.opacity = "0";
+    if(hint) hint.classList.add("is-faded");
   }, { passive: false });
-  ctrlIn  && ctrlIn .addEventListener("click", ()=> setZoom(ZOOM.scale * 1.25));
-  ctrlOut && ctrlOut.addEventListener("click", ()=> setZoom(ZOOM.scale / 1.25));
+  ctrlIn  && ctrlIn .addEventListener("click", ()=> { setZoom(ZOOM.scale * 1.25); const h=document.getElementById("zoom-hint"); if(h) h.classList.add("is-faded"); });
+  ctrlOut && ctrlOut.addEventListener("click", ()=> { setZoom(ZOOM.scale / 1.25); const h=document.getElementById("zoom-hint"); if(h) h.classList.add("is-faded"); });
   ctrlRst && ctrlRst.addEventListener("click", resetView);
+  /* Hint auto-fades after a few seconds even if the user never zooms,
+     so it doesn't sit on top of the map indefinitely. */
+  setTimeout(()=>{
+    const h = document.getElementById("zoom-hint");
+    if(h) h.classList.add("is-faded");
+  }, 5500);
 
   // Drag to pan — only kicks in when the pointer started on empty map
   // (not on a dot, label, or origin marker) so clicks still select cities.
@@ -1243,8 +1680,14 @@ function wireZoom(){
     // is sized via CSS; rect gives us the px size of the visible SVG).
     const r = svg.getBoundingClientRect();
     const vbScale = 1000 / r.width;
-    ZOOM.tx = startTx + (e.clientX - startX) * vbScale;
-    ZOOM.ty = startTy + (e.clientY - startY) * vbScale;
+    const rawTx = startTx + (e.clientX - startX) * vbScale;
+    const rawTy = startTy + (e.clientY - startY) * vbScale;
+    // Clamp pan so the origin can't leave the outer ring.
+    // At scale s, the max meaningful offset in SVG units is R_MAX*(s-1)/s
+    // — beyond that the centre of the map would exit the compass frame.
+    const maxPan = R_MAX * (ZOOM.scale - 1) / ZOOM.scale;
+    ZOOM.tx = Math.max(-maxPan, Math.min(maxPan, rawTx));
+    ZOOM.ty = Math.max(-maxPan, Math.min(maxPan, rawTy));
     applyZoom();
   });
   const endDrag = (e)=>{
@@ -1263,9 +1706,20 @@ function drawHeadline(data){
   const focusName = STATE.active || STATE.hovered;
   const d = focusName ? data.find(x=>x.name===focusName) : data[0];
   if(!d) return;
-  matchNameEl.textContent = d.name;
+  /* City + country on one row — country as a small inline meta string,
+     not a separate line, so the panel reads as one block. */
+  matchNameEl.innerHTML = `${d.name}<span class="wf-headline-country">${d.country}</span>`;
+  const eyebrowEl = document.getElementById("match-eyebrow");
+  if(eyebrowEl){
+    eyebrowEl.textContent = focusName
+      ? (`Rank · ${ord(d.rank)}`)
+      : "Best match · composite score";
+  }
   const _hh=Math.floor(d.time),_mm=Math.round((d.time-_hh)*60);
-  matchSubEl.textContent  = `${d.country} · ${d.bearingDeg.toFixed(0)}° ${bearingLabel(d.bearingDeg)} · ${_mm>0?`${_hh}h ${_mm}m`:`${_hh}h`} · €${d.cost} · ${d.co2}kg CO₂`;
+  /* Bearing removed — the radial position on the map already encodes direction.
+     Subtitle shows the three core travel metrics, cleanly grouped. */
+  const _timeStr = _mm>0 ? `${_hh}h ${_mm}m` : `${_hh}h`;
+  matchSubEl.innerHTML  = `<span class="wf-h-metric"><b>${_timeStr}</b><i>travel</i></span><span class="wf-h-metric"><b>€${d.cost}</b><i>fare</i></span><span class="wf-h-metric"><b>${d.co2}<u>kg</u></b><i>CO₂</i></span>`;
   matchPctEl.textContent  = d.matchPct;
   insightEl.textContent   = d.insight;
 }
@@ -1300,6 +1754,65 @@ function _syncLabelVisibility(){
     el.style.display = (focus && el.getAttribute("data-name") === focus) ? "none" : "";
   });
 }
+function closeDotPopup(){
+  if(dotPopupEl) dotPopupEl.hidden = true;
+}
+
+function showDotPopup(d, clickEvent){
+  if(!dotPopupEl) return;
+
+  // Position popup using the click coordinates relative to the stage container
+  const stageRect = dotPopupEl.parentElement.getBoundingClientRect();
+  const dotX = clickEvent.clientX - stageRect.left;
+  const dotY = clickEvent.clientY - stageRect.top;
+
+  const popW = 220, popH = 290;
+  let left = dotX + 12;
+  let top  = dotY - 50;
+  if(left + popW > stageRect.width - 8)  left = dotX - popW - 12;
+  if(top + popH  > stageRect.height - 8) top  = stageRect.height - popH - 8;
+  if(top < 8) top = 8;
+  dotPopupEl.style.left = left + "px";
+  dotPopupEl.style.top  = top  + "px";
+
+  // Populate content
+  dotPopupRankEl.textContent    = `#${d.rank}`;
+  dotPopupNameEl.textContent    = d.name;
+  dotPopupCountryEl.textContent = d.country;
+  dotPopupMatchEl.textContent   = `${d.matchPct}%`;
+
+  const photoSrc = d.photoUrl || photoURL(d.photoId, 240) || fallbackPhotoURL(d.iata || d.name, 240);
+  const fbSrc    = fallbackPhotoURL(d.iata || d.name, 240);
+  dotPopupPhotoEl.src = photoSrc || fbSrc;
+  dotPopupPhotoEl.dataset.fb = fbSrc;
+  dotPopupPhotoEl.onerror = function(){
+    if(this.dataset.fb && this.src !== this.dataset.fb){ this.src = this.dataset.fb; }
+    else { this.style.display = "none"; }
+  };
+
+  const hh = Math.floor(d.time), mm = Math.round((d.time - hh) * 60);
+  const timeStr = mm > 0 ? `${hh}h ${mm}m` : `${hh}h`;
+  dotPopupMetricsEl.innerHTML = `
+    <div class="wf-dot-popup-metric"><span class="wf-dot-popup-metric-v">${timeStr}</span><span class="wf-dot-popup-metric-l">Travel</span></div>
+    <div class="wf-dot-popup-metric"><span class="wf-dot-popup-metric-v">€${d.cost}</span><span class="wf-dot-popup-metric-l">Fare</span></div>
+    <div class="wf-dot-popup-metric"><span class="wf-dot-popup-metric-v">${d.co2}kg</span><span class="wf-dot-popup-metric-l">CO₂</span></div>
+  `;
+
+  // Tags: budget, walkability, aqi
+  const tags = [];
+  const city = WF.CITIES.find(c => c.name === d.name);
+  if(city){
+    if(city.budget)      tags.push({ label: city.budget + " budget",  cls: city.budget === "Low" ? "is-good" : city.budget === "High" ? "is-mid" : "" });
+    if(city.walkability) tags.push({ label: "Walk: " + city.walkability, cls: (city.walkability === "Great" || city.walkability === "Good") ? "is-good" : "" });
+    if(city.aqi)         tags.push({ label: "Air: " + city.aqi,          cls: (city.aqi === "Great" || city.aqi === "Good") ? "is-good" : city.aqi === "Poor" ? "is-mid" : "" });
+  }
+  dotPopupTagsEl.innerHTML = tags.map(t => `<span class="wf-dot-popup-tag ${t.cls}">${t.label}</span>`).join("");
+
+  dotPopupInsightEl.textContent = (city && city.insight) ? city.insight : (d.insight || "");
+
+  dotPopupEl.hidden = false;
+}
+
 function onSelect(name){
   STATE.active = (STATE.active === name) ? null : name;
   drawOverlay(lastData);
@@ -1353,15 +1866,21 @@ function applyPreset(id){
     });
   }
   STATE.active = null;
+  closeDotPopup();
   render();
 }
 
 function syncAdvancedFromState(){
-  ["time","cost","co2","pop"].forEach(k=>{
+  // Scale preset weights so the dominant factor shows 100 and others are proportional.
+  // This gives each slider a clear 0–100 "importance" reading independent of the others.
+  const keys = ["time","cost","co2","pop"];
+  const maxW = Math.max(...keys.map(k => STATE.weights[k] || 0)) || 1;
+  keys.forEach(k=>{
+    const raw = Math.round((STATE.weights[k] / maxW) * 100);
     const s = document.querySelector(`input[data-w="${k}"]`);
-    if(s){ s.value = Math.round(STATE.weights[k]*100); }
+    if(s){ s.value = raw; }
     const v = document.querySelector(`[data-vw="${k}"]`);
-    if(v){ v.textContent = Math.round(STATE.weights[k]*100)+"%"; }
+    if(v){ v.textContent = raw + "%"; }
   });
   const inv = document.getElementById("pop-invert");
   if(inv) inv.checked = !!STATE.popInvert;
@@ -1374,10 +1893,11 @@ function readAdvanced(){
   const s=t+c+e+p||1;
   STATE.weights = { time:t/s, cost:c/s, co2:e/s, pop:p/s };
   STATE.popInvert = document.getElementById("pop-invert").checked;
-  document.querySelector('[data-vw="time"]').textContent = Math.round(STATE.weights.time*100)+"%";
-  document.querySelector('[data-vw="cost"]').textContent = Math.round(STATE.weights.cost*100)+"%";
-  document.querySelector('[data-vw="co2"]').textContent  = Math.round(STATE.weights.co2*100)+"%";
-  document.querySelector('[data-vw="pop"]').textContent  = Math.round(STATE.weights.pop*100)+"%";
+  // Show raw slider value (0–100) so each factor feels independent
+  document.querySelector('[data-vw="time"]').textContent = t + "%";
+  document.querySelector('[data-vw="cost"]').textContent = c + "%";
+  document.querySelector('[data-vw="co2"]').textContent  = e + "%";
+  document.querySelector('[data-vw="pop"]').textContent  = p + "%";
   STATE.presetId = "custom";
   if(presetTrayEl) presetTrayEl.querySelectorAll(".wf-preset").forEach(b=>b.classList.remove("is-active"));
 }
@@ -1395,6 +1915,25 @@ function drawOriginSelect(){
   originSelectEl.addEventListener("change", e=>{
     STATE.originKey = e.target.value;
     STATE.active = null;
+    closeDotPopup();
+    render();
+  });
+}
+
+function drawMonthSelect(){
+  if(!monthSelectEl) return;
+  monthSelectEl.innerHTML = "";
+  MONTHS.forEach(([label], i)=>{
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = label;
+    if(i === (STATE.month ?? 0)) opt.selected = true;
+    monthSelectEl.appendChild(opt);
+  });
+  monthSelectEl.addEventListener("change", e=>{
+    STATE.month = parseInt(e.target.value, 10);
+    STATE.active = null;
+    closeDotPopup();
     render();
   });
 }
@@ -1461,6 +2000,13 @@ function drawEntry(){
     vibesEl.appendChild(b);
   });
 
+  // Move the adv-toggle button INTO entry-vibes as the 8th grid card.
+  // It lives in the HTML outside the grid so innerHTML="" above doesn't destroy it,
+  // then we re-insert it here as the final grid item.
+  const advToggleCard = document.getElementById("entry-adv-toggle");
+  advToggleCard.style.display = ""; // unhide from staging position
+  vibesEl.appendChild(advToggleCard);
+
   // Entry advanced disclosure
   const advRoot   = document.getElementById("entry-adv");
   const advToggle = document.getElementById("entry-adv-toggle");
@@ -1485,11 +2031,14 @@ function drawEntry(){
   document.getElementById("entry-cta").addEventListener("click", finishEntry);
 }
 function syncEntrySliders(){
+  const keys = ["time","cost","co2","pop"];
+  const maxW = Math.max(...keys.map(k => STATE.weights[k] || 0)) || 1;
   document.querySelectorAll('#entry-adv-body input[data-ew]').forEach(el=>{
     const k = el.dataset.ew;
-    el.value = Math.round((STATE.weights[k]||0) * 100);
+    const raw = Math.round(((STATE.weights[k]||0) / maxW) * 100);
+    el.value = raw;
     const v = document.querySelector(`#entry-adv-body [data-evw="${k}"]`);
-    if(v) v.textContent = Math.round((STATE.weights[k]||0)*100) + "%";
+    if(v) v.textContent = raw + "%";
   });
   const inv = document.querySelector('#entry-adv-body input[data-epop-invert]');
   if(inv) inv.checked = !!STATE.popInvert;
@@ -1510,10 +2059,10 @@ function readEntrySliders(){
   STATE.presetId = "custom";
   // De-select vibes
   document.querySelectorAll("#entry-vibes .wf-vibe").forEach(x=>x.classList.remove("is-active"));
-  // Update displayed percentages
+  // Show raw slider value (0–100) so each factor feels independent
   document.querySelectorAll('#entry-adv-body [data-evw]').forEach(v=>{
     const k = v.dataset.evw;
-    v.textContent = Math.round(STATE.weights[k]*100) + "%";
+    v.textContent = (raw[k] || 0) + "%";
   });
   updateEntryAdvSummary();
   updateEntrySummary();
@@ -1569,7 +2118,9 @@ function openEntry(){
 function render(){
   const data = compute();
   lastData = data;
-  drawBasemap();
+  // Clear basemap — Europe outline is only shown in the mini map, not behind the radial plot
+  const gBasemap = document.getElementById("g-basemap");
+  if(gBasemap) gBasemap.innerHTML = "";
   // Rose removed — origin uses simple pulse ring; g-rose kept empty
   const gRose = document.getElementById("g-rose");
   if(gRose) gRose.innerHTML = "";
@@ -1577,6 +2128,7 @@ function render(){
   drawBearings();
   drawCardinal();
   drawOrigin();
+  drawPopGlow(data);
   drawDots(data);
   drawLabels(data);
   drawOverlay(data);
@@ -1584,6 +2136,8 @@ function render(){
   drawRanking(data);
   drawHeadline(data);
   syncUrlFromState();
+  if(originSelectEl) originSelectEl.value = STATE.originKey;
+  if(monthSelectEl)  monthSelectEl.value  = String(STATE.month ?? 0);
 }
 
 /* ────────── URL STATE ────────── */
@@ -1627,27 +2181,48 @@ function svgEl(tag, attrs){
 function wireLegend(){
   function toggleLayer(layer){
     LEGEND[layer] = !LEGEND[layer];
-
     const row = document.getElementById(`legend-${layer}`);
-    const ind = document.getElementById(`legend-ind-${layer}`);
-    if(row){ row.classList.toggle("is-on", LEGEND[layer]); row.setAttribute("aria-pressed", LEGEND[layer]); }
-    if(ind){ ind.classList.toggle("is-on", LEGEND[layer]); }
-
-    // Show CO₂ colour key strip when CO₂ layer turns on
+    if(row){
+      row.classList.toggle("is-on", LEGEND[layer]);
+      row.setAttribute("aria-pressed", LEGEND[layer]);
+    }
     if(layer === "co2"){
       const strip = document.getElementById("legend-co2-strip");
-      if(strip) strip.classList.toggle("is-visible", LEGEND[layer]);
+      if(strip){
+        strip.classList.toggle("is-visible", LEGEND[layer]);
+        strip.setAttribute("aria-hidden", String(!LEGEND[layer]));
+      }
     }
-
+    if(layer === "pop" && lastData && lastData.length){
+      drawPopGlow(lastData);
+      return;
+    }
     if(lastData && lastData.length) drawDots(lastData);
   }
 
-  ["transport","co2"].forEach(layer=>{
+  ["transport","co2","pop"].forEach(layer=>{
     const el = document.getElementById(`legend-${layer}`);
     if(!el) return;
     el.addEventListener("click", ()=> toggleLayer(layer));
     el.addEventListener("keydown", e=>{ if(e.key===" "||e.key==="Enter"){ e.preventDefault(); toggleLayer(layer); } });
   });
+
+  /* Collapse / expand toggle on the legend chrome — the panel folds into a
+     tiny pill so the map stays uncovered when the legend isn't needed. */
+  const legend  = document.getElementById("wf-legend");
+  const toggle  = document.getElementById("legend-toggle");
+  const reopen  = document.getElementById("legend-reopen");
+  function setCollapsed(v){
+    if(!legend) return;
+    legend.classList.toggle("is-collapsed", v);
+    if(reopen) reopen.hidden = !v;
+    try { localStorage.setItem("wf-legend-collapsed", v ? "1" : "0"); } catch(_){}
+  }
+  if(toggle) toggle.addEventListener("click", ()=> setCollapsed(true));
+  if(reopen) reopen.addEventListener("click", ()=> setCollapsed(false));
+  try {
+    if(localStorage.getItem("wf-legend-collapsed") === "1") setCollapsed(true);
+  } catch(_){}
 }
 
 /* ────────── ADVANCED DOCK ────────── */
@@ -1705,6 +2280,7 @@ function bootApp(){
   }
   appBooted = true;
   drawOriginSelect();
+  drawMonthSelect();
   drawPresetTray();
   wireAdvanced();
   wireAbout();
@@ -1714,10 +2290,11 @@ function bootApp(){
   drawMiniLand();
   render();
 
-  // Click outside dots/labels resets selection
+  // Click outside dots/labels resets selection and closes popup
   document.querySelector(".wf-stage-map").addEventListener("click", e=>{
     if(e.target.tagName === "svg" || e.target.closest("#g-rings") || e.target.closest("#g-bearings") || e.target.closest("#g-cardinal")){
       if(STATE.active){ STATE.active = null; render(); }
+      closeDotPopup();
     }
   });
 
@@ -1741,8 +2318,10 @@ async function boot(){
   // works using each city's static fallback time/cost.
   try {
     if (typeof WF.loadDestinations === "function") {
-      await WF.loadDestinations();
-    }
+await Promise.all([
+  WF.loadDestinations(),
+  WF.loadEuropeGeoJSON("europe.geojson")
+]);    }
   } catch (err) {
     console.warn("[WhereToGo] Could not load destinations_all_months.json — running with static fallbacks.", err);
   }

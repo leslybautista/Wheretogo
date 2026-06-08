@@ -258,18 +258,34 @@ window.__WF_TWEAKS = /*EDITMODE-BEGIN*/{
       <!-- Canvas (radial map) -->
       <div id="canvas">
         <svg id="map" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
-          <g id="map-zoom">
-            <g id="g-basemap"></g>
-            <g id="g-rings"></g>
-            <g id="g-bearings"></g>
+          <defs>
+            <!-- Clips zoomed content to the outer ring boundary so panned
+                 content never bleeds outside the compass frame. -->
+            <clipPath id="map-inner-clip" clipPathUnits="userSpaceOnUse">
+              <circle cx="500" cy="500" r="430"/>
+            </clipPath>
+          </defs>
+
+          <!-- Clip wrapper (never transforms) keeps content inside the compass ring -->
+          <g clip-path="url(#map-inner-clip)">
+            <!-- Zoomable / pannable layer -->
+            <g id="map-zoom">
+              <g id="g-basemap"></g>
+              <g id="g-rings"></g>
+              <g id="g-bearings"></g>
+              <g id="g-rose"></g>
+              <g id="g-pop-glow"></g>
+              <g id="g-halos"></g>
+              <g id="g-dots"></g>
+              <g id="g-labels"></g>
+              <g id="g-active"></g>
+              <g id="g-origin"></g>
+            </g>
+          </g>
+
+          <!-- Static frame — never zooms or pans -->
+          <g id="map-static">
             <g id="g-cardinal"></g>
-            <g id="g-rose"></g>
-            <g id="g-pop-glow"></g>
-            <g id="g-halos"></g>
-            <g id="g-dots"></g>
-            <g id="g-labels"></g>
-            <g id="g-active"></g>
-            <g id="g-origin"></g>
           </g>
         </svg>
       </div>
@@ -305,9 +321,9 @@ window.__WF_TWEAKS = /*EDITMODE-BEGIN*/{
           <div class="wf-legend-toggle-row" id="legend-co2" role="button" aria-pressed="false" tabindex="0" title="Colour dots by CO₂ emission level">
             <span class="wf-legend-sym">
               <svg viewBox="0 0 18 18" width="18" height="18">
-                <circle cx="5" cy="9" r="2.5" fill="rgba(80,190,158,.95)"/>
+                <circle cx="5" cy="9" r="2.5" fill="rgba(79,158,212,.95)"/>
                 <circle cx="9" cy="9" r="2.5" fill="rgba(210,165,75,.95)"/>
-                <circle cx="13" cy="9" r="2.5" fill="rgba(195,90,90,.95)"/>
+                <circle cx="13" cy="9" r="2.5" fill="rgba(154,96,32,.95)"/>
               </svg>
             </span>
             <span class="wf-legend-layer-label">CO₂ emissions</span>
@@ -363,6 +379,27 @@ window.__WF_TWEAKS = /*EDITMODE-BEGIN*/{
 
       <!-- Tooltip -->
       <div class="wf-tip" id="tip"></div>
+
+      <!-- Dot popup for rank 11+ destinations -->
+      <div class="wf-dot-popup" id="dot-popup" hidden>
+        <button class="wf-dot-popup-close" id="dot-popup-close" aria-label="Close">×</button>
+        <div class="wf-dot-popup-photo-wrap">
+          <img class="wf-dot-popup-photo" id="dot-popup-photo" src="" alt="" loading="lazy">
+        </div>
+        <div class="wf-dot-popup-body">
+          <div class="wf-dot-popup-header">
+            <span class="wf-dot-popup-rank" id="dot-popup-rank"></span>
+            <div>
+              <div class="wf-dot-popup-name" id="dot-popup-name"></div>
+              <div class="wf-dot-popup-country" id="dot-popup-country"></div>
+            </div>
+            <span class="wf-dot-popup-match" id="dot-popup-match"></span>
+          </div>
+          <div class="wf-dot-popup-metrics" id="dot-popup-metrics"></div>
+          <div class="wf-dot-popup-tags" id="dot-popup-tags"></div>
+          <div class="wf-dot-popup-insight" id="dot-popup-insight"></div>
+        </div>
+      </div>
 
     </div><!-- /.wf-stage-map -->
 

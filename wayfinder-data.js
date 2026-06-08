@@ -114,7 +114,7 @@ WF.PRESETS = [
     w:{ time:.25, cost:.25, co2:.25, pop:.25 } },
   { id:"weekend",     label:"Weekend escape",  hint:"Quick, affordable, low-friction",
     w:{ time:.50, cost:.30, co2:.15, pop:.05 } },
-  { id:"culture",     label:"Culture",         hint:"Reach a major cultural anchor",
+  { id:"popular",     label:"Popular",         hint:"Reach a major popular anchor",
     w:{ time:.20, cost:.15, co2:.10, pop:.55 }, popInvert:false },
   { id:"hidden",      label:"Hidden gems",     hint:"Underexplored cities, cleanly reached",
     w:{ time:.20, cost:.25, co2:.25, pop:.30 }, popInvert:true },

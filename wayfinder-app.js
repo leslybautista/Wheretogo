@@ -234,6 +234,9 @@ let miniLandEl = null, miniDotsEl = null, miniGratEl = null, miniHitsEl = null;
 let presetTrayEl = null, originSelectEl = null, monthSelectEl = null;
 let insightEl=null, matchPctEl=null, matchNameEl=null, matchSubEl=null;
 let rankCountEl=null, rankPresetEl=null;
+let dotPopupEl=null, dotPopupNameEl=null, dotPopupCountryEl=null,
+    dotPopupRankEl=null, dotPopupMatchEl=null, dotPopupPhotoEl=null,
+    dotPopupMetricsEl=null, dotPopupTagsEl=null, dotPopupInsightEl=null;
 
 function captureRefs(){
   gLayer = {
@@ -262,31 +265,37 @@ function captureRefs(){
   matchSubEl   = document.getElementById("match-sub");
   rankCountEl  = document.getElementById("rank-count");
   rankPresetEl = document.getElementById("rank-preset");
+  dotPopupEl        = document.getElementById("dot-popup");
+  dotPopupNameEl    = document.getElementById("dot-popup-name");
+  dotPopupCountryEl = document.getElementById("dot-popup-country");
+  dotPopupRankEl    = document.getElementById("dot-popup-rank");
+  dotPopupMatchEl   = document.getElementById("dot-popup-match");
+  dotPopupPhotoEl   = document.getElementById("dot-popup-photo");
+  dotPopupMetricsEl = document.getElementById("dot-popup-metrics");
+  dotPopupTagsEl    = document.getElementById("dot-popup-tags");
+  dotPopupInsightEl = document.getElementById("dot-popup-insight");
+  if(dotPopupEl){
+    document.getElementById("dot-popup-close").addEventListener("click", closeDotPopup);
+  }
 }
 
 /* ────────── DRAW: RINGS, BEARING LINES, CARDINALS ────────── */
 function drawRings(){
   const g = gLayer.rings;
   g.innerHTML = "";
-  // 5 rings — inner is highlighted, outer is solid.
+  // Inner rings only — the outermost ring is owned by the static compass layer.
   RING_BANDS.forEach((band, i) => {
+    if(i === RING_BANDS.length - 1) return; // outer ring drawn in drawCardinal (static)
     const r = R_MIN + band.t * (R_MAX - R_MIN);
-    const isOuter = i === RING_BANDS.length-1;
     const isInner = i === 0;
-    const cls = isOuter ? "wf-ring wf-ring-outer"
-              : isInner ? "wf-ring wf-ring-emph"
-              : "wf-ring";
-    g.appendChild(svgEl("circle",{
-      cx:CX, cy:CY, r,
-      class: cls,
-    }));
-    // band label, placed at top edge of each ring
+    const cls = isInner ? "wf-ring wf-ring-emph" : "wf-ring";
+    g.appendChild(svgEl("circle",{ cx:CX, cy:CY, r, class: cls }));
     if(band.label){
       const t = svgEl("text",{
         x: CX + 4,
         y: CY - r - 4,
         class: "wf-ring-label",
-    "text-anchor": "middle",
+        "text-anchor": "middle",
       });
       t.textContent = band.label.toUpperCase();
       g.appendChild(t);
@@ -311,18 +320,21 @@ function drawCardinal(){
   const g = gLayer.cardinal;
   g.innerHTML = "";
 
-  /* ── The outer map ring (wf-ring-outer at r = R_MAX) already serves as
-     the compass bezel — we don't draw a separate circle here.
-     All compass geometry is referenced to R_MAX so the two elements are
-     perfectly coincident. ── */
-  const R_BEZEL        = R_MAX;          // 430 — unified with outer map ring
-  const R_TICK_IN      = R_MAX - 9;      // 421 — major tick inner end (inside ring)
-  const R_TICK_OUT     = R_MAX + 9;      // 439 — major tick outer end (outside ring)
-  const R_MINOR_IN     = R_MAX - 5;      // 425
-  const R_MINOR_OUT    = R_MAX + 5;      // 435
-  const R_LABEL        = R_MAX + 34;     // 464 — cardinal/intercardinal labels
+  /* ── g-cardinal is now in the static layer (never zooms/pans).
+     It owns the outer ring circle so the bezel is always fully visible. ── */
+  const R_TICK_IN      = R_MAX - 9;
+  const R_TICK_OUT     = R_MAX + 9;
+  const R_MINOR_IN     = R_MAX - 5;
+  const R_MINOR_OUT    = R_MAX + 5;
+  const R_LABEL        = R_MAX + 34;
 
-  // One subtle inner deco ring to give the compass depth
+  // Outer boundary ring (the compass bezel frame)
+  g.appendChild(svgEl("circle",{
+    cx:CX, cy:CY, r:R_MAX,
+    class:"wf-ring wf-ring-outer"
+  }));
+
+  // One subtle inner deco ring for compass depth
   g.appendChild(svgEl("circle",{
     cx:CX, cy:CY, r: R_MAX - 16,
     stroke:"rgba(255,255,255,0.05)", "stroke-width":0.8, fill:"none"
@@ -645,21 +657,22 @@ function updateByName(g, items, makeFn, updateFn){
 
 function _co2Color(co2){
   if(co2 == null) return null;
-  if(co2 < 15)  return "rgba(80,190,158,.85)";   // muted green
+  if(co2 < 15)  return "rgba(79,158,212,.85)";   // steel blue
   if(co2 < 60)  return "rgba(210,165,75,.85)";   // muted amber
-  return          "rgba(195,90,90,.85)";          // muted red
+  return          "rgba(154,96,32,.85)";          // dark amber-brown
 }
 
 function drawDots(data){
-  // Halos for top tier
-  const topData = data.filter(d => d.rank <= 5);
+  // Halos: top 5 always; extend to top 8 when zoomed in for added legibility
+  const haloThreshold = ZOOM.scale > 1.8 ? 8 : 5;
+  const topData = data.filter(d => d.rank <= haloThreshold);
   updateByName(
     gLayer.halos, topData,
     () => svgEl("circle", { class:"wf-halo-top" }),
     (el, d) => {
       el.setAttribute("cx", d.x);
       el.setAttribute("cy", d.y);
-      el.setAttribute("r", 15);
+      el.setAttribute("r", 15 / Math.pow(ZOOM.scale, 1.5));
     }
   );
 
@@ -673,12 +686,28 @@ function drawDots(data){
       const name = d.name;
       g.addEventListener("mouseenter", () => onHover(name));
       g.addEventListener("mouseleave", () => onHover(null));
-      g.addEventListener("click",      () => onSelect(name));
+      g.addEventListener("click", (e) => {
+        if(d.rank > 10){
+          e.stopPropagation();
+          const currentData = lastData ? lastData.find(x => x.name === name) : null;
+          if(currentData) showDotPopup(currentData, e);
+        } else {
+          closeDotPopup();
+          onSelect(name);
+        }
+      });
       return g;
     },
     (el, d) => {
       const tier    = d.rank<=5 ? "top" : d.rank<=12 ? "mid" : "low";
-      const r       = tier==="top" ? 6.0 : tier==="mid" ? 4.5 : 3.4;
+      // Zoom-aware radius: top cities grow on screen (prominence), mid stays stable,
+      // low shrinks at overview zoom to reduce visual noise.
+      const s = ZOOM.scale;
+      const baseR = tier==="top" ? 6.0 : tier==="mid" ? 4.5 : 3.4;
+      // Dots shrink as zoom increases: divide by s^1.5 so on-screen size = baseR / √s
+      // (at zoom=2 → ~71% of original, at zoom=4 → 50%). Low tier shrinks faster.
+      const exp = tier==="low" ? 1.8 : 1.5;
+      const r = baseR / Math.pow(s, exp);
       const isTrain = d.transport === "train";
       const focusName = STATE.active || STATE.hovered;
       const isFocus   = focusName === d.name;
@@ -691,7 +720,7 @@ function drawDots(data){
       const hit = el.querySelector(".wf-dot-hit");
       hit.setAttribute("cx", d.x);
       hit.setAttribute("cy", d.y);
-      hit.setAttribute("r", 14);
+      hit.setAttribute("r", 14 / Math.pow(ZOOM.scale, 1.5));
 
       // Shape — replace element if glyph type changed (circle ↔ rect)
       let shape = el.querySelector(".wf-dot-shape");
@@ -742,43 +771,94 @@ function drawDots(data){
 }
 function drawLabels(data){
   const g = gLayer.labels;
-  // semantic zoom: at higher zoom show more labels, at lower zoom fewer.
-  const baseLimit = STATE.density==="rich" ? 14 : 7;
-  const limit = Math.min(
-    data.length,
-    Math.max(4, Math.round(baseLimit + (ZOOM.scale - 1) * 6))
-  );
-  const top = data.slice(0, limit);
+  const baseLimit = STATE.density==="rich" ? 12 : 6;
+  const zoomBonus = Math.round(Math.pow(ZOOM.scale - 1, 0.8) * 14);
+  const limit = Math.min(data.length, Math.max(4, baseLimit + zoomBonus));
+
+  // Only label cities whose dot is currently inside the clip circle.
+  // Transform dot position to SVG viewport space and check against R_MAX.
+  const s = ZOOM.scale;
+  function dotInView(d){
+    const dx = s * (d.x - CX) + ZOOM.tx;
+    const dy = s * (d.y - CY) + ZOOM.ty;
+    return Math.hypot(dx, dy) < R_MAX - 4;
+  }
+
+  const top = data.slice(0, limit).filter(dotInView);
   const focusName = STATE.active || STATE.hovered;
 
-  // Greedy de-overlap: keep estimated bounding boxes of already-placed labels
-  // and push new ones outward if they'd collide. Labels are sorted by rank,
-  // so the most important always wins.
   const placed = [];
   const approxCharW = 7.5;
   const approxH = 18;
 
+  // Candidate placement angles: bearing direction first, then perpendiculars,
+  // then opposite — gives us 8 distinct positions to try before giving up.
+  function candidateAngles(bearingDeg){
+    const b = bearingDeg - 90; // SVG angle
+    return [b, b+90, b-90, b+45, b-45, b+135, b-135, b+180].map(toRad);
+  }
+
   updateByName(
     g, top,
-    (d) => svgEl("text", { class:"wf-label", "data-name": d.name }),
+    (d) => {
+      const el = svgEl("text", { class:"wf-label", "data-name": d.name });
+      el.addEventListener("mouseenter", () => onHover(d.name));
+      el.addEventListener("mouseleave", () => onHover(null));
+      el.addEventListener("click",      () => onSelect(d.name));
+      return el;
+    },
     (el, d) => {
-      const θ = toRad(d.bearingDeg-90);
-      let offset = 16;
+      const candidates = candidateAngles(d.bearingDeg);
       let lx, ly, bx, by, w, anchor;
-      // try a few offsets to avoid collisions
-      for(let tries=0; tries<6; tries++){
-        lx = d.x + offset*Math.cos(θ);
-        ly = d.y + offset*Math.sin(θ);
-        anchor = Math.cos(θ) > 0.25 ? "start" : Math.cos(θ) < -0.25 ? "end" : "middle";
-        w = (d.name.length) * approxCharW;
-        bx = anchor==="start" ? lx : anchor==="end" ? lx - w : lx - w/2;
-        by = ly - approxH/2;
-        const hit = placed.some(p =>
-          bx < p.bx + p.w && bx + w > p.bx &&
-          by < p.by + p.h && by + p.h > p.by
+      const baseOffset = 16;
+      let placed_ok = false;
+
+      // Effective clip radius in local map-zoom coordinates.
+      // A label corner at local (x,y) is inside if Math.hypot(x-CX, y-CY) < R_CLIP_LOCAL.
+      const R_CLIP_LOCAL = (R_MAX - 6) / ZOOM.scale;
+      function boxFitsInClip(bx2, by2, w2, h2){
+        const corners = [
+          [bx2,      by2     ],
+          [bx2 + w2, by2     ],
+          [bx2,      by2 + h2],
+          [bx2 + w2, by2 + h2],
+        ];
+        return corners.every(([cx3, cy3]) =>
+          Math.hypot(cx3 - CX, cy3 - CY) < R_CLIP_LOCAL
         );
-        if(!hit) break;
-        offset += 14;
+      }
+
+      outer:
+      for(let offStep = 0; offStep < 4; offStep++){
+        const offset = baseOffset + offStep * 12;
+        for(const θ of candidates){
+          const cx2 = d.x + offset * Math.cos(θ);
+          const cy2 = d.y + offset * Math.sin(θ);
+          const anc  = Math.cos(θ) > 0.25 ? "start" : Math.cos(θ) < -0.25 ? "end" : "middle";
+          w  = d.name.length * approxCharW;
+          bx = anc === "start" ? cx2 : anc === "end" ? cx2 - w : cx2 - w/2;
+          by = cy2 - approxH/2;
+          const overlap = placed.some(p =>
+            bx < p.bx + p.w + 4 && bx + w > p.bx - 4 &&
+            by < p.by + p.h + 2 && by + p.h > p.by - 2
+          );
+          if(!overlap && boxFitsInClip(bx, by, w, approxH)){
+            lx = cx2; ly = cy2; anchor = anc;
+            placed_ok = true;
+            break outer;
+          }
+        }
+      }
+      if(!placed_ok){
+        // Fallback: place toward center (inward) so it stays inside the clip.
+        const inwardθ = Math.atan2(CY - d.y, CX - d.x);
+        const offset = baseOffset + 4;
+        lx = d.x + offset * Math.cos(inwardθ);
+        ly = d.y + offset * Math.sin(inwardθ);
+        anchor = Math.cos(inwardθ) > 0.25 ? "start" : Math.cos(inwardθ) < -0.25 ? "end" : "middle";
+        w  = d.name.length * approxCharW;
+        bx = anchor === "start" ? lx : anchor === "end" ? lx - w : lx - w/2;
+        by = ly - approxH/2;
       }
       placed.push({ bx, by, w, h: approxH });
 
@@ -791,8 +871,6 @@ function drawLabels(data){
       el.setAttribute("dominant-baseline", "middle");
       el.textContent = d.name;
 
-      // Hide this label if it's the focused city — the overlay
-      // group renders an accent-styled label for the focus.
       el.style.display = (focusName && focusName === d.name) ? "none" : "";
     }
   );
@@ -812,15 +890,41 @@ function drawOverlay(data){
     class:"wf-connector"
   }));
   // 2) ring at destination
-  g.appendChild(svgEl("circle",{cx:d.x,cy:d.y,r:12,class:"wf-focus-ring"}));
-  // 3) label
-  const θ = toRad(d.bearingDeg-90);
-  const lx = d.x + 20*Math.cos(θ);
-  const ly = d.y + 20*Math.sin(θ);
-  const anchor = Math.cos(θ) > 0.25 ? "start" : Math.cos(θ) < -0.25 ? "end" : "middle";
+  g.appendChild(svgEl("circle",{cx:d.x,cy:d.y,r:12/Math.pow(ZOOM.scale,1.5),class:"wf-focus-ring"}));
+  // 3) label — placed using the same clip-aware logic as drawLabels
+  const approxCharW = 7.5, approxH = 20;
+  const R_CLIP_LOCAL = (R_MAX - 6) / ZOOM.scale;
+  function fitsInClip(bx2, by2, w2, h2){
+    return [[bx2,by2],[bx2+w2,by2],[bx2,by2+h2],[bx2+w2,by2+h2]]
+      .every(([cx3,cy3]) => Math.hypot(cx3-CX, cy3-CY) < R_CLIP_LOCAL);
+  }
+  const w = d.name.length * approxCharW;
+  // Try bearing direction first, then inward, then the 6 other candidates
+  const bearingθ = toRad(d.bearingDeg - 90);
+  const inwardθ  = Math.atan2(CY - d.y, CX - d.x);
+  const tryAngles = [bearingθ, inwardθ,
+    bearingθ+Math.PI/2, bearingθ-Math.PI/2,
+    bearingθ+Math.PI/4, bearingθ-Math.PI/4, bearingθ+Math.PI];
+  let lx = d.x + 20*Math.cos(bearingθ);
+  let ly = d.y + 20*Math.sin(bearingθ);
+  let anchor = Math.cos(bearingθ) > 0.25 ? "start" : Math.cos(bearingθ) < -0.25 ? "end" : "middle";
+  for(const a of tryAngles){
+    const cx2 = d.x + 20*Math.cos(a);
+    const cy2 = d.y + 20*Math.sin(a);
+    const anc  = Math.cos(a) > 0.25 ? "start" : Math.cos(a) < -0.25 ? "end" : "middle";
+    const bx2  = anc==="start" ? cx2 : anc==="end" ? cx2-w : cx2-w/2;
+    const by2  = cy2 - approxH/2;
+    if(fitsInClip(bx2, by2, w, approxH)){ lx=cx2; ly=cy2; anchor=anc; break; }
+  }
   const t = svgEl("text",{x:lx,y:ly,class:"wf-label wf-label-focus","text-anchor":anchor,"dominant-baseline":"middle"});
   t.textContent = d.name;
+  t.addEventListener("mouseenter", () => onHover(focus));
+  t.addEventListener("mouseleave", () => onHover(null));
+  t.addEventListener("click",      () => onSelect(focus));
   g.appendChild(t);
+  // Apply current zoom scale so the focus label is always the right screen size
+  const sqrtS = Math.sqrt(ZOOM.scale);
+  t.style.fontSize = (20 / sqrtS) + "px";
 }
 
 /* ────────── MINI EUROPE MAP (real coastline) ────────── */
@@ -1110,6 +1214,9 @@ const MEDAL = {
   1: { icon: "🏆", label: "Best match"   },
   2: { icon: "🥈", label: "Silver pick"  },
   3: { icon: "🥉", label: "Bronze pick"  },
+  4: { label: "4th"  }, 5: { label: "5th"  }, 6: { label: "6th"  },
+  7: { label: "7th"  }, 8: { label: "8th"  }, 9: { label: "9th"  },
+  10:{ label: "10th" },
 };
 
 function drawRanking(data){
@@ -1140,8 +1247,8 @@ function drawRanking(data){
     const imgTag = `<img class="wf-rank-photo-img" src="${primaryUrl || fallbackUrl}" data-fb="${fallbackUrl}" alt="" loading="lazy" onerror="if(this.dataset.fb && this.src!==this.dataset.fb){this.src=this.dataset.fb;}else{this.style.display='none';}">`;
 
     const medal = MEDAL[d.rank];
-    /* Small inline medal badge sits next to the city name in the title row,
-       not over the photo. Top-3 cards get gold / silver / bronze. */
+    /* Rank badge for all top-10 cards. Ranks 1–3 get a filled medal disc;
+       ranks 4–10 get a subtle ghost disc so position is still readable. */
     const medalInline = medal
       ? `<span class="wf-rank-medal-inline is-rank-${d.rank}" title="${medal.label}" aria-label="${medal.label}"><span class="medal-disc">${d.rank}</span></span>`
       : "";
@@ -1501,26 +1608,32 @@ function applyZoom(){
   const lvl = document.getElementById("zoom-level");
   if(lvl) lvl.textContent = Math.round(ZOOM.scale * 100) + "%";
   // Re-render labels: counter-scale font + adjust semantic-zoom limit.
-  if(lastData && lastData.length) drawLabels(lastData);
+  if(lastData && lastData.length){ drawDots(lastData); drawLabels(lastData); }
   // Counter-scale label font so text stays readable at high zoom,
   // while preserving the major/normal/dim tier sizes.
+  // Counter-scale by sqrt(zoom) so labels grow visibly when zooming in
+  // (full 1/zoom would keep them constant; no division would make them huge).
+  const sqrtScale = Math.sqrt(ZOOM.scale);
   const sizeFor = (cls)=>
     !cls ? 17 :
     cls.indexOf("wf-label-major") >= 0 ? 21 :
     cls.indexOf("wf-label-dim")   >= 0 ? 14 :
     17;
   g.querySelectorAll(".wf-label").forEach(el => {
-    el.style.fontSize = (sizeFor(el.getAttribute("class")) / ZOOM.scale) + "px";
+    el.style.fontSize = (sizeFor(el.getAttribute("class")) / sqrtScale) + "px";
   });
-  // Also counter-scale ring band labels, cardinals
+  // Counter-scale inner structural labels (inside zoom group)
   g.querySelectorAll(".wf-ring-label").forEach(el => el.style.fontSize = (11 / ZOOM.scale) + "px");
-  g.querySelectorAll(".wf-cardinal").forEach(el => el.style.fontSize = (13 / ZOOM.scale) + "px");
-  g.querySelectorAll(".wf-intercardinal").forEach(el => el.style.fontSize = (10 / ZOOM.scale) + "px");
   g.querySelectorAll(".wf-origin-label").forEach(el => el.style.fontSize = (20 / ZOOM.scale) + "px");
   g.querySelectorAll(".wf-origin-sub").forEach(el => el.style.fontSize = (9 / ZOOM.scale) + "px");
+  // Cardinals are in the static layer — no counter-scale needed
 }
 function setZoom(s){
   ZOOM.scale = Math.max(ZOOM.min, Math.min(ZOOM.max, s));
+  // Re-clamp pan whenever scale changes so tx/ty stay within the new bound.
+  const maxPan = R_MAX * (ZOOM.scale - 1) / ZOOM.scale;
+  ZOOM.tx = Math.max(-maxPan, Math.min(maxPan, ZOOM.tx));
+  ZOOM.ty = Math.max(-maxPan, Math.min(maxPan, ZOOM.ty));
   applyZoom();
 }
 function resetView(){
@@ -1567,8 +1680,14 @@ function wireZoom(){
     // is sized via CSS; rect gives us the px size of the visible SVG).
     const r = svg.getBoundingClientRect();
     const vbScale = 1000 / r.width;
-    ZOOM.tx = startTx + (e.clientX - startX) * vbScale;
-    ZOOM.ty = startTy + (e.clientY - startY) * vbScale;
+    const rawTx = startTx + (e.clientX - startX) * vbScale;
+    const rawTy = startTy + (e.clientY - startY) * vbScale;
+    // Clamp pan so the origin can't leave the outer ring.
+    // At scale s, the max meaningful offset in SVG units is R_MAX*(s-1)/s
+    // — beyond that the centre of the map would exit the compass frame.
+    const maxPan = R_MAX * (ZOOM.scale - 1) / ZOOM.scale;
+    ZOOM.tx = Math.max(-maxPan, Math.min(maxPan, rawTx));
+    ZOOM.ty = Math.max(-maxPan, Math.min(maxPan, rawTy));
     applyZoom();
   });
   const endDrag = (e)=>{
@@ -1635,6 +1754,65 @@ function _syncLabelVisibility(){
     el.style.display = (focus && el.getAttribute("data-name") === focus) ? "none" : "";
   });
 }
+function closeDotPopup(){
+  if(dotPopupEl) dotPopupEl.hidden = true;
+}
+
+function showDotPopup(d, clickEvent){
+  if(!dotPopupEl) return;
+
+  // Position popup using the click coordinates relative to the stage container
+  const stageRect = dotPopupEl.parentElement.getBoundingClientRect();
+  const dotX = clickEvent.clientX - stageRect.left;
+  const dotY = clickEvent.clientY - stageRect.top;
+
+  const popW = 220, popH = 290;
+  let left = dotX + 12;
+  let top  = dotY - 50;
+  if(left + popW > stageRect.width - 8)  left = dotX - popW - 12;
+  if(top + popH  > stageRect.height - 8) top  = stageRect.height - popH - 8;
+  if(top < 8) top = 8;
+  dotPopupEl.style.left = left + "px";
+  dotPopupEl.style.top  = top  + "px";
+
+  // Populate content
+  dotPopupRankEl.textContent    = `#${d.rank}`;
+  dotPopupNameEl.textContent    = d.name;
+  dotPopupCountryEl.textContent = d.country;
+  dotPopupMatchEl.textContent   = `${d.matchPct}%`;
+
+  const photoSrc = d.photoUrl || photoURL(d.photoId, 240) || fallbackPhotoURL(d.iata || d.name, 240);
+  const fbSrc    = fallbackPhotoURL(d.iata || d.name, 240);
+  dotPopupPhotoEl.src = photoSrc || fbSrc;
+  dotPopupPhotoEl.dataset.fb = fbSrc;
+  dotPopupPhotoEl.onerror = function(){
+    if(this.dataset.fb && this.src !== this.dataset.fb){ this.src = this.dataset.fb; }
+    else { this.style.display = "none"; }
+  };
+
+  const hh = Math.floor(d.time), mm = Math.round((d.time - hh) * 60);
+  const timeStr = mm > 0 ? `${hh}h ${mm}m` : `${hh}h`;
+  dotPopupMetricsEl.innerHTML = `
+    <div class="wf-dot-popup-metric"><span class="wf-dot-popup-metric-v">${timeStr}</span><span class="wf-dot-popup-metric-l">Travel</span></div>
+    <div class="wf-dot-popup-metric"><span class="wf-dot-popup-metric-v">€${d.cost}</span><span class="wf-dot-popup-metric-l">Fare</span></div>
+    <div class="wf-dot-popup-metric"><span class="wf-dot-popup-metric-v">${d.co2}kg</span><span class="wf-dot-popup-metric-l">CO₂</span></div>
+  `;
+
+  // Tags: budget, walkability, aqi
+  const tags = [];
+  const city = WF.CITIES.find(c => c.name === d.name);
+  if(city){
+    if(city.budget)      tags.push({ label: city.budget + " budget",  cls: city.budget === "Low" ? "is-good" : city.budget === "High" ? "is-mid" : "" });
+    if(city.walkability) tags.push({ label: "Walk: " + city.walkability, cls: (city.walkability === "Great" || city.walkability === "Good") ? "is-good" : "" });
+    if(city.aqi)         tags.push({ label: "Air: " + city.aqi,          cls: (city.aqi === "Great" || city.aqi === "Good") ? "is-good" : city.aqi === "Poor" ? "is-mid" : "" });
+  }
+  dotPopupTagsEl.innerHTML = tags.map(t => `<span class="wf-dot-popup-tag ${t.cls}">${t.label}</span>`).join("");
+
+  dotPopupInsightEl.textContent = (city && city.insight) ? city.insight : (d.insight || "");
+
+  dotPopupEl.hidden = false;
+}
+
 function onSelect(name){
   STATE.active = (STATE.active === name) ? null : name;
   drawOverlay(lastData);
@@ -1688,15 +1866,21 @@ function applyPreset(id){
     });
   }
   STATE.active = null;
+  closeDotPopup();
   render();
 }
 
 function syncAdvancedFromState(){
-  ["time","cost","co2","pop"].forEach(k=>{
+  // Scale preset weights so the dominant factor shows 100 and others are proportional.
+  // This gives each slider a clear 0–100 "importance" reading independent of the others.
+  const keys = ["time","cost","co2","pop"];
+  const maxW = Math.max(...keys.map(k => STATE.weights[k] || 0)) || 1;
+  keys.forEach(k=>{
+    const raw = Math.round((STATE.weights[k] / maxW) * 100);
     const s = document.querySelector(`input[data-w="${k}"]`);
-    if(s){ s.value = Math.round(STATE.weights[k]*100); }
+    if(s){ s.value = raw; }
     const v = document.querySelector(`[data-vw="${k}"]`);
-    if(v){ v.textContent = Math.round(STATE.weights[k]*100)+"%"; }
+    if(v){ v.textContent = raw + "%"; }
   });
   const inv = document.getElementById("pop-invert");
   if(inv) inv.checked = !!STATE.popInvert;
@@ -1709,10 +1893,11 @@ function readAdvanced(){
   const s=t+c+e+p||1;
   STATE.weights = { time:t/s, cost:c/s, co2:e/s, pop:p/s };
   STATE.popInvert = document.getElementById("pop-invert").checked;
-  document.querySelector('[data-vw="time"]').textContent = Math.round(STATE.weights.time*100)+"%";
-  document.querySelector('[data-vw="cost"]').textContent = Math.round(STATE.weights.cost*100)+"%";
-  document.querySelector('[data-vw="co2"]').textContent  = Math.round(STATE.weights.co2*100)+"%";
-  document.querySelector('[data-vw="pop"]').textContent  = Math.round(STATE.weights.pop*100)+"%";
+  // Show raw slider value (0–100) so each factor feels independent
+  document.querySelector('[data-vw="time"]').textContent = t + "%";
+  document.querySelector('[data-vw="cost"]').textContent = c + "%";
+  document.querySelector('[data-vw="co2"]').textContent  = e + "%";
+  document.querySelector('[data-vw="pop"]').textContent  = p + "%";
   STATE.presetId = "custom";
   if(presetTrayEl) presetTrayEl.querySelectorAll(".wf-preset").forEach(b=>b.classList.remove("is-active"));
 }
@@ -1730,6 +1915,7 @@ function drawOriginSelect(){
   originSelectEl.addEventListener("change", e=>{
     STATE.originKey = e.target.value;
     STATE.active = null;
+    closeDotPopup();
     render();
   });
 }
@@ -1747,6 +1933,7 @@ function drawMonthSelect(){
   monthSelectEl.addEventListener("change", e=>{
     STATE.month = parseInt(e.target.value, 10);
     STATE.active = null;
+    closeDotPopup();
     render();
   });
 }
@@ -1844,11 +2031,14 @@ function drawEntry(){
   document.getElementById("entry-cta").addEventListener("click", finishEntry);
 }
 function syncEntrySliders(){
+  const keys = ["time","cost","co2","pop"];
+  const maxW = Math.max(...keys.map(k => STATE.weights[k] || 0)) || 1;
   document.querySelectorAll('#entry-adv-body input[data-ew]').forEach(el=>{
     const k = el.dataset.ew;
-    el.value = Math.round((STATE.weights[k]||0) * 100);
+    const raw = Math.round(((STATE.weights[k]||0) / maxW) * 100);
+    el.value = raw;
     const v = document.querySelector(`#entry-adv-body [data-evw="${k}"]`);
-    if(v) v.textContent = Math.round((STATE.weights[k]||0)*100) + "%";
+    if(v) v.textContent = raw + "%";
   });
   const inv = document.querySelector('#entry-adv-body input[data-epop-invert]');
   if(inv) inv.checked = !!STATE.popInvert;
@@ -1869,10 +2059,10 @@ function readEntrySliders(){
   STATE.presetId = "custom";
   // De-select vibes
   document.querySelectorAll("#entry-vibes .wf-vibe").forEach(x=>x.classList.remove("is-active"));
-  // Update displayed percentages
+  // Show raw slider value (0–100) so each factor feels independent
   document.querySelectorAll('#entry-adv-body [data-evw]').forEach(v=>{
     const k = v.dataset.evw;
-    v.textContent = Math.round(STATE.weights[k]*100) + "%";
+    v.textContent = (raw[k] || 0) + "%";
   });
   updateEntryAdvSummary();
   updateEntrySummary();
@@ -2100,10 +2290,11 @@ function bootApp(){
   drawMiniLand();
   render();
 
-  // Click outside dots/labels resets selection
+  // Click outside dots/labels resets selection and closes popup
   document.querySelector(".wf-stage-map").addEventListener("click", e=>{
     if(e.target.tagName === "svg" || e.target.closest("#g-rings") || e.target.closest("#g-bearings") || e.target.closest("#g-cardinal")){
       if(STATE.active){ STATE.active = null; render(); }
+      closeDotPopup();
     }
   });
 
