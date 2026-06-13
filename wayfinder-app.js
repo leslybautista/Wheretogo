@@ -712,7 +712,7 @@ function drawDots(data){
       g.addEventListener("mouseenter", () => onHover(name));
       g.addEventListener("mouseleave", () => onHover(null));
       g.addEventListener("click", (e) => {
-        if(d.rank > 10){
+        if(d.rank > 20){
           e.stopPropagation();
           const currentData = lastData ? lastData.find(x => x.name === name) : null;
           if(currentData) showDotPopup(currentData, e);
@@ -1241,12 +1241,15 @@ const MEDAL = {
   3: { icon: "🥉", label: "Bronze pick"  },
   4: { label: "4th"  }, 5: { label: "5th"  }, 6: { label: "6th"  },
   7: { label: "7th"  }, 8: { label: "8th"  }, 9: { label: "9th"  },
-  10:{ label: "10th" },
+  10:{ label: "10th" }, 11:{ label: "11th" }, 12:{ label: "12th" },
+  13:{ label: "13th" }, 14:{ label: "14th" }, 15:{ label: "15th" },
+  16:{ label: "16th" }, 17:{ label: "17th" }, 18:{ label: "18th" },
+  19:{ label: "19th" }, 20:{ label: "20th" },
 };
 
 function drawRanking(data){
   if(!listEl) return;
-  const top = data.slice(0, 10);
+  const top = data.slice(0, 20);
   rankCountEl.textContent = top.length;
   const preset = PRESETS.find(p=>p.id===STATE.presetId);
   rankPresetEl.textContent = preset ? preset.label.toLowerCase() : STATE.presetId;
@@ -1272,8 +1275,8 @@ function drawRanking(data){
     const imgTag = `<img class="wf-rank-photo-img" src="${primaryUrl || fallbackUrl}" data-fb="${fallbackUrl}" alt="" loading="lazy" onerror="if(this.dataset.fb && this.src!==this.dataset.fb){this.src=this.dataset.fb;}else{this.style.display='none';}">`;
 
     const medal = MEDAL[d.rank];
-    /* Rank badge for all top-10 cards. Ranks 1–3 get a filled medal disc;
-       ranks 4–10 get a subtle ghost disc so position is still readable. */
+    /* Rank badge for all top-20 cards. Ranks 1–3 get a filled medal disc;
+       ranks 4–20 get a subtle ghost disc so position is still readable. */
     const medalInline = medal
       ? `<span class="wf-rank-medal-inline is-rank-${d.rank}" title="${medal.label}" aria-label="${medal.label}"><span class="medal-disc">${d.rank}</span></span>`
       : "";
@@ -1426,19 +1429,19 @@ function buildDetailModalBody(d, cell){
     const pills = ORDER.map((m,i) => {
       const cls = highSet.has(m) ? "" : medSet.has(m) ? " is-med" : " is-low";
       const isCur = (curIdx === i) ? " is-current" : "";
-      const tipText = highSet.has(m) ? "Peak season — high demand & prices" :
-                      medSet.has(m)  ? "Shoulder season — good balance" :
+      const tipText = highSet.has(m) ? "Crowded — high demand & prices" :
+                      medSet.has(m)  ? "Moderate — decent value" :
                                        "Off-peak — quieter, cheaper";
       return `<span class="wf-detail-month${cls}${isCur}" title="${tipText}">${SHORT[i]}</span>`;
     }).join("");
     return `<div class="wf-detail-season">
       <div class="wf-detail-season-header">
         <div class="wf-detail-season-label">Best time to visit
-          <span class="wf-season-help" title="Colour guide: teal = peak season (busy &amp; pricey), amber = shoulder (great balance), grey = off-peak (quietest). Your selected month is highlighted.">?</span>
+          <span class="wf-season-help" title="Colour guide: red = crowded (busy &amp; pricey), amber = moderate (decent value), grey = off-peak (quietest). Your selected month is highlighted.">?</span>
         </div>
         <div class="wf-season-legend">
-          <span class="wf-season-legend-dot is-high"></span><span>Peak</span>
-          <span class="wf-season-legend-dot is-med"></span><span>Shoulder</span>
+          <span class="wf-season-legend-dot is-high"></span><span>Crowded</span>
+          <span class="wf-season-legend-dot is-med"></span><span>Moderate</span>
           <span class="wf-season-legend-dot is-low"></span><span>Off-peak</span>
         </div>
       </div>
@@ -1529,7 +1532,7 @@ function buildDetailModalBody(d, cell){
 function openDetail(name){
   const d = lastData.find(x=>x.name===name);
   if(!d) return;
-  window.logEvent?.("CARD_DETAIL_OPEN", { dest: name, rank: d.rank, score: d.score });
+  window.detailOpen?.(name, d.rank, d.score);
   STATE.active = name;
   drawOverlay(lastData);
   drawMini(lastData);
@@ -1589,7 +1592,7 @@ function openDetail(name){
 }
 
 function closeDetail(){
-  window.logEvent?.("CARD_DETAIL_CLOSE", { dest: STATE.active || null });
+  window.detailClose?.(STATE.active || null);
   const overlay = document.getElementById("detail-overlay");
   if(!overlay) return;
   overlay.classList.remove("is-open");
@@ -1655,17 +1658,21 @@ function applyZoom(){
   g.querySelectorAll(".wf-origin-sub").forEach(el => el.style.fontSize = (9 / ZOOM.scale) + "px");
   // Cardinals are in the static layer — no counter-scale needed
 }
-function setZoom(s){
+function setZoom(s, method){
+  const scale_from = ZOOM.scale;
   ZOOM.scale = Math.max(ZOOM.min, Math.min(ZOOM.max, s));
   // Re-clamp pan whenever scale changes so tx/ty stay within the new bound.
   const maxPan = R_MAX * (ZOOM.scale - 1) / ZOOM.scale;
   ZOOM.tx = Math.max(-maxPan, Math.min(maxPan, ZOOM.tx));
   ZOOM.ty = Math.max(-maxPan, Math.min(maxPan, ZOOM.ty));
   applyZoom();
+  window.logZoom?.(scale_from, ZOOM.scale, method || "unknown");
 }
 function resetView(){
+  const scale_before = Math.round(ZOOM.scale * 100) / 100;
   ZOOM.scale = 1; ZOOM.tx = 0; ZOOM.ty = 0;
   applyZoom();
+  window.logEvent?.("MAP_ZOOM_RESET", { scale_before });
 }
 function wireZoom(){
   const svg = document.getElementById("map");
@@ -1676,12 +1683,12 @@ function wireZoom(){
   svg.addEventListener("wheel", (e)=>{
     e.preventDefault();
     const factor = Math.exp(-e.deltaY * 0.0015);
-    setZoom(ZOOM.scale * factor);
+    setZoom(ZOOM.scale * factor, "wheel");
     const hint = document.getElementById("zoom-hint");
     if(hint) hint.classList.add("is-faded");
   }, { passive: false });
-  ctrlIn  && ctrlIn .addEventListener("click", ()=> { setZoom(ZOOM.scale * 1.25); const h=document.getElementById("zoom-hint"); if(h) h.classList.add("is-faded"); });
-  ctrlOut && ctrlOut.addEventListener("click", ()=> { setZoom(ZOOM.scale / 1.25); const h=document.getElementById("zoom-hint"); if(h) h.classList.add("is-faded"); });
+  ctrlIn  && ctrlIn .addEventListener("click", ()=> { setZoom(ZOOM.scale * 1.25, "button_in");  const h=document.getElementById("zoom-hint"); if(h) h.classList.add("is-faded"); });
+  ctrlOut && ctrlOut.addEventListener("click", ()=> { setZoom(ZOOM.scale / 1.25, "button_out"); const h=document.getElementById("zoom-hint"); if(h) h.classList.add("is-faded"); });
   ctrlRst && ctrlRst.addEventListener("click", resetView);
   /* Hint auto-fades after a few seconds even if the user never zooms,
      so it doesn't sit on top of the map indefinitely. */
@@ -1886,9 +1893,16 @@ function drawPresetTray(){
 function applyPreset(id){
   const p = PRESETS.find(x=>x.id===id);
   if(!p) return;
+  const prev = STATE.presetId;
   STATE.presetId  = id;
   STATE.weights   = { ...p.w };
   STATE.popInvert = !!p.popInvert;
+  window.logEvent?.("PRESET_SELECT", {
+    preset_id:  id,
+    prev_preset: prev,
+    context:    STATE.entryDone ? "main" : "entry",
+    weights:    { ...p.w }
+  });
   syncAdvancedFromState();
   if(presetTrayEl){
     presetTrayEl.querySelectorAll(".wf-preset").forEach(b=>{
@@ -1949,7 +1963,9 @@ function drawOriginSelect(){
     originSelectEl.appendChild(opt);
   });
   originSelectEl.addEventListener("change", e=>{
+    const prev = STATE.originKey;
     STATE.originKey = e.target.value;
+    window.logEvent?.("ORIGIN_CHANGE", { from: prev, to: STATE.originKey, context: "main" });
     STATE.active = null;
     closeDotPopup();
     render();
@@ -1967,7 +1983,9 @@ function drawMonthSelect(){
     monthSelectEl.appendChild(opt);
   });
   monthSelectEl.addEventListener("change", e=>{
+    const prev = STATE.month;
     STATE.month = parseInt(e.target.value, 10);
+    window.logEvent?.("MONTH_CHANGE", { from_month: prev, to_month: STATE.month, context: "main" });
     STATE.active = null;
     closeDotPopup();
     render();
@@ -1987,7 +2005,9 @@ function drawEntry(){
     sel.appendChild(opt);
   });
   sel.addEventListener("change", e=>{
+    const prev = STATE.originKey;
     STATE.originKey = e.target.value;
+    window.logEvent?.("ORIGIN_CHANGE", { from: prev, to: STATE.originKey, context: "entry" });
     updateEntrySummary();
   });
 
@@ -2000,7 +2020,9 @@ function drawEntry(){
     b.className = "wf-month" + (STATE.month===i ? " is-active" : "");
     b.innerHTML = `<span class="num">${num}</span><span>${label}</span>`;
     b.addEventListener("click", ()=>{
+      const prev = STATE.month;
       STATE.month = i;
+      window.logEvent?.("MONTH_CHANGE", { from_month: prev, to_month: i, context: "entry" });
       monthsEl.querySelectorAll(".wf-month").forEach(x=>x.classList.remove("is-active"));
       b.classList.add("is-active");
       updateEntrySummary();
@@ -2052,7 +2074,10 @@ function drawEntry(){
     advRoot.classList.toggle("is-open", open);
     advBody.hidden = !open;
     advToggle.setAttribute("aria-expanded", open ? "true" : "false");
-    if(open) syncEntrySliders();
+    if(open){
+      syncEntrySliders();
+      window.logEvent?.("ADVANCED_OPEN", { context: "entry" });
+    }
   });
 
   // Entry sliders
@@ -2121,6 +2146,17 @@ function updateEntrySummary(){
 }
 function finishEntry(){
   STATE.entryDone = true;
+  window.logEvent?.("ENTRY_COMPLETE", {
+    origin:  STATE.originKey,
+    month:   STATE.month,
+    preset:  STATE.presetId,
+    weights: {
+      time: Math.round(STATE.weights.time * 100),
+      cost: Math.round(STATE.weights.cost * 100),
+      co2:  Math.round(STATE.weights.co2  * 100),
+      pop:  Math.round(STATE.weights.pop  * 100)
+    }
+  });
   const entry = document.getElementById("wf-entry");
   const shell = document.getElementById("wf-shell");
   entry.style.transition = "opacity .25s";

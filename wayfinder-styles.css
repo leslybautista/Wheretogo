@@ -1490,14 +1490,24 @@ input[type=range].wf-range::-moz-range-thumb{
   opacity: .40;
 }
 
-/* ── Ranks 4–10: ghost disc — position visible, never dominant ── */
+/* ── Ranks 4–20: ghost disc — position visible, never dominant ── */
 .wf-rank-medal-inline.is-rank-4  .medal-disc,
 .wf-rank-medal-inline.is-rank-5  .medal-disc,
 .wf-rank-medal-inline.is-rank-6  .medal-disc,
 .wf-rank-medal-inline.is-rank-7  .medal-disc,
 .wf-rank-medal-inline.is-rank-8  .medal-disc,
 .wf-rank-medal-inline.is-rank-9  .medal-disc,
-.wf-rank-medal-inline.is-rank-10 .medal-disc{
+.wf-rank-medal-inline.is-rank-10 .medal-disc,
+.wf-rank-medal-inline.is-rank-11 .medal-disc,
+.wf-rank-medal-inline.is-rank-12 .medal-disc,
+.wf-rank-medal-inline.is-rank-13 .medal-disc,
+.wf-rank-medal-inline.is-rank-14 .medal-disc,
+.wf-rank-medal-inline.is-rank-15 .medal-disc,
+.wf-rank-medal-inline.is-rank-16 .medal-disc,
+.wf-rank-medal-inline.is-rank-17 .medal-disc,
+.wf-rank-medal-inline.is-rank-18 .medal-disc,
+.wf-rank-medal-inline.is-rank-19 .medal-disc,
+.wf-rank-medal-inline.is-rank-20 .medal-disc{
   width: 19px; height: 19px;
   font: 500 10px var(--wf-mono);
   color: rgba(255,255,255,.38);
@@ -1690,14 +1700,14 @@ input[type=range].wf-range::-moz-range-thumb{
 .wf-season-help{ display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--wf-line-2); font: 500 9px var(--wf-mono); color: var(--wf-ink-3); cursor: default; flex-shrink: 0; }
 .wf-season-legend{ display: flex; align-items: center; gap: 6px; font: 400 9.5px var(--wf-mono); color: var(--wf-ink-3); letter-spacing: .04em; }
 .wf-season-legend-dot{ display: inline-block; width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
-.wf-season-legend-dot.is-high{ background: rgba(125,211,192,.5); }
+.wf-season-legend-dot.is-high{ background: rgba(210,60,60,.6); }
 .wf-season-legend-dot.is-med { background: rgba(212,165,116,.4); }
 .wf-season-legend-dot.is-low { background: var(--wf-surface-2); border: 1px solid var(--wf-line); }
 .wf-detail-season-months{ display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; }
 .wf-detail-month{
   text-align: center; font: 500 9.5px var(--wf-mono); letter-spacing: .04em;
   padding: 5px 0; border-radius: 4px;
-  background: rgba(125,211,192,.18); color: var(--wf-accent);
+  background: rgba(210,60,60,.13); color: #c94040;
   cursor: default; transition: opacity .15s;
 }
 .wf-detail-month:hover{ opacity: .75; }
