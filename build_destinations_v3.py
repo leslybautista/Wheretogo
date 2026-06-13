@@ -277,12 +277,13 @@ def tp_fetch(token: str, origin_iata: str, dest_iata: str,
         data = r.json().get("data", {})
         for _, offers in data.items():
             for _, offer in offers.items():
-                price    = offer.get("price")
-                duration = offer.get("duration")  # minutes
-                if price and duration:
+                price       = offer.get("price")
+                # duration_to = one-way flight minutes (more accurate than total duration)
+                duration_to = offer.get("duration_to") or offer.get("duration")
+                if price and duration_to:
                     result = {
                         "price_eur":  float(price),
-                        "duration_h": float(duration) / 60.0,
+                        "duration_h": float(duration_to) / 60.0,
                     }
                     cache[key] = result
                     return result
