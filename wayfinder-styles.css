@@ -414,7 +414,7 @@ html, body {
 /* ─── Top bar ─── */
 .wf-top{
   display: grid;
-  grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
+  grid-template-columns: max-content 1fr max-content;
   gap: 16px;
   align-items: center;
   padding: 0 22px;
@@ -423,7 +423,8 @@ html, body {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
-.wf-brand{ display:flex; align-items:center; gap:14px; }
+.wf-brand{ display:flex; align-items:center; gap:14px; min-width:0; }
+.wf-brand-sep{ width:1px; height:18px; background:var(--wf-line-2); flex-shrink:0; margin: 0 2px; }
 .wf-brand-mark{ width: 30px; height: 30px; position: relative; display: flex; align-items: center; justify-content: center; }
 .wf-brand-mark svg{ width:30px; height:30px; }
 .wf-brand-text h1{
@@ -455,12 +456,14 @@ html, body {
   background: var(--wf-surface);
   color: var(--wf-ink-2);
   font-size: 12.5px;
-  width: 140px;
+  width: 135px;
   flex-shrink: 0;
 }
-/* Month pill only needs room for 3-letter abbreviation */
+/* Month pill: no label, just the full month name */
 #month-pill{
-  width: 100px;
+  width: auto;
+  min-width: 90px;
+  padding-left: 12px;
 }
 .wf-origin-pill .wf-origin-prefix{
   color: var(--wf-ink-3);
@@ -473,14 +476,14 @@ html, body {
 .wf-origin-pill select{
   appearance: none; -webkit-appearance: none;
   background: transparent; border: 0; outline: none; color: var(--wf-ink);
-  font: inherit; font-family: var(--wf-serif); font-size: 13px;
+  font: inherit; font-family: var(--wf-serif); font-size: 12px;
   cursor: pointer;
   padding-right: 18px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%236b7589' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right center;
   flex: 1;
-  min-width: 0;
+  min-width: 70px;
 }
 .wf-origin-pill select option{ background: var(--wf-bg-2); color: var(--wf-ink); }
 
@@ -532,9 +535,9 @@ html, body {
 .wf-preset{
   appearance: none; border: 0; background: transparent;
   color: var(--wf-ink-2);
-  font: 500 12px var(--wf-sans);
+  font: 500 11px var(--wf-sans);
   letter-spacing: .01em;
-  padding: 6px 13px;
+  padding: 5px 10px;
   border-radius: 999px;
   cursor: pointer;
   transition: color .18s, background .18s, box-shadow .18s;
@@ -609,56 +612,106 @@ html, body {
 }
 .wf-headline-name{
   font-family: var(--wf-serif);
-  font-size: 36px; line-height: 1.02;
-  letter-spacing: -.022em;
+  font-size: 26px; line-height: 1.05;
+  letter-spacing: -.018em;
   font-weight: 400;
   color: var(--wf-ink);
   margin: 0;
   word-break: break-word;
   text-wrap: balance;
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
 }
 /* Country meta sits on the same baseline as the city name — small caps,
    neutral mono so it reads as metadata, not a second headline. */
 .wf-headline-country{
   display: inline;
-  margin-left: 10px;
   font-family: var(--wf-mono);
   font-style: normal;
-  font-size: 10px;
+  font-size: 9.5px;
   letter-spacing: .2em;
   text-transform: uppercase;
   color: var(--wf-ink-3);
-  vertical-align: middle;
   white-space: nowrap;
 }
-.wf-headline-match{
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(220,228,242,.07);
-  display: flex; align-items: baseline; gap: 10px;
-}
-.wf-headline-match-num{
+/* Inline match % — replaces the old 46px hero number to keep the panel low */
+.wf-headline-pct{
+  margin-left: auto;
   font-family: var(--wf-serif);
-  font-size: 46px; line-height: 1;
+  font-size: 22px;
   color: var(--wf-accent);
-  font-style: normal;
-  letter-spacing: -.02em;
-  display: inline-flex; align-items: baseline; gap: 1px;
+  letter-spacing: -.01em;
+  white-space: nowrap;
 }
-.wf-headline-match-pct{
-  font-family: var(--wf-mono);
+.wf-headline-pct i{
   font-style: normal;
-  font-size: 14px;
-  color: var(--wf-accent);
+  font-family: var(--wf-mono);
+  font-size: 11px;
   opacity: .55;
-  letter-spacing: .04em;
-  margin-left: 2px;
+  margin-left: 1px;
 }
-.wf-headline-match-unit{
+
+/* ── Factor weight rows: label · segmented weight bar · % · value ── */
+.wf-headline-factors{
+  display: grid;
+  gap: 7px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(220,228,242,.07);
+}
+.wf-factor{
+  display: grid;
+  grid-template-columns: 34px 56px 36px 1fr;
+  align-items: center;
+  gap: 8px;
+}
+.wf-factor-lbl{
   font-family: var(--wf-mono);
-  font-size: 9px; letter-spacing: .2em; text-transform: uppercase;
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
   color: var(--wf-ink-3);
-  line-height: 1.25;
+}
+.wf-factor-segs{
+  display: inline-flex;
+  gap: 3px;
+}
+.wf-factor-segs i{
+  width: 8px; height: 5px;
+  border-radius: 1.5px;
+  background: rgba(220,228,242,.10);
+}
+.wf-factor-segs i.on{ background: var(--wf-accent); }
+.wf-factor-w{
+  font-family: var(--wf-mono);
+  font-size: 10px;
+  color: var(--wf-ink-2);
+  text-align: right;
+}
+.wf-factor-val{
+  font-family: var(--wf-sans);
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--wf-ink);
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wf-factor-val .stars{
+  color: var(--wf-highlight);
+  font-size: 11px;
+  letter-spacing: .06em;
+}
+
+/* ── Composite bar row ── */
+.wf-headline-comp{
+  display: grid;
+  grid-template-columns: 34px 1fr 38px;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 11px;
+  border-top: 1px solid rgba(220,228,242,.07);
 }
 .wf-insight{
   font-family: var(--wf-serif);
@@ -672,40 +725,31 @@ html, body {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-/* Subline: three crisp metric chips replace the old slash-delimited string.
-   No bearing — direction is already encoded by the dot's radial position. */
-.wf-headline-sub{
-  display: flex; align-items: stretch; gap: 0;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(220,228,242,.07);
-  text-transform: none;
-  letter-spacing: 0;
-  color: var(--wf-ink-2);
-}
-.wf-h-metric{
-  flex: 1; min-width: 0;
-  display: flex; flex-direction: column; gap: 3px;
-  padding: 0 10px;
-  border-left: 1px solid rgba(220,228,242,.06);
-}
-.wf-h-metric:first-child{ padding-left: 0; border-left: 0; }
-.wf-h-metric b{
-  font-family: var(--wf-sans);
-  font-weight: 500;
-  font-size: 13.5px;
-  color: var(--wf-ink);
-  letter-spacing: -.005em;
-  line-height: 1.05;
-}
-.wf-h-metric b u{ text-decoration: none; font-size: 10.5px; color: var(--wf-ink-3); margin-left: 1px; font-weight: 400; }
-.wf-h-metric i{
-  font-style: normal;
+.wf-comp-lbl{
   font-family: var(--wf-mono);
-  font-size: 8.5px;
-  letter-spacing: .18em;
+  font-size: 9px;
+  letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--wf-ink-3);
+}
+.wf-comp-bar{
+  position: relative;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(220,228,242,.08);
+  overflow: hidden;
+}
+.wf-comp-bar i{
+  position: absolute; inset: 0 auto 0 0;
+  border-radius: 3px;
+  background: linear-gradient(90deg, rgba(125,211,192,.55), var(--wf-accent));
+  transition: width .5s cubic-bezier(.2,.7,.2,1);
+}
+.wf-comp-pct{
+  font-family: var(--wf-mono);
+  font-size: 11px;
+  color: var(--wf-accent);
+  text-align: right;
 }
 
 /* ─── Canvas / map ─── */
@@ -758,6 +802,163 @@ svg{ display:block; }
   stroke-dasharray: 3 7;
   opacity: 1;
 }
+
+/* ============================================================
+   ATLAS BASEMAP — editorial pale-blue plate (toggleable layer)
+   Drawn into #g-atlas behind all data. Scoped overrides below
+   retune existing rings/labels/markers so they read on light.
+   ============================================================ */
+.wf-atlas-disc{ }
+.wf-atlas-shadow{ }
+.wf-atlas-grat{
+  fill: none;
+  stroke: #8aa1aa;
+  stroke-width: .5;
+  opacity: .38;
+  vector-effect: non-scaling-stroke;
+}
+.wf-atlas-spoke{
+  stroke: #8aa1aa;
+  stroke-width: .45;
+  opacity: .26;
+  vector-effect: non-scaling-stroke;
+}
+.wf-atlas-spoke-major{
+  stroke: #7c95a0;
+  stroke-width: .6;
+  opacity: .4;
+}
+.wf-atlas-rim{
+  fill: none;
+  stroke: #7d949e;
+  stroke-width: 1.6;
+  opacity: .8;
+}
+.wf-atlas-rim-soft{
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 1;
+  opacity: .4;
+}
+.wf-atlas-cross{
+  stroke: #6f8893;
+  stroke-width: .8;
+  opacity: .5;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ── Atlas mode: retune the surrounding map area + existing layers so the
+   whole plate reads as one editorial composition. Markers stay functional;
+   only colours/casings are adjusted for contrast on the pale ground. ── */
+/* Kill the dark decorative body glows behind the plate */
+[data-basemap="atlas"] body::before{ display: none; }
+
+/* Concentric match-band rings → thin embossed ink on light */
+[data-basemap="atlas"] .wf-ring{
+  stroke: rgba(60,84,94,.30);
+  stroke-width: 1;
+  stroke-dasharray: 2 6;
+}
+[data-basemap="atlas"] .wf-ring-outer{
+  stroke: rgba(60,84,94,.55);
+  stroke-width: 2;
+}
+[data-basemap="atlas"] .wf-ring-emph{
+  stroke: #2f7d6e;
+  opacity: .55;
+}
+[data-basemap="atlas"] .wf-bearing-line{
+  stroke: rgba(60,84,94,.22);
+}
+/* Ring km labels + cardinals: ink with a pale halo instead of dark */
+[data-basemap="atlas"] .wf-ring-label{
+  fill: #4a5f68;
+  stroke: #dbe2df;
+}
+[data-basemap="atlas"] .wf-cardinal{
+  fill: #2f3d44;
+  stroke: #dbe2df;
+}
+[data-basemap="atlas"] .wf-intercardinal{
+  fill: #5d7079;
+  stroke: #dbe2df;
+}
+/* Basemap coastline graticule (if shown) tuned for light */
+[data-basemap="atlas"] .wf-basemap-graticule{ stroke: rgba(60,84,94,.18); }
+[data-basemap="atlas"] .wf-basemap-land{
+  fill: rgba(60,84,94,.05);
+  stroke: rgba(60,84,94,.3);
+  opacity: .5;
+}
+
+/* Markers: keep them, just add ink casing so they pop on pale blue.
+   Top dots stay teal; mid/low get darker casing + ink fill for contrast. */
+[data-basemap="atlas"] .wf-dot-top{
+  fill: #2f7d6e;
+  stroke: #f1f4ef;
+  stroke-width: 1.5;
+}
+[data-basemap="atlas"] .wf-dot-mid{
+  fill: #566571;
+  stroke: rgba(241,244,239,.85);
+  stroke-width: 1.1;
+}
+[data-basemap="atlas"] .wf-dot-low{
+  fill: #6c7a82;
+  stroke: rgba(241,244,239,.7);
+  stroke-width: .8;
+  opacity: .95;
+}
+[data-basemap="atlas"] #g-dots.has-focus .wf-dot{ opacity: .42; }
+[data-basemap="atlas"] #g-dots.has-focus .wf-dot.is-focus{ opacity: 1; }
+[data-basemap="atlas"] .wf-dot.is-focus{ fill: #1f6b5d; stroke: #f1f4ef; stroke-width: 1.7; }
+[data-basemap="atlas"] .wf-halo-top{ fill: rgba(47,125,110,.10); }
+
+/* Train mode (rect squares) in atlas — dark navy fill so they pop on skyblue.
+   Uses #g-dots ID to ensure higher specificity than the general .wf-dot-top rule. */
+[data-basemap="atlas"] #g-dots rect.wf-dot-top{ fill: #163548; stroke: rgba(255,255,255,.92); stroke-width: 1.6; }
+[data-basemap="atlas"] #g-dots rect.wf-dot-mid{ fill: #1e3d52; stroke: rgba(255,255,255,.78); stroke-width: 1.2; }
+[data-basemap="atlas"] #g-dots rect.wf-dot-low{ fill: #2a4a5e; stroke: rgba(255,255,255,.6);  stroke-width: .9; }
+/* Mode ring — dark teal instead of near-invisible light teal */
+[data-basemap="atlas"] .wf-dot-mode-ring{ stroke: rgba(22,70,100,.65); stroke-width: 1.4; }
+
+/* Labels: italic serif ink with a PALE halo (was dark) + light leader lines */
+[data-basemap="atlas"] .wf-label{ fill: #243038; stroke: #dde4e0; }
+[data-basemap="atlas"] .wf-label-major{ fill: #1c2830; }
+[data-basemap="atlas"] .wf-label-dim{ fill: #4f636c; }
+[data-basemap="atlas"] .wf-label-focus{ fill: #1f6b5d; stroke: #dde4e0; }
+[data-basemap="atlas"] .wf-leader{ stroke: rgba(47,66,74,.5); }
+
+/* Origin marker on light */
+[data-basemap="atlas"] .wf-origin-ring,
+[data-basemap="atlas"] .wf-origin-ring-soft{ stroke: #2a6e82; }
+[data-basemap="atlas"] .wf-origin-core{ fill: transparent; }
+[data-basemap="atlas"] .wf-origin-halo{ fill: rgba(42,110,130,.10); }
+[data-basemap="atlas"] .wf-origin-pin{ display: none; }
+[data-basemap="atlas"] .wf-origin-label{ fill: #1a2e38; stroke: #c2dde8; stroke-width: 3px; }
+[data-basemap="atlas"] .wf-origin-sub{ fill: #2a6e82; stroke: #c2dde8; stroke-width: 3px; }
+
+/* ── ATLAS: Popularity glow — screen→multiply so violet darkens light bg ── */
+[data-basemap="atlas"] .wf-pop-glow-outer,
+[data-basemap="atlas"] .wf-pop-glow-inner {
+  mix-blend-mode: multiply;
+}
+/* core era blanco (invisible en claro) → violeta oscuro */
+[data-basemap="atlas"] .wf-pop-core {
+  mix-blend-mode: normal;
+  fill: #4a3f8a;
+}
+/* anillo exterior era blanco punteado → violeta medio */
+[data-basemap="atlas"] .wf-pop-ring--outer {
+  stroke: #7a6fb0;
+  opacity: 0.55;
+}
+/* Topo fill: soft multiply-blended plateau under the rings */
+.wf-pop-topo-fill{
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
 .wf-ring-outer{
   stroke: rgba(220,228,242,.65);
   stroke-dasharray: none;
@@ -852,12 +1053,27 @@ svg{ display:block; }
   pointer-events: none;
   transition: cx .6s cubic-bezier(.2,.7,.2,1), cy .6s cubic-bezier(.2,.7,.2,1);
 }
-.wf-dot-g:hover .wf-dot{ r: 7; }
-.wf-dot-top{ fill: var(--wf-ink); }
-.wf-dot-mid{ fill: var(--wf-ink-3); }
-.wf-dot-low{ fill: var(--wf-ink-4); }
+.wf-dot-g:hover .wf-dot{ r: 8; }
+/* Reference-style dots: coloured core + casing stroke so dots separate from
+   ring strokes and basemap. Tier encoded by size (JS) AND colour/casing. */
+.wf-dot-top{
+  fill: var(--wf-accent);
+  stroke: rgba(236,240,246,.9);
+  stroke-width: 1.4;
+}
+.wf-dot-mid{
+  fill: #c2cade;
+  stroke: rgba(220,228,248,.55);
+  stroke-width: 1.3;
+}
+.wf-dot-low{
+  fill: #a8b4c8;
+  stroke: rgba(210,220,242,.38);
+  stroke-width: 1;
+  opacity: 1;
+}
 .wf-halo-top{
-  fill: rgba(255,255,255,.025);
+  fill: rgba(125,211,192,.06);
   transition: cx .6s cubic-bezier(.2,.7,.2,1),
               cy .6s cubic-bezier(.2,.7,.2,1),
               r .25s, opacity .25s;
@@ -866,13 +1082,14 @@ svg{ display:block; }
 
 #g-dots.has-focus .wf-dot{ opacity: .35; }
 #g-dots.has-focus .wf-dot.is-focus{ opacity: 1; }
-.wf-dot.is-focus{ fill: var(--wf-accent); }
+.wf-dot.is-focus{ fill: var(--wf-accent); stroke: rgba(236,240,246,.95); stroke-width: 1.6; }
 #g-dots.has-focus .wf-dot-hit{ opacity: 1; }
 
-/* Labels */
+/* Labels — cartographic italic serif with dotted leader lines (reference style) */
 .wf-label{
   font-family: var(--wf-serif);
   font-size: 17px;
+  font-style: italic;
   fill: var(--wf-ink);
   paint-order: stroke;
   stroke: var(--wf-bg);
@@ -880,11 +1097,20 @@ svg{ display:block; }
   stroke-linejoin: round;
   pointer-events: all;
   cursor: pointer;
-  font-style: normal;
 }
-.wf-label-major{ font-size: 21px; }
-.wf-label-dim{ fill: var(--wf-ink-3); font-size: 14px; }
-.wf-label-focus{ fill: var(--wf-accent); font-style: normal; font-size: 20px; pointer-events: all; cursor: pointer; }
+.wf-label-major{ font-size: 21px; fill: var(--wf-ink); }
+.wf-label-dim{ fill: var(--wf-ink-2); font-size: 14px; }
+.wf-label-focus{ fill: var(--wf-accent); font-style: italic; font-size: 20px; pointer-events: all; cursor: pointer; paint-order: stroke; stroke: var(--wf-bg); stroke-width: 4px; stroke-linejoin: round; }
+.wf-leader{
+  fill: none;
+  stroke: rgba(220,228,242,.45);
+  stroke-width: 1;
+  stroke-dasharray: .5 3.5;
+  stroke-linecap: round;
+  pointer-events: none;
+  vector-effect: non-scaling-stroke;
+}
+.wf-label-g{ cursor: pointer; }
 
 /* Focus overlay */
 .wf-connector{ stroke: var(--wf-accent); stroke-width: .8; stroke-dasharray: 2 4; opacity: .7; }
@@ -1048,7 +1274,7 @@ svg{ display:block; }
   margin-bottom: 6px;
   text-align: left;
 }
-.wf-mini-svg{ width: 240px; height: 216px; display:block; cursor: default; }
+.wf-mini-svg{ width: 240px; height: 176px; display:block; cursor: default; }
 .wf-mini-hit{ fill: rgba(0,0,0,0); pointer-events: all; cursor: pointer; }
 .wf-mini-dot{ pointer-events: none; }
 .wf-mini-origin, .wf-mini-origin-ring{ pointer-events: none; }
@@ -1358,7 +1584,7 @@ input[type=range].wf-range::-moz-range-thumb{
    ============================================================ */
 @media (max-width: 1280px){ .wf-brand-text .wf-brand-sub{ display:none; } .wf-brand-text h1{ font-size: 22px; } }
 @media (max-width: 1180px){ .wf-pill-btn .wf-pill-btn-label{ display:none; } .wf-pill-btn{ padding: 0; width: 36px; justify-content: center; } }
-@media (max-width: 1024px){ .wf-brand-text{ display:none; } .wf-headline-name{ font-size: 40px; } .wf-mini{ width: 140px; } .wf-mini-svg{ width: 140px; height: 120px; } .wf-origin-pill select{ font-size: 14px; } }
+@media (max-width: 1024px){ .wf-brand-text{ display:none; } .wf-headline-name{ font-size: 40px; } .wf-mini{ width: 140px; } .wf-mini-svg{ width: 140px; height: 98px; } .wf-origin-pill select{ font-size: 14px; } }
 
 .wf-fade-in{ animation: wfFadeIn .6s ease both; }
 @keyframes wfFadeIn{ from{ opacity: 0; transform: translateY(6px); } to{ opacity: 1; transform: none; } }
@@ -1889,6 +2115,57 @@ input[type=range].wf-range::-moz-range-thumb{
 }
 .wf-legend-toggle-row.is-on .wf-legend-switch{ background: var(--wf-accent-soft); }
 .wf-legend-toggle-row.is-on .wf-legend-switch-dot{ transform: translateX(10px); background: var(--wf-accent); }
+
+/* ── Base map picker ── */
+.wf-legend-section-label{
+  font-family: var(--wf-mono);
+  font-size: 8px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--wf-ink-4);
+  padding: 6px 4px 4px;
+}
+.wf-legend-bm-picker{
+  display: flex;
+  gap: 6px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--wf-line);
+  margin-bottom: 2px;
+}
+.wf-bm-btn{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 4px 6px;
+  border-radius: 9px;
+  border: 1.5px solid var(--wf-line-2);
+  background: transparent;
+  cursor: pointer;
+  color: var(--wf-ink-3);
+  transition: border-color .15s, background .15s, color .15s;
+}
+.wf-bm-btn:hover{
+  border-color: var(--wf-line-3);
+  background: rgba(255,255,255,.03);
+  color: var(--wf-ink-2);
+}
+.wf-bm-btn.is-active{
+  border-color: var(--wf-accent);
+  background: var(--wf-accent-soft);
+  color: var(--wf-ink);
+}
+.wf-bm-preview svg{
+  display: block;
+  border-radius: 50%;
+}
+.wf-bm-label{
+  font-family: var(--wf-mono);
+  font-size: 8.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
 
 /* CO₂ gradient strip — only when CO₂ layer is on. */
 .wf-legend-co2-strip {

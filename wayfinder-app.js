@@ -50,11 +50,16 @@ const LEGEND = {
   transport: false,
   co2:       false,
   pop:       false,
+  atlas:     false,  // dark mode is default; atlas is opt-in
 };
+try {
+  const _a = localStorage.getItem("wf-basemap-atlas");
+  if(_a !== null) LEGEND.atlas = _a === "1";
+} catch(_){}
 
 const MONTHS = [
-  ["Jan","01"],["Feb","02"],["Mar","03"],["Apr","04"],["May","05"],["Jun","06"],
-  ["Jul","07"],["Aug","08"],["Sep","09"],["Oct","10"],["Nov","11"],["Dec","12"],
+  ["January","01"],["February","02"],["March","03"],["April","04"],["May","05"],["June","06"],
+  ["July","07"],["August","08"],["September","09"],["October","10"],["November","11"],["December","12"],
 ];
 
 /* ────────── CANVAS GEOMETRY ────────── */
@@ -452,6 +457,74 @@ function geoJSONPolygonPath(coords, oLat, oLon){
   }).join(" ");
 }
 
+/* ────────── ATLAS BASEMAP (editorial, decorative, toggleable) ──────────
+   A designed pale-blue plate that sits behind every data layer. Static
+   (never zooms/pans), pointer-events off. Reproduces the printed-atlas
+   language of the references: soft disc + embossed rim + fine concentric
+   graticule + thin radial guide spokes. Pure decoration — no geography. */
+function drawAtlas(){
+  const g = document.getElementById("g-atlas");
+  if(!g) return;
+  g.innerHTML = "";
+  document.documentElement.setAttribute("data-basemap", LEGEND.atlas ? "atlas" : "off");
+  if(!LEGEND.atlas) return;
+
+  const R = R_MAX;
+
+  // 1) Soft outer shadow ring — gives the plate printed depth on the page.
+  g.appendChild(svgEl("circle", {
+    cx: CX, cy: CY, r: R,
+    fill: "#cdd9dc",
+    filter: "url(#atlas-shadow)",
+    class: "wf-atlas-shadow"
+  }));
+
+  // 2) The disc itself — pale desaturated blue with a gentle radial vignette.
+  g.appendChild(svgEl("circle", {
+    cx: CX, cy: CY, r: R,
+    fill: "url(#atlas-disc)",
+    class: "wf-atlas-disc"
+  }));
+
+  // 3) Fine concentric graticule — dense, low-contrast print rings.
+  const innerR = 26;
+  const step   = (R - innerR) / 13;
+  for(let r = innerR; r <= R - 1; r += step){
+    g.appendChild(svgEl("circle", {
+      cx: CX, cy: CY, r,
+      class: "wf-atlas-grat"
+    }));
+  }
+
+  // 4) Thin radial guide spokes every 15° — directional editorial lines.
+  for(let a = 0; a < 360; a += 15){
+    const θ = toRad(a - 90);
+    const major = (a % 45 === 0);
+    g.appendChild(svgEl("line", {
+      x1: CX + innerR * Math.cos(θ), y1: CY + innerR * Math.sin(θ),
+      x2: CX + (R - 2) * Math.cos(θ), y2: CY + (R - 2) * Math.sin(θ),
+      class: major ? "wf-atlas-spoke wf-atlas-spoke-major" : "wf-atlas-spoke"
+    }));
+  }
+
+  // 5) Embossed rim: a crisp inner stroke + a soft white highlight just inside,
+  //    so the plate edge reads as a pressed coastline border (reference look).
+  g.appendChild(svgEl("circle", {
+    cx: CX, cy: CY, r: R - 1.2,
+    class: "wf-atlas-rim",
+    filter: "url(#atlas-emboss)"
+  }));
+  g.appendChild(svgEl("circle", {
+    cx: CX, cy: CY, r: R - 6,
+    class: "wf-atlas-rim-soft"
+  }));
+
+  // 6) Centre tick — a faint cross-hair at the origin, like a compass pivot.
+  const c = 9;
+  g.appendChild(svgEl("line", { x1: CX - c, y1: CY, x2: CX + c, y2: CY, class: "wf-atlas-cross" }));
+  g.appendChild(svgEl("line", { x1: CX, y1: CY - c, x2: CX, y2: CY + c, class: "wf-atlas-cross" }));
+}
+
 function drawBasemap(){
   const g = document.getElementById("g-basemap");
   if (!g) return;
@@ -725,10 +798,10 @@ function drawDots(data){
     },
     (el, d) => {
       const tier    = d.rank<=5 ? "top" : d.rank<=12 ? "mid" : "low";
-      // Zoom-aware radius: top cities grow on screen (prominence), mid stays stable,
-      // low shrinks at overview zoom to reduce visual noise.
+      // Zoom-aware radius: strong size spread between tiers so ranking is
+      // readable at a glance (reference-style: big cores for top matches).
       const s = ZOOM.scale;
-      const baseR = tier==="top" ? 6.0 : tier==="mid" ? 4.5 : 3.4;
+      const baseR = tier==="top" ? 7.4 : tier==="mid" ? 4.6 : 2.8;
       // Dots shrink as zoom increases: divide by s^1.5 so on-screen size = baseR / √s
       // (at zoom=2 → ~71% of original, at zoom=4 → 50%). Low tier shrinks faster.
       const exp = tier==="low" ? 1.8 : 1.5;
@@ -773,8 +846,17 @@ function drawDots(data){
       }
 
       shape.setAttribute("class", `wf-dot-shape wf-dot wf-dot-${tier}${isFocus ? " is-focus" : ""}`);
-      // CO₂ colour: only when legend CO₂ layer is ON; focus accent overrides anyway
-      shape.style.fill = (LEGEND.co2 && co2Color && !isFocus) ? co2Color : "";
+      // Fill priority: focus > CO₂ > atlas-train override > CSS default
+      if(isFocus){
+        shape.style.fill = "";
+      } else if(LEGEND.co2 && co2Color){
+        shape.style.fill = co2Color;
+      } else if(LEGEND.atlas && showAsTrain){
+        // Dark navy in atlas so train squares pop on skyblue background
+        shape.style.fill = tier === "top" ? "#163548" : tier === "mid" ? "#1e3d52" : "#2a4a5e";
+      } else {
+        shape.style.fill = "";
+      }
 
       // Mode ring (outer cyan ring): only when transport layer is ON and train is available
       let modeRing = el.querySelector(".wf-dot-mode-ring");
@@ -812,10 +894,6 @@ function drawLabels(data){
   const top = data.slice(0, limit).filter(dotInView);
   const focusName = STATE.active || STATE.hovered;
 
-  const placed = [];
-  const approxCharW = 7.5;
-  const approxH = 18;
-
   // Candidate placement angles: bearing direction first, then perpendiculars,
   // then opposite — gives us 8 distinct positions to try before giving up.
   function candidateAngles(bearingDeg){
@@ -823,23 +901,40 @@ function drawLabels(data){
     return [b, b+90, b-90, b+45, b-45, b+135, b-135, b+180].map(toRad);
   }
 
+  // Reserve origin marker zone so no label lands on top of it.
+  const sqrtScale = Math.sqrt(ZOOM.scale);
+  const originGuard = 52 / sqrtScale;
+  const placed = [{ bx: CX - originGuard, by: CY - originGuard * 1.6, w: originGuard * 2, h: originGuard * 3.2 }];
+
   updateByName(
     g, top,
     (d) => {
-      const el = svgEl("text", { class:"wf-label", "data-name": d.name });
+      const el = svgEl("g", { class:"wf-label-g" });
+      const ln = svgEl("line", { class:"wf-leader" });
+      const tx = svgEl("text", { class:"wf-label" });
+      el.appendChild(ln);
+      el.appendChild(tx);
       el.addEventListener("mouseenter", () => onHover(d.name));
       el.addEventListener("mouseleave", () => onHover(null));
       el.addEventListener("click",      () => onSelect(d.name));
       return el;
     },
     (el, d) => {
+      // Compute tier first so char-width estimate matches the rendered font size.
+      const i = top.indexOf(d);
+      const cls = i<3 ? "wf-label wf-label-major" : (i<7 ? "wf-label" : "wf-label wf-label-dim");
+      // Font sizes (px in SVG space) are counter-scaled by sqrtScale; match that here.
+      const charW = (i<3 ? 12.5 : i<7 ? 8.5 : 7) / sqrtScale;
+      const approxH = (i<3 ? 24 : i<7 ? 18 : 15) / sqrtScale;
+
       const candidates = candidateAngles(d.bearingDeg);
       let lx, ly, bx, by, w, anchor;
-      const baseOffset = 16;
+      // Divide by zoom so screen-space distance stays roughly constant
+      // (at zoom=2 the SVG offset halves, keeping the visual gap the same).
+      const baseOffset = Math.max(5, 14 / ZOOM.scale);
       let placed_ok = false;
 
       // Effective clip radius in local map-zoom coordinates.
-      // A label corner at local (x,y) is inside if Math.hypot(x-CX, y-CY) < R_CLIP_LOCAL.
       const R_CLIP_LOCAL = (R_MAX - 6) / ZOOM.scale;
       function boxFitsInClip(bx2, by2, w2, h2){
         const corners = [
@@ -855,17 +950,17 @@ function drawLabels(data){
 
       outer:
       for(let offStep = 0; offStep < 4; offStep++){
-        const offset = baseOffset + offStep * 12;
+        const offset = baseOffset + offStep * (10 / ZOOM.scale);
         for(const θ of candidates){
           const cx2 = d.x + offset * Math.cos(θ);
           const cy2 = d.y + offset * Math.sin(θ);
           const anc  = Math.cos(θ) > 0.25 ? "start" : Math.cos(θ) < -0.25 ? "end" : "middle";
-          w  = d.name.length * approxCharW;
+          w  = d.name.length * charW;
           bx = anc === "start" ? cx2 : anc === "end" ? cx2 - w : cx2 - w/2;
           by = cy2 - approxH/2;
           const overlap = placed.some(p =>
-            bx < p.bx + p.w + 4 && bx + w > p.bx - 4 &&
-            by < p.by + p.h + 2 && by + p.h > p.by - 2
+            bx < p.bx + p.w + 7 && bx + w > p.bx - 7 &&
+            by < p.by + p.h + 4 && by + p.h > p.by - 4
           );
           if(!overlap && boxFitsInClip(bx, by, w, approxH)){
             lx = cx2; ly = cy2; anchor = anc;
@@ -875,26 +970,46 @@ function drawLabels(data){
         }
       }
       if(!placed_ok){
-        // Fallback: place toward center (inward) so it stays inside the clip.
+        // Dim labels (lowest tier) are dropped if no clean spot exists.
+        if(i >= 7){ el.style.display = "none"; return; }
+        // Top/mid labels fall back inward so they stay inside the clip.
         const inwardθ = Math.atan2(CY - d.y, CX - d.x);
         const offset = baseOffset + 4;
         lx = d.x + offset * Math.cos(inwardθ);
         ly = d.y + offset * Math.sin(inwardθ);
         anchor = Math.cos(inwardθ) > 0.25 ? "start" : Math.cos(inwardθ) < -0.25 ? "end" : "middle";
-        w  = d.name.length * approxCharW;
+        w  = d.name.length * charW;
         bx = anchor === "start" ? lx : anchor === "end" ? lx - w : lx - w/2;
         by = ly - approxH/2;
       }
       placed.push({ bx, by, w, h: approxH });
 
-      const i = top.indexOf(d);
-      const cls = i<3 ? "wf-label wf-label-major" : (i<7 ? "wf-label" : "wf-label wf-label-dim");
-      el.setAttribute("class", cls);
-      el.setAttribute("x", lx);
-      el.setAttribute("y", ly);
-      el.setAttribute("text-anchor", anchor);
-      el.setAttribute("dominant-baseline", "middle");
-      el.textContent = d.name;
+      const txt = el.querySelector("text");
+      const ln  = el.querySelector("line.wf-leader");
+
+      txt.setAttribute("class", cls);
+      txt.setAttribute("data-name", d.name);
+      txt.setAttribute("x", lx);
+      txt.setAttribute("y", ly);
+      txt.setAttribute("text-anchor", anchor);
+      txt.setAttribute("dominant-baseline", "middle");
+      txt.textContent = d.name;
+
+      // Dotted leader from the dot edge toward the label.
+      const ang  = Math.atan2(ly - d.y, lx - d.x);
+      const dist = Math.hypot(lx - d.x, ly - d.y);
+      const tier = d.rank<=5 ? 7.4 : d.rank<=12 ? 4.6 : 2.8;
+      const startGap = tier + 3;
+      const endGap   = anchor === "middle" ? 11 : 5;
+      if(dist > startGap + endGap + 6){
+        ln.setAttribute("x1", d.x + startGap * Math.cos(ang));
+        ln.setAttribute("y1", d.y + startGap * Math.sin(ang));
+        ln.setAttribute("x2", lx - endGap * Math.cos(ang));
+        ln.setAttribute("y2", ly - endGap * Math.sin(ang));
+        ln.style.display = "";
+      } else {
+        ln.style.display = "none";
+      }
 
       el.style.display = (focusName && focusName === d.name) ? "none" : "";
     }
@@ -1029,11 +1144,105 @@ function drawMiniLand(){
    threshold nothing renders so low-tourism spots stay invisible in this
    layer, creating a clear hierarchy. The colour is --wf-violet so it
    doesn't clash with the orange/red/green CO₂ palette. */
+/* ── ATLAS MODE: topographic contour rings (no blur, pure vector) ──────────
+   Visual language: cartographic elevation contours — ring count encodes tier.
+   Designed for warm cream backgrounds; uses multiply blend on the fill. */
+function drawPopTopoAtlas(g, data){
+  const C_DARK  = "#3d2e78";   // innermost ring — darkest violet
+  const C_MID   = "#6b5aaa";   // mid rings
+  const C_LIGHT = "#9d8fc7";   // outer soft rings
+
+  data.forEach(d => {
+    const pop = d.pop ?? 0;
+    if(pop < 55) return;
+
+    const tRaw = Math.max(0, Math.min(1, (pop - 55) / 45));
+    const t    = Math.pow(tRaw, 1.2);
+
+    /* Soft plateau fill — larger spread makes elite clearly bigger */
+    g.appendChild(svgEl("circle", {
+      cx: d.x, cy: d.y,
+      r: 3 + t * 25,                  // pop55→3  pop78→14  pop95→25
+      fill: C_MID,
+      opacity: 0.08 + t * 0.20,
+      class: "wf-pop-topo-fill",
+    }));
+
+    /* Ring 1 — always present (pop ≥ 55) */
+    g.appendChild(svgEl("circle", {
+      cx: d.x, cy: d.y,
+      r: 4 + t * 13,                  // pop55→4  pop78→10  pop95→15
+      fill: "none",
+      stroke: C_DARK,
+      "stroke-width": 0.8 + t * 0.8, // pop55→0.8  pop95→1.5
+      opacity: 0.45 + t * 0.40,       // pop55→0.45  pop95→0.80
+      class: "wf-pop-ring",
+    }));
+
+    /* Ring 2 (pop ≥ 68) */
+    if(pop >= 68){
+      const t2 = Math.max(0, Math.min(1, (pop - 68) / 32));
+      g.appendChild(svgEl("circle", {
+        cx: d.x, cy: d.y,
+        r: 8 + t2 * 22,               // pop68→8  pop78→15  pop95→27
+        fill: "none",
+        stroke: C_MID,
+        "stroke-width": 0.8 + t2 * 0.6,
+        opacity: 0.40 + t2 * 0.28,
+        class: "wf-pop-ring",
+      }));
+    }
+
+    /* Ring 3 — dashed outer (pop ≥ 82) */
+    if(pop >= 82){
+      const t3 = Math.max(0, Math.min(1, (pop - 82) / 18));
+      g.appendChild(svgEl("circle", {
+        cx: d.x, cy: d.y,
+        r: 22 + t3 * 16,              // pop82→22  pop95→34
+        fill: "none",
+        stroke: C_LIGHT,
+        "stroke-width": 0.9,
+        opacity: 0.38 + t3 * 0.15,
+        class: "wf-pop-ring wf-pop-ring--outer",
+      }));
+    }
+
+    /* Ring 4 — elite outermost (pop ≥ 93) */
+    if(pop >= 93){
+      const t4 = Math.max(0, Math.min(1, (pop - 93) / 7));
+      g.appendChild(svgEl("circle", {
+        cx: d.x, cy: d.y,
+        r: 38 + t4 * 10,
+        fill: "none",
+        stroke: C_MID,
+        "stroke-width": 0.6,
+        opacity: 0.22 + t4 * 0.12,
+        class: "wf-pop-ring wf-pop-ring--outer",
+      }));
+    }
+
+    /* Core dot — iconic elite only (pop ≥ 88), absent in mid-tier */
+    if(pop >= 88){
+      const tCore = Math.max(0, Math.min(1, (pop - 88) / 12));
+      g.appendChild(svgEl("circle", {
+        cx: d.x, cy: d.y,
+        r: 2.5 + tCore * 2.0,
+        fill: C_DARK,
+        opacity: 0.65 + tCore * 0.20,
+        class: "wf-pop-topo-fill",
+      }));
+    }
+  });
+}
+
 function drawPopGlow(data){
   const g = gLayer.popGlow;
   if(!g) return;
   g.innerHTML = "";
   if(!LEGEND.pop) return;
+
+  /* Atlas mode → topographic rings instead of screen-blend glow */
+  if(LEGEND.atlas){ drawPopTopoAtlas(g, data); return; }
 
   /* Ensure a single <defs> + blur filter lives in the parent SVG. */
   const svg = g.closest("svg");
@@ -1532,7 +1741,7 @@ function buildDetailModalBody(d, cell){
 function openDetail(name){
   const d = lastData.find(x=>x.name===name);
   if(!d) return;
-  window.detailOpen?.(name, d.rank, d.score);
+  window.logEvent?.("CARD_DETAIL_OPEN", { dest: name, rank: d.rank, score: d.score });
   STATE.active = name;
   drawOverlay(lastData);
   drawMini(lastData);
@@ -1592,7 +1801,7 @@ function openDetail(name){
 }
 
 function closeDetail(){
-  window.detailClose?.(STATE.active || null);
+  window.logEvent?.("CARD_DETAIL_CLOSE", { dest: STATE.active || null });
   const overlay = document.getElementById("detail-overlay");
   if(!overlay) return;
   overlay.classList.remove("is-open");
@@ -1658,21 +1867,17 @@ function applyZoom(){
   g.querySelectorAll(".wf-origin-sub").forEach(el => el.style.fontSize = (9 / ZOOM.scale) + "px");
   // Cardinals are in the static layer — no counter-scale needed
 }
-function setZoom(s, method){
-  const scale_from = ZOOM.scale;
+function setZoom(s){
   ZOOM.scale = Math.max(ZOOM.min, Math.min(ZOOM.max, s));
   // Re-clamp pan whenever scale changes so tx/ty stay within the new bound.
   const maxPan = R_MAX * (ZOOM.scale - 1) / ZOOM.scale;
   ZOOM.tx = Math.max(-maxPan, Math.min(maxPan, ZOOM.tx));
   ZOOM.ty = Math.max(-maxPan, Math.min(maxPan, ZOOM.ty));
   applyZoom();
-  window.logZoom?.(scale_from, ZOOM.scale, method || "unknown");
 }
 function resetView(){
-  const scale_before = Math.round(ZOOM.scale * 100) / 100;
   ZOOM.scale = 1; ZOOM.tx = 0; ZOOM.ty = 0;
   applyZoom();
-  window.logEvent?.("MAP_ZOOM_RESET", { scale_before });
 }
 function wireZoom(){
   const svg = document.getElementById("map");
@@ -1683,12 +1888,12 @@ function wireZoom(){
   svg.addEventListener("wheel", (e)=>{
     e.preventDefault();
     const factor = Math.exp(-e.deltaY * 0.0015);
-    setZoom(ZOOM.scale * factor, "wheel");
+    setZoom(ZOOM.scale * factor);
     const hint = document.getElementById("zoom-hint");
     if(hint) hint.classList.add("is-faded");
   }, { passive: false });
-  ctrlIn  && ctrlIn .addEventListener("click", ()=> { setZoom(ZOOM.scale * 1.25, "button_in");  const h=document.getElementById("zoom-hint"); if(h) h.classList.add("is-faded"); });
-  ctrlOut && ctrlOut.addEventListener("click", ()=> { setZoom(ZOOM.scale / 1.25, "button_out"); const h=document.getElementById("zoom-hint"); if(h) h.classList.add("is-faded"); });
+  ctrlIn  && ctrlIn .addEventListener("click", ()=> { setZoom(ZOOM.scale * 1.25); const h=document.getElementById("zoom-hint"); if(h) h.classList.add("is-faded"); });
+  ctrlOut && ctrlOut.addEventListener("click", ()=> { setZoom(ZOOM.scale / 1.25); const h=document.getElementById("zoom-hint"); if(h) h.classList.add("is-faded"); });
   ctrlRst && ctrlRst.addEventListener("click", resetView);
   /* Hint auto-fades after a few seconds even if the user never zooms,
      so it doesn't sit on top of the map indefinitely. */
@@ -1740,22 +1945,49 @@ function drawHeadline(data){
   const focusName = STATE.active || STATE.hovered;
   const d = focusName ? data.find(x=>x.name===focusName) : data[0];
   if(!d) return;
-  /* City + country on one row — country as a small inline meta string,
-     not a separate line, so the panel reads as one block. */
-  matchNameEl.innerHTML = `${d.name}<span class="wf-headline-country">${d.country}</span>`;
   const eyebrowEl = document.getElementById("match-eyebrow");
   if(eyebrowEl){
     eyebrowEl.textContent = focusName
-      ? (`Rank · ${ord(d.rank)}`)
+      ? (`Rank ${ord(d.rank)} · composite score`)
       : "Best match · composite score";
   }
-  const _hh=Math.floor(d.time),_mm=Math.round((d.time-_hh)*60);
-  /* Bearing removed — the radial position on the map already encodes direction.
-     Subtitle shows the three core travel metrics, cleanly grouped. */
-  const _timeStr = _mm>0 ? `${_hh}h ${_mm}m` : `${_hh}h`;
-  matchSubEl.innerHTML  = `<span class="wf-h-metric"><b>${_timeStr}</b><i>travel</i></span><span class="wf-h-metric"><b>€${d.cost}</b><i>fare</i></span><span class="wf-h-metric"><b>${d.co2}<u>kg</u></b><i>CO₂</i></span>`;
-  matchPctEl.textContent  = d.matchPct;
-  insightEl.textContent   = d.insight;
+  /* Name row: city · country meta · inline match % (replaces old hero number) */
+  matchNameEl.innerHTML =
+    `${d.name}<span class="wf-headline-country">${d.country}</span>` +
+    `<span class="wf-headline-pct">${d.matchPct}<i>%</i></span>`;
+
+  const factorsEl = document.getElementById("match-factors");
+  const compEl    = document.getElementById("match-composite");
+  if(!factorsEl || !compEl) return;
+
+  const w  = STATE.weights;
+  const hh = Math.floor(d.time), mm = Math.round((d.time-hh)*60);
+  const timeStr = mm>0 ? `${hh}h ${mm}m` : `${hh}h`;
+  const stars = Math.max(0, Math.min(5, Math.round((d.pop||0)/20)));
+  const rows = [
+    { lbl:"Time", w:w.time, val:timeStr },
+    { lbl:"Cost", w:w.cost, val:`€${d.cost}` },
+    { lbl:"CO₂",  w:w.co2,  val:`${d.co2} kg` },
+    { lbl:"Pop",  w:w.pop,  val:`<span class="stars">${"★".repeat(stars)}${"☆".repeat(5-stars)}</span>` },
+  ];
+  factorsEl.innerHTML = rows.map(r=>{
+    const pct = Math.round((r.w||0)*100);
+    const filled = pct <= 0 ? 0 : Math.max(1, Math.round(pct/20));
+    const segs = Array.from({length:5},(_,i)=>`<i class="${i<filled?"on":""}"></i>`).join("");
+    return `<div class="wf-factor">` +
+      `<span class="wf-factor-lbl">${r.lbl}</span>` +
+      `<span class="wf-factor-segs">${segs}</span>` +
+      `<span class="wf-factor-w">${pct}%</span>` +
+      `<span class="wf-factor-val">${r.val}</span>` +
+      `</div>`;
+  }).join("");
+
+  compEl.innerHTML =
+    `<span class="wf-comp-lbl">Match</span>` +
+    `<span class="wf-comp-bar"><i style="width:${d.matchPct}%"></i></span>` +
+    `<span class="wf-comp-pct">${d.matchPct}%</span>`;
+
+  if(insightEl) insightEl.textContent = d.insight || "";
 }
 
 /* ────────── INTERACTIONS ────────── */
@@ -1893,16 +2125,9 @@ function drawPresetTray(){
 function applyPreset(id){
   const p = PRESETS.find(x=>x.id===id);
   if(!p) return;
-  const prev = STATE.presetId;
   STATE.presetId  = id;
   STATE.weights   = { ...p.w };
   STATE.popInvert = !!p.popInvert;
-  window.logEvent?.("PRESET_SELECT", {
-    preset_id:  id,
-    prev_preset: prev,
-    context:    STATE.entryDone ? "main" : "entry",
-    weights:    { ...p.w }
-  });
   syncAdvancedFromState();
   if(presetTrayEl){
     presetTrayEl.querySelectorAll(".wf-preset").forEach(b=>{
@@ -1963,9 +2188,7 @@ function drawOriginSelect(){
     originSelectEl.appendChild(opt);
   });
   originSelectEl.addEventListener("change", e=>{
-    const prev = STATE.originKey;
     STATE.originKey = e.target.value;
-    window.logEvent?.("ORIGIN_CHANGE", { from: prev, to: STATE.originKey, context: "main" });
     STATE.active = null;
     closeDotPopup();
     render();
@@ -1983,9 +2206,7 @@ function drawMonthSelect(){
     monthSelectEl.appendChild(opt);
   });
   monthSelectEl.addEventListener("change", e=>{
-    const prev = STATE.month;
     STATE.month = parseInt(e.target.value, 10);
-    window.logEvent?.("MONTH_CHANGE", { from_month: prev, to_month: STATE.month, context: "main" });
     STATE.active = null;
     closeDotPopup();
     render();
@@ -2005,9 +2226,7 @@ function drawEntry(){
     sel.appendChild(opt);
   });
   sel.addEventListener("change", e=>{
-    const prev = STATE.originKey;
     STATE.originKey = e.target.value;
-    window.logEvent?.("ORIGIN_CHANGE", { from: prev, to: STATE.originKey, context: "entry" });
     updateEntrySummary();
   });
 
@@ -2020,9 +2239,7 @@ function drawEntry(){
     b.className = "wf-month" + (STATE.month===i ? " is-active" : "");
     b.innerHTML = `<span class="num">${num}</span><span>${label}</span>`;
     b.addEventListener("click", ()=>{
-      const prev = STATE.month;
       STATE.month = i;
-      window.logEvent?.("MONTH_CHANGE", { from_month: prev, to_month: i, context: "entry" });
       monthsEl.querySelectorAll(".wf-month").forEach(x=>x.classList.remove("is-active"));
       b.classList.add("is-active");
       updateEntrySummary();
@@ -2074,10 +2291,7 @@ function drawEntry(){
     advRoot.classList.toggle("is-open", open);
     advBody.hidden = !open;
     advToggle.setAttribute("aria-expanded", open ? "true" : "false");
-    if(open){
-      syncEntrySliders();
-      window.logEvent?.("ADVANCED_OPEN", { context: "entry" });
-    }
+    if(open) syncEntrySliders();
   });
 
   // Entry sliders
@@ -2146,17 +2360,6 @@ function updateEntrySummary(){
 }
 function finishEntry(){
   STATE.entryDone = true;
-  window.logEvent?.("ENTRY_COMPLETE", {
-    origin:  STATE.originKey,
-    month:   STATE.month,
-    preset:  STATE.presetId,
-    weights: {
-      time: Math.round(STATE.weights.time * 100),
-      cost: Math.round(STATE.weights.cost * 100),
-      co2:  Math.round(STATE.weights.co2  * 100),
-      pop:  Math.round(STATE.weights.pop  * 100)
-    }
-  });
   const entry = document.getElementById("wf-entry");
   const shell = document.getElementById("wf-shell");
   entry.style.transition = "opacity .25s";
@@ -2199,6 +2402,7 @@ function render(){
   drawRings();
   drawBearings();
   drawCardinal();
+  drawAtlas();
   drawOrigin();
   drawPopGlow(data);
   drawDots(data);
@@ -2251,6 +2455,30 @@ function svgEl(tag, attrs){
 
 /* ────────── LEGEND PANEL ────────── */
 function wireLegend(){
+  // ── Basemap radio picker (Dark / Atlas) ──
+  const bmDark  = document.getElementById("bm-dark");
+  const bmAtlas = document.getElementById("bm-atlas");
+
+  function setBasemap(isAtlas){
+    LEGEND.atlas = isAtlas;
+    bmDark .classList.toggle("is-active", !isAtlas);
+    bmAtlas.classList.toggle("is-active",  isAtlas);
+    bmDark .setAttribute("aria-pressed", String(!isAtlas));
+    bmAtlas.setAttribute("aria-pressed", String( isAtlas));
+    try { localStorage.setItem("wf-basemap-atlas", isAtlas ? "1" : "0"); } catch(_){}
+    drawAtlas();
+    if(lastData && lastData.length){ drawDots(lastData); drawLabels(lastData); }
+  }
+
+  if(bmDark)  bmDark .addEventListener("click", () => setBasemap(false));
+  if(bmAtlas) bmAtlas.addEventListener("click", () => setBasemap(true));
+  // Reflect persisted state on load
+  if(bmDark)  bmDark .classList.toggle("is-active", !LEGEND.atlas);
+  if(bmAtlas) bmAtlas.classList.toggle("is-active",  LEGEND.atlas);
+  if(bmDark)  bmDark .setAttribute("aria-pressed", String(!LEGEND.atlas));
+  if(bmAtlas) bmAtlas.setAttribute("aria-pressed", String( LEGEND.atlas));
+
+  // ── Layer toggles (transport / co2 / pop) ──
   function toggleLayer(layer){
     LEGEND[layer] = !LEGEND[layer];
     const row = document.getElementById(`legend-${layer}`);
@@ -2275,6 +2503,8 @@ function wireLegend(){
   ["transport","co2","pop"].forEach(layer=>{
     const el = document.getElementById(`legend-${layer}`);
     if(!el) return;
+    el.classList.toggle("is-on", !!LEGEND[layer]);
+    el.setAttribute("aria-pressed", String(!!LEGEND[layer]));
     el.addEventListener("click", ()=> toggleLayer(layer));
     el.addEventListener("keydown", e=>{ if(e.key===" "||e.key==="Enter"){ e.preventDefault(); toggleLayer(layer); } });
   });

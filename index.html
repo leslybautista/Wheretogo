@@ -196,28 +196,27 @@ window.__WF_TWEAKS = /*EDITMODE-BEGIN*/{
       <div class="wf-brand-text">
         <h1>WhereToGo</h1>
       </div>
-    </div>
-
-    <div class="wf-top-center">
+      <div class="wf-brand-sep"></div>
       <div class="wf-origin-pill" title="Choose your origin city">
         <span class="wf-origin-prefix">From</span>
         <select id="origin-select"></select>
       </div>
+    </div>
+
+    <div class="wf-top-center">
       <div class="wf-origin-pill" id="month-pill" title="Change travel month">
-        <span class="wf-origin-prefix">Month</span>
         <select id="month-select"></select>
       </div>
       <div class="wf-preset-tray" id="preset-tray"></div>
     </div>
 
     <div class="wf-top-right">
-      <button class="wf-pill-btn" id="btn-setup" title="Edit setup">
-        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-        <span class="wf-pill-btn-label">Setup</span>
-      </button>
       <button class="wf-pill-btn" id="btn-advanced" title="Advanced preferences">
         <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><line x1="6" y1="9" x2="6" y2="22"/><line x1="18" y1="2" x2="18" y2="15"/></svg>
         <span class="wf-pill-btn-label">Advanced</span>
+      </button>
+      <button class="wf-pill-btn wf-pill-btn-icon" id="btn-setup" title="Back to setup">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
       <button class="wf-pill-btn wf-pill-btn-icon" id="btn-about" title="About WhereToGo">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><circle cx="12" cy="8" r=".8" fill="currentColor" stroke="none"/></svg>
@@ -231,22 +230,19 @@ window.__WF_TWEAKS = /*EDITMODE-BEGIN*/{
     <!-- LEFT: map area -->
     <div class="wf-stage-map">
 
-      <!-- Floating headline (top-left) -->
+      <!-- Floating headline (top-left) — best-match briefing with factor weights -->
       <div class="wf-headline wf-fade-in">
         <div class="wf-headline-eyebrow" id="match-eyebrow">Best match · composite score</div>
         <h2 class="wf-headline-name" id="match-name">—</h2>
-        <div class="wf-headline-match">
-          <div class="wf-headline-match-num"><span id="match-pct">—</span><span class="wf-headline-match-pct">%</span></div>
-          <div class="wf-headline-match-unit">composite<br>match</div>
-        </div>
+        <div class="wf-headline-factors" id="match-factors"></div>
         <p class="wf-insight" id="insight-line">—</p>
-        <div class="wf-headline-sub" id="match-sub">—</div>
+        <div class="wf-headline-comp" id="match-composite"></div>
       </div>
 
       <!-- Mini Europe map (bottom-left) -->
       <div class="wf-mini wf-fade-in">
         <div class="wf-mini-head">Geographic context</div>
-        <svg class="wf-mini-svg" id="mini-europe-svg" viewBox="0 0 240 216" preserveAspectRatio="xMidYMid meet">
+        <svg class="wf-mini-svg" id="mini-europe-svg" viewBox="0 40 240 176" preserveAspectRatio="xMidYMid meet">
           <rect class="wf-mini-frame" x="0" y="0" width="240" height="216" rx="6"/>
           <g id="mini-grat"></g>
           <g id="mini-land"></g>
@@ -264,7 +260,32 @@ window.__WF_TWEAKS = /*EDITMODE-BEGIN*/{
             <clipPath id="map-inner-clip" clipPathUnits="userSpaceOnUse">
               <circle cx="500" cy="500" r="430"/>
             </clipPath>
+
+            <!-- ATLAS BASEMAP plate assets (editorial, static, decorative).
+                 Pale-blue disc with a soft vignette + embossed rim shadow. -->
+            <radialGradient id="atlas-disc" cx="50%" cy="46%" r="58%">
+              <stop offset="0%"  stop-color="#b8e0f7"/>
+              <stop offset="55%" stop-color="#87ceeb"/>
+              <stop offset="86%" stop-color="#5fb0d8"/>
+              <stop offset="100%" stop-color="#4a9ac4"/>
+            </radialGradient>
+            <radialGradient id="atlas-vignette" cx="50%" cy="46%" r="58%">
+              <stop offset="0%"  stop-color="#000" stop-opacity="0"/>
+              <stop offset="78%" stop-color="#000" stop-opacity="0"/>
+              <stop offset="100%" stop-color="#5f7682" stop-opacity=".28"/>
+            </radialGradient>
+            <filter id="atlas-shadow" x="-25%" y="-25%" width="150%" height="150%">
+              <feDropShadow dx="0" dy="7" stdDeviation="14" flood-color="#2c3a42" flood-opacity=".34"/>
+            </filter>
+            <filter id="atlas-emboss" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="1.2" stdDeviation="1.2" flood-color="#ffffff" flood-opacity=".55"/>
+            </filter>
           </defs>
+
+          <!-- ATLAS BASEMAP — static decorative plate behind ALL zoom content.
+               Toggled via the "Atlas basemap" layer control; pointer-events off
+               so it never interferes with markers, hover, popups or pan/zoom. -->
+          <g id="g-atlas" style="pointer-events:none"></g>
 
           <!-- Clip wrapper (never transforms) keeps content inside the compass ring -->
           <g clip-path="url(#map-inner-clip)">
@@ -290,15 +311,51 @@ window.__WF_TWEAKS = /*EDITMODE-BEGIN*/{
         </svg>
       </div>
 
-      <!-- Legend Panel — single "Map layers" block, collapsible. -->
+      <!-- Legend Panel — Base map selector + layer toggles, collapsible. -->
       <div id="wf-legend" class="wf-legend" aria-label="Map legend">
         <div class="wf-legend-head">
-          <div class="wf-legend-head-title">Map layers</div>
+          <div class="wf-legend-head-title">Map legend</div>
           <button class="wf-legend-toggle-btn" id="legend-toggle" type="button" title="Hide legend" aria-label="Hide legend">
             <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><polyline points="4 6 8 10 12 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </div>
         <div class="wf-legend-body">
+
+          <!-- BASE MAP radio picker -->
+          <div class="wf-legend-section-label">Base map</div>
+          <div class="wf-legend-bm-picker">
+            <button class="wf-bm-btn is-active" id="bm-dark" type="button" aria-pressed="true" title="Dark mode (default)">
+              <span class="wf-bm-preview">
+                <svg viewBox="0 0 32 32" width="32" height="32">
+                  <circle cx="16" cy="16" r="14" fill="#0c0f14"/>
+                  <circle cx="16" cy="16" r="8.5" fill="none" stroke="rgba(220,228,242,.12)" stroke-width=".7"/>
+                  <circle cx="16" cy="16" r="4.5" fill="none" stroke="rgba(220,228,242,.1)" stroke-width=".5"/>
+                  <circle cx="16" cy="16" r="3.8" fill="rgba(125,211,192,.85)"/>
+                  <circle cx="23" cy="11" r="2" fill="rgba(220,228,242,.55)"/>
+                  <circle cx="10" cy="20" r="1.4" fill="rgba(220,228,242,.38)"/>
+                </svg>
+              </span>
+              <span class="wf-bm-label">Dark</span>
+            </button>
+            <button class="wf-bm-btn" id="bm-atlas" type="button" aria-pressed="false" title="Atlas — editorial light style">
+              <span class="wf-bm-preview">
+                <svg viewBox="0 0 32 32" width="32" height="32">
+                  <circle cx="16" cy="16" r="14" fill="#87ceeb"/>
+                  <circle cx="16" cy="16" r="9"  fill="none" stroke="rgba(42,110,130,.35)" stroke-width=".6"/>
+                  <circle cx="16" cy="16" r="5"  fill="none" stroke="rgba(42,110,130,.3)"  stroke-width=".5"/>
+                  <line x1="2" y1="16" x2="30" y2="16" stroke="rgba(42,110,130,.25)" stroke-width=".4"/>
+                  <line x1="16" y1="2" x2="16" y2="30" stroke="rgba(42,110,130,.25)" stroke-width=".4"/>
+                  <circle cx="16" cy="16" r="3.2" fill="rgba(42,110,130,.7)"/>
+                  <circle cx="23" cy="11" r="2"   fill="rgba(42,110,130,.5)"/>
+                  <circle cx="10" cy="20" r="1.4" fill="rgba(42,110,130,.38)"/>
+                </svg>
+              </span>
+              <span class="wf-bm-label">Atlas</span>
+            </button>
+          </div>
+
+          <!-- Static destinations row -->
+          <div class="wf-legend-section-label">Layers</div>
           <div class="wf-legend-row wf-legend-static" title="Every dot on the map is a destination">
             <span class="wf-legend-sym">
               <svg viewBox="0 0 18 18" width="18" height="18">
@@ -384,7 +441,7 @@ window.__WF_TWEAKS = /*EDITMODE-BEGIN*/{
       <div class="wf-dot-popup" id="dot-popup" hidden>
         <button class="wf-dot-popup-close" id="dot-popup-close" aria-label="Close">×</button>
         <div class="wf-dot-popup-photo-wrap">
-          <img class="wf-dot-popup-photo" id="dot-popup-photo" src="" alt="" loading="lazy">
+          <img class="wf-dot-popup-photo" id="dot-popup-photo" alt="" loading="lazy">
         </div>
         <div class="wf-dot-popup-body">
           <div class="wf-dot-popup-header">

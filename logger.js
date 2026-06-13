@@ -19,9 +19,8 @@
   window.STUDY_PARTICIPANT = participant;
   window.SESSION_LOG       = [];
 
-  /* ── 3. Timers internos para calcular duración de hover y detalle ── */
-  const _ht = {};   // hover timers
-  const _dt = {};   // detail-open timers
+  /* ── 3. Timers internos para calcular duración de hover ── */
+  const _ht = {};
 
   /* ── 4. Función principal de log ── */
   window.logEvent = function (type, payload) {
@@ -63,35 +62,7 @@
     delete _ht[dest];
   };
 
-  /* ── 6. Helpers de detalle (auto-calcula time_open_ms en el cierre) ── */
-  window.detailOpen = function (dest, rank, score) {
-    _dt[dest] = Date.now();
-    logEvent("CARD_DETAIL_OPEN", { dest, rank, score });
-  };
-
-  window.detailClose = function (dest) {
-    const opened = dest ? _dt[dest] : null;
-    logEvent("CARD_DETAIL_CLOSE", {
-      dest,
-      time_open_ms: opened ? Date.now() - opened : null
-    });
-    if (dest) delete _dt[dest];
-  };
-
-  /* ── 7. Logger de zoom con debounce (evita spam de eventos scroll) ── */
-  let _zoomTimer = null;
-  window.logZoom = function (scale_from, scale_to, method) {
-    clearTimeout(_zoomTimer);
-    _zoomTimer = setTimeout(function () {
-      logEvent("MAP_ZOOM", {
-        scale_from: Math.round(scale_from * 100) / 100,
-        scale_to:   Math.round(scale_to   * 100) / 100,
-        method
-      });
-    }, 400);
-  };
-
-  /* ── 8. Eventos automáticos de sesión ── */
+  /* ── 6. Eventos automáticos de sesión ── */
   window.addEventListener("load", function () {
     logEvent("SESSION_START", {
       url:       location.href,
