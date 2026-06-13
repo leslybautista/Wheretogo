@@ -1,0 +1,7342 @@
+{
+  "DRS|CDG|2026-05": {
+    "price_eur": 385.0,
+    "duration_h": 35.75
+  },
+  "DRS|CDG|2026-06": null,
+  "DRS|CDG|2026-07": null,
+  "DRS|CDG|2026-08": null,
+  "DRS|CDG|2026-09": null,
+  "DRS|CDG|2026-10": null,
+  "DRS|CDG|2026-11": null,
+  "DRS|CDG|2026-12": null,
+  "DRS|AMS|2026-05": null,
+  "DRS|AMS|2026-06": null,
+  "DRS|AMS|2026-07": null,
+  "DRS|AMS|2026-08": null,
+  "DRS|AMS|2026-09": null,
+  "DRS|AMS|2026-10": null,
+  "DRS|AMS|2026-11": null,
+  "DRS|AMS|2026-12": null,
+  "DRS|BRU|2026-05": null,
+  "DRS|BRU|2026-06": null,
+  "DRS|BRU|2026-07": {
+    "price_eur": 352.0,
+    "duration_h": 22.833333333333332
+  },
+  "DRS|BRU|2026-08": null,
+  "DRS|BRU|2026-09": null,
+  "DRS|BRU|2026-10": null,
+  "DRS|BRU|2026-11": null,
+  "DRS|BRU|2026-12": null,
+  "DRS|LHR|2026-05": null,
+  "DRS|LHR|2026-06": {
+    "price_eur": 261.0,
+    "duration_h": 13.0
+  },
+  "DRS|LHR|2026-07": null,
+  "DRS|LHR|2026-08": null,
+  "DRS|LHR|2026-09": null,
+  "DRS|LHR|2026-10": null,
+  "DRS|LHR|2026-11": null,
+  "DRS|LHR|2026-12": null,
+  "DRS|MAD|2026-05": null,
+  "DRS|MAD|2026-06": null,
+  "DRS|MAD|2026-07": null,
+  "DRS|MAD|2026-08": null,
+  "DRS|MAD|2026-09": null,
+  "DRS|MAD|2026-10": null,
+  "DRS|MAD|2026-11": null,
+  "DRS|MAD|2026-12": null,
+  "DRS|BCN|2026-05": null,
+  "DRS|BCN|2026-06": {
+    "price_eur": 242.0,
+    "duration_h": 9.083333333333334
+  },
+  "DRS|BCN|2026-07": null,
+  "DRS|BCN|2026-08": null,
+  "DRS|BCN|2026-09": null,
+  "DRS|BCN|2026-10": null,
+  "DRS|BCN|2026-11": null,
+  "DRS|BCN|2026-12": null,
+  "DRS|LIS|2026-05": null,
+  "DRS|LIS|2026-06": null,
+  "DRS|LIS|2026-07": null,
+  "DRS|LIS|2026-08": null,
+  "DRS|LIS|2026-09": null,
+  "DRS|LIS|2026-10": null,
+  "DRS|LIS|2026-11": null,
+  "DRS|LIS|2026-12": null,
+  "DRS|FCO|2026-05": null,
+  "DRS|FCO|2026-06": null,
+  "DRS|FCO|2026-07": null,
+  "DRS|FCO|2026-08": null,
+  "DRS|FCO|2026-09": null,
+  "DRS|FCO|2026-10": null,
+  "DRS|FCO|2026-11": null,
+  "DRS|FCO|2026-12": null,
+  "DRS|MXP|2026-05": null,
+  "DRS|MXP|2026-06": null,
+  "DRS|MXP|2026-07": null,
+  "DRS|MXP|2026-08": null,
+  "DRS|MXP|2026-09": null,
+  "DRS|MXP|2026-10": null,
+  "DRS|MXP|2026-11": null,
+  "DRS|MXP|2026-12": null,
+  "DRS|FLR|2026-05": null,
+  "DRS|FLR|2026-06": null,
+  "DRS|FLR|2026-07": null,
+  "DRS|FLR|2026-08": null,
+  "DRS|FLR|2026-09": null,
+  "DRS|FLR|2026-10": null,
+  "DRS|FLR|2026-11": null,
+  "DRS|FLR|2026-12": null,
+  "DRS|VCE|2026-05": null,
+  "DRS|VCE|2026-06": null,
+  "DRS|VCE|2026-07": null,
+  "DRS|VCE|2026-08": null,
+  "DRS|VCE|2026-09": null,
+  "DRS|VCE|2026-10": null,
+  "DRS|VCE|2026-11": null,
+  "DRS|VCE|2026-12": null,
+  "DRS|NAP|2026-05": null,
+  "DRS|NAP|2026-06": null,
+  "DRS|NAP|2026-07": null,
+  "DRS|NAP|2026-08": null,
+  "DRS|NAP|2026-09": null,
+  "DRS|NAP|2026-10": null,
+  "DRS|NAP|2026-11": null,
+  "DRS|NAP|2026-12": null,
+  "DRS|GVA|2026-05": null,
+  "DRS|GVA|2026-06": null,
+  "DRS|GVA|2026-07": null,
+  "DRS|GVA|2026-08": null,
+  "DRS|GVA|2026-09": null,
+  "DRS|GVA|2026-10": null,
+  "DRS|GVA|2026-11": null,
+  "DRS|GVA|2026-12": null,
+  "DRS|ARN|2026-05": null,
+  "DRS|ARN|2026-06": {
+    "price_eur": 269.0,
+    "duration_h": 12.333333333333334
+  },
+  "DRS|ARN|2026-07": null,
+  "DRS|ARN|2026-08": null,
+  "DRS|ARN|2026-09": null,
+  "DRS|ARN|2026-10": null,
+  "DRS|ARN|2026-11": null,
+  "DRS|ARN|2026-12": null,
+  "DRS|OSL|2026-05": null,
+  "DRS|OSL|2026-06": null,
+  "DRS|OSL|2026-07": null,
+  "DRS|OSL|2026-08": null,
+  "DRS|OSL|2026-09": null,
+  "DRS|OSL|2026-10": null,
+  "DRS|OSL|2026-11": null,
+  "DRS|OSL|2026-12": null,
+  "DRS|HEL|2026-05": null,
+  "DRS|HEL|2026-06": null,
+  "DRS|HEL|2026-07": null,
+  "DRS|HEL|2026-08": null,
+  "DRS|HEL|2026-09": null,
+  "DRS|HEL|2026-10": null,
+  "DRS|HEL|2026-11": null,
+  "DRS|HEL|2026-12": null,
+  "DRS|KEF|2026-05": null,
+  "DRS|KEF|2026-06": null,
+  "DRS|KEF|2026-07": null,
+  "DRS|KEF|2026-08": null,
+  "DRS|KEF|2026-09": null,
+  "DRS|KEF|2026-10": null,
+  "DRS|KEF|2026-11": null,
+  "DRS|KEF|2026-12": null,
+  "DRS|DUB|2026-05": null,
+  "DRS|DUB|2026-06": null,
+  "DRS|DUB|2026-07": null,
+  "DRS|DUB|2026-08": null,
+  "DRS|DUB|2026-09": null,
+  "DRS|DUB|2026-10": null,
+  "DRS|DUB|2026-11": null,
+  "DRS|DUB|2026-12": null,
+  "DRS|EDI|2026-05": null,
+  "DRS|EDI|2026-06": null,
+  "DRS|EDI|2026-07": null,
+  "DRS|EDI|2026-08": null,
+  "DRS|EDI|2026-09": null,
+  "DRS|EDI|2026-10": null,
+  "DRS|EDI|2026-11": null,
+  "DRS|EDI|2026-12": null,
+  "DRS|ZAG|2026-05": {
+    "price_eur": 291.0,
+    "duration_h": 29.75
+  },
+  "DRS|ZAG|2026-06": null,
+  "DRS|ZAG|2026-07": null,
+  "DRS|ZAG|2026-08": null,
+  "DRS|ZAG|2026-09": null,
+  "DRS|ZAG|2026-10": null,
+  "DRS|ZAG|2026-11": null,
+  "DRS|ZAG|2026-12": null,
+  "DRS|ATH|2026-05": {
+    "price_eur": 429.0,
+    "duration_h": 59.666666666666664
+  },
+  "DRS|ATH|2026-06": null,
+  "DRS|ATH|2026-07": null,
+  "DRS|ATH|2026-08": null,
+  "DRS|ATH|2026-09": null,
+  "DRS|ATH|2026-10": null,
+  "DRS|ATH|2026-11": null,
+  "DRS|ATH|2026-12": null,
+  "DRS|IST|2026-05": {
+    "price_eur": 306.0,
+    "duration_h": 14.083333333333334
+  },
+  "DRS|IST|2026-06": {
+    "price_eur": 259.0,
+    "duration_h": 13.583333333333334
+  },
+  "DRS|IST|2026-07": null,
+  "DRS|IST|2026-08": {
+    "price_eur": 317.0,
+    "duration_h": 28.916666666666668
+  },
+  "DRS|IST|2026-09": null,
+  "DRS|IST|2026-10": null,
+  "DRS|IST|2026-11": null,
+  "DRS|IST|2026-12": null,
+  "DRS|SOF|2026-05": null,
+  "DRS|SOF|2026-06": {
+    "price_eur": 258.0,
+    "duration_h": 11.666666666666666
+  },
+  "DRS|SOF|2026-07": null,
+  "DRS|SOF|2026-08": null,
+  "DRS|SOF|2026-09": null,
+  "DRS|SOF|2026-10": null,
+  "DRS|SOF|2026-11": null,
+  "DRS|SOF|2026-12": null,
+  "DRS|OTP|2026-05": {
+    "price_eur": 317.0,
+    "duration_h": 14.416666666666666
+  },
+  "DRS|OTP|2026-06": {
+    "price_eur": 263.0,
+    "duration_h": 12.5
+  },
+  "DRS|OTP|2026-07": {
+    "price_eur": 326.0,
+    "duration_h": 11.833333333333334
+  },
+  "DRS|OTP|2026-08": null,
+  "DRS|OTP|2026-09": null,
+  "DRS|OTP|2026-10": null,
+  "DRS|OTP|2026-11": null,
+  "DRS|OTP|2026-12": null,
+  "DRS|TLL|2026-05": null,
+  "DRS|TLL|2026-06": null,
+  "DRS|TLL|2026-07": null,
+  "DRS|TLL|2026-08": null,
+  "DRS|TLL|2026-09": null,
+  "DRS|TLL|2026-10": null,
+  "DRS|TLL|2026-11": null,
+  "DRS|TLL|2026-12": null,
+  "DRS|RIX|2026-05": null,
+  "DRS|RIX|2026-06": null,
+  "DRS|RIX|2026-07": {
+    "price_eur": 381.0,
+    "duration_h": 18.916666666666668
+  },
+  "DRS|RIX|2026-08": null,
+  "DRS|RIX|2026-09": null,
+  "DRS|RIX|2026-10": null,
+  "DRS|RIX|2026-11": null,
+  "DRS|RIX|2026-12": null,
+  "BER|CDG|2026-05": {
+    "price_eur": 133.0,
+    "duration_h": 3.5833333333333335
+  },
+  "BER|CDG|2026-06": {
+    "price_eur": 98.0,
+    "duration_h": 3.5833333333333335
+  },
+  "BER|CDG|2026-07": {
+    "price_eur": 99.0,
+    "duration_h": 3.5833333333333335
+  },
+  "BER|CDG|2026-08": {
+    "price_eur": 105.0,
+    "duration_h": 3.5
+  },
+  "BER|CDG|2026-09": {
+    "price_eur": 85.0,
+    "duration_h": 3.5
+  },
+  "BER|CDG|2026-10": {
+    "price_eur": 73.0,
+    "duration_h": 3.5833333333333335
+  },
+  "BER|CDG|2026-11": {
+    "price_eur": 133.0,
+    "duration_h": 3.5833333333333335
+  },
+  "BER|CDG|2026-12": null,
+  "BER|BRU|2026-05": {
+    "price_eur": 146.0,
+    "duration_h": 46.5
+  },
+  "BER|BRU|2026-06": {
+    "price_eur": 123.0,
+    "duration_h": 43.333333333333336
+  },
+  "BER|BRU|2026-07": {
+    "price_eur": 155.0,
+    "duration_h": 35.916666666666664
+  },
+  "BER|BRU|2026-08": null,
+  "BER|BRU|2026-09": null,
+  "BER|BRU|2026-10": null,
+  "BER|BRU|2026-11": null,
+  "BER|BRU|2026-12": null,
+  "BER|LHR|2026-05": {
+    "price_eur": 197.0,
+    "duration_h": 4.0
+  },
+  "BER|LHR|2026-06": {
+    "price_eur": 164.0,
+    "duration_h": 4.0
+  },
+  "BER|LHR|2026-07": {
+    "price_eur": 206.0,
+    "duration_h": 9.583333333333334
+  },
+  "BER|LHR|2026-08": {
+    "price_eur": 188.0,
+    "duration_h": 4.083333333333333
+  },
+  "BER|LHR|2026-09": {
+    "price_eur": 161.0,
+    "duration_h": 4.0
+  },
+  "BER|LHR|2026-10": null,
+  "BER|LHR|2026-11": null,
+  "BER|LHR|2026-12": null,
+  "BER|MAD|2026-05": {
+    "price_eur": 173.0,
+    "duration_h": 25.166666666666668
+  },
+  "BER|MAD|2026-06": {
+    "price_eur": 105.0,
+    "duration_h": 40.0
+  },
+  "BER|MAD|2026-07": {
+    "price_eur": 141.0,
+    "duration_h": 30.25
+  },
+  "BER|MAD|2026-08": {
+    "price_eur": 137.0,
+    "duration_h": 48.916666666666664
+  },
+  "BER|MAD|2026-09": {
+    "price_eur": 163.0,
+    "duration_h": 41.583333333333336
+  },
+  "BER|MAD|2026-10": {
+    "price_eur": 209.0,
+    "duration_h": 29.166666666666668
+  },
+  "BER|MAD|2026-11": {
+    "price_eur": 198.0,
+    "duration_h": 29.333333333333332
+  },
+  "BER|MAD|2026-12": null,
+  "BER|BCN|2026-05": {
+    "price_eur": 106.0,
+    "duration_h": 23.166666666666668
+  },
+  "BER|BCN|2026-06": {
+    "price_eur": 90.0,
+    "duration_h": 14.333333333333334
+  },
+  "BER|BCN|2026-07": {
+    "price_eur": 90.0,
+    "duration_h": 21.5
+  },
+  "BER|BCN|2026-08": {
+    "price_eur": 103.0,
+    "duration_h": 5.5
+  },
+  "BER|BCN|2026-09": {
+    "price_eur": 114.0,
+    "duration_h": 27.583333333333332
+  },
+  "BER|BCN|2026-10": {
+    "price_eur": 127.0,
+    "duration_h": 29.583333333333332
+  },
+  "BER|BCN|2026-11": {
+    "price_eur": 81.0,
+    "duration_h": 5.5
+  },
+  "BER|BCN|2026-12": {
+    "price_eur": 138.0,
+    "duration_h": 5.25
+  },
+  "BER|LIS|2026-05": {
+    "price_eur": 240.0,
+    "duration_h": 21.666666666666668
+  },
+  "BER|LIS|2026-06": {
+    "price_eur": 144.0,
+    "duration_h": 16.75
+  },
+  "BER|LIS|2026-07": {
+    "price_eur": 147.0,
+    "duration_h": 53.75
+  },
+  "BER|LIS|2026-08": {
+    "price_eur": 160.0,
+    "duration_h": 7.166666666666667
+  },
+  "BER|LIS|2026-09": {
+    "price_eur": 150.0,
+    "duration_h": 17.583333333333332
+  },
+  "BER|LIS|2026-10": {
+    "price_eur": 227.0,
+    "duration_h": 48.166666666666664
+  },
+  "BER|LIS|2026-11": {
+    "price_eur": 144.0,
+    "duration_h": 14.583333333333334
+  },
+  "BER|LIS|2026-12": null,
+  "BER|FCO|2026-05": {
+    "price_eur": 117.0,
+    "duration_h": 31.416666666666668
+  },
+  "BER|FCO|2026-06": {
+    "price_eur": 75.0,
+    "duration_h": 28.0
+  },
+  "BER|FCO|2026-07": {
+    "price_eur": 111.0,
+    "duration_h": 35.25
+  },
+  "BER|FCO|2026-08": {
+    "price_eur": 119.0,
+    "duration_h": 36.333333333333336
+  },
+  "BER|FCO|2026-09": {
+    "price_eur": 130.0,
+    "duration_h": 21.25
+  },
+  "BER|FCO|2026-10": {
+    "price_eur": 127.0,
+    "duration_h": 42.333333333333336
+  },
+  "BER|FCO|2026-11": null,
+  "BER|FCO|2026-12": {
+    "price_eur": 188.0,
+    "duration_h": 4.333333333333333
+  },
+  "BER|MXP|2026-05": {
+    "price_eur": 95.0,
+    "duration_h": 41.5
+  },
+  "BER|MXP|2026-06": {
+    "price_eur": 73.0,
+    "duration_h": 3.5
+  },
+  "BER|MXP|2026-07": {
+    "price_eur": 99.0,
+    "duration_h": 11.5
+  },
+  "BER|MXP|2026-08": {
+    "price_eur": 107.0,
+    "duration_h": 3.5
+  },
+  "BER|MXP|2026-09": {
+    "price_eur": 100.0,
+    "duration_h": 3.5
+  },
+  "BER|MXP|2026-10": {
+    "price_eur": 124.0,
+    "duration_h": 3.5
+  },
+  "BER|MXP|2026-11": {
+    "price_eur": 98.0,
+    "duration_h": 3.5
+  },
+  "BER|MXP|2026-12": null,
+  "BER|FLR|2026-05": {
+    "price_eur": 247.0,
+    "duration_h": 12.25
+  },
+  "BER|FLR|2026-06": {
+    "price_eur": 235.0,
+    "duration_h": 29.166666666666668
+  },
+  "BER|FLR|2026-07": {
+    "price_eur": 247.0,
+    "duration_h": 46.75
+  },
+  "BER|FLR|2026-08": null,
+  "BER|FLR|2026-09": {
+    "price_eur": 196.0,
+    "duration_h": 26.416666666666668
+  },
+  "BER|FLR|2026-10": null,
+  "BER|FLR|2026-11": null,
+  "BER|FLR|2026-12": null,
+  "BER|VCE|2026-05": {
+    "price_eur": 97.0,
+    "duration_h": 3.3333333333333335
+  },
+  "BER|VCE|2026-06": {
+    "price_eur": 79.0,
+    "duration_h": 3.3333333333333335
+  },
+  "BER|VCE|2026-07": {
+    "price_eur": 92.0,
+    "duration_h": 3.3333333333333335
+  },
+  "BER|VCE|2026-08": {
+    "price_eur": 61.0,
+    "duration_h": 3.3333333333333335
+  },
+  "BER|VCE|2026-09": {
+    "price_eur": 151.0,
+    "duration_h": 31.083333333333332
+  },
+  "BER|VCE|2026-10": null,
+  "BER|VCE|2026-11": {
+    "price_eur": 108.0,
+    "duration_h": 3.1666666666666665
+  },
+  "BER|VCE|2026-12": null,
+  "BER|NAP|2026-05": {
+    "price_eur": 282.0,
+    "duration_h": 11.583333333333334
+  },
+  "BER|NAP|2026-06": {
+    "price_eur": 87.0,
+    "duration_h": 36.25
+  },
+  "BER|NAP|2026-07": {
+    "price_eur": 122.0,
+    "duration_h": 37.666666666666664
+  },
+  "BER|NAP|2026-08": {
+    "price_eur": 104.0,
+    "duration_h": 17.0
+  },
+  "BER|NAP|2026-09": {
+    "price_eur": 122.0,
+    "duration_h": 4.583333333333333
+  },
+  "BER|NAP|2026-10": null,
+  "BER|NAP|2026-11": null,
+  "BER|NAP|2026-12": {
+    "price_eur": 141.0,
+    "duration_h": 32.583333333333336
+  },
+  "BER|ZRH|2026-05": {
+    "price_eur": 148.0,
+    "duration_h": 5.75
+  },
+  "BER|ZRH|2026-06": {
+    "price_eur": 110.0,
+    "duration_h": 2.9166666666666665
+  },
+  "BER|ZRH|2026-07": {
+    "price_eur": 102.0,
+    "duration_h": 3.0
+  },
+  "BER|ZRH|2026-08": {
+    "price_eur": 95.0,
+    "duration_h": 3.0
+  },
+  "BER|ZRH|2026-09": null,
+  "BER|ZRH|2026-10": {
+    "price_eur": 113.0,
+    "duration_h": 3.0
+  },
+  "BER|ZRH|2026-11": null,
+  "BER|ZRH|2026-12": null,
+  "BER|GVA|2026-05": {
+    "price_eur": 212.0,
+    "duration_h": 17.833333333333332
+  },
+  "BER|GVA|2026-06": {
+    "price_eur": 129.0,
+    "duration_h": 3.4166666666666665
+  },
+  "BER|GVA|2026-07": {
+    "price_eur": 154.0,
+    "duration_h": 3.4166666666666665
+  },
+  "BER|GVA|2026-08": null,
+  "BER|GVA|2026-09": null,
+  "BER|GVA|2026-10": null,
+  "BER|GVA|2026-11": null,
+  "BER|GVA|2026-12": null,
+  "BER|ARN|2026-05": {
+    "price_eur": 129.0,
+    "duration_h": 3.1666666666666665
+  },
+  "BER|ARN|2026-06": {
+    "price_eur": 139.0,
+    "duration_h": 32.0
+  },
+  "BER|ARN|2026-07": {
+    "price_eur": 145.0,
+    "duration_h": 23.5
+  },
+  "BER|ARN|2026-08": {
+    "price_eur": 119.0,
+    "duration_h": 3.1666666666666665
+  },
+  "BER|ARN|2026-09": null,
+  "BER|ARN|2026-10": null,
+  "BER|ARN|2026-11": {
+    "price_eur": 144.0,
+    "duration_h": 3.25
+  },
+  "BER|ARN|2026-12": null,
+  "BER|OSL|2026-05": {
+    "price_eur": 140.0,
+    "duration_h": 39.666666666666664
+  },
+  "BER|OSL|2026-06": {
+    "price_eur": 97.0,
+    "duration_h": 24.0
+  },
+  "BER|OSL|2026-07": {
+    "price_eur": 173.0,
+    "duration_h": 29.166666666666668
+  },
+  "BER|OSL|2026-08": {
+    "price_eur": 146.0,
+    "duration_h": 3.25
+  },
+  "BER|OSL|2026-09": null,
+  "BER|OSL|2026-10": {
+    "price_eur": 141.0,
+    "duration_h": 47.833333333333336
+  },
+  "BER|OSL|2026-11": null,
+  "BER|OSL|2026-12": null,
+  "BER|HEL|2026-05": {
+    "price_eur": 192.0,
+    "duration_h": 3.9166666666666665
+  },
+  "BER|HEL|2026-06": {
+    "price_eur": 221.0,
+    "duration_h": 17.25
+  },
+  "BER|HEL|2026-07": {
+    "price_eur": 217.0,
+    "duration_h": 3.9166666666666665
+  },
+  "BER|HEL|2026-08": null,
+  "BER|HEL|2026-09": {
+    "price_eur": 160.0,
+    "duration_h": 21.75
+  },
+  "BER|HEL|2026-10": null,
+  "BER|HEL|2026-11": {
+    "price_eur": 158.0,
+    "duration_h": 24.916666666666668
+  },
+  "BER|HEL|2026-12": null,
+  "BER|KEF|2026-05": {
+    "price_eur": 359.0,
+    "duration_h": 36.666666666666664
+  },
+  "BER|KEF|2026-06": {
+    "price_eur": 325.0,
+    "duration_h": 37.916666666666664
+  },
+  "BER|KEF|2026-07": {
+    "price_eur": 325.0,
+    "duration_h": 62.416666666666664
+  },
+  "BER|KEF|2026-08": null,
+  "BER|KEF|2026-09": null,
+  "BER|KEF|2026-10": null,
+  "BER|KEF|2026-11": null,
+  "BER|KEF|2026-12": null,
+  "BER|DUB|2026-05": {
+    "price_eur": 123.0,
+    "duration_h": 4.583333333333333
+  },
+  "BER|DUB|2026-06": {
+    "price_eur": 69.0,
+    "duration_h": 4.583333333333333
+  },
+  "BER|DUB|2026-07": {
+    "price_eur": 114.0,
+    "duration_h": 4.583333333333333
+  },
+  "BER|DUB|2026-08": {
+    "price_eur": 89.0,
+    "duration_h": 4.583333333333333
+  },
+  "BER|DUB|2026-09": null,
+  "BER|DUB|2026-10": null,
+  "BER|DUB|2026-11": null,
+  "BER|DUB|2026-12": null,
+  "BER|EDI|2026-05": null,
+  "BER|EDI|2026-06": {
+    "price_eur": 146.0,
+    "duration_h": 28.25
+  },
+  "BER|EDI|2026-07": null,
+  "BER|EDI|2026-08": {
+    "price_eur": 131.0,
+    "duration_h": 43.583333333333336
+  },
+  "BER|EDI|2026-09": {
+    "price_eur": 136.0,
+    "duration_h": 21.916666666666668
+  },
+  "BER|EDI|2026-10": null,
+  "BER|EDI|2026-11": null,
+  "BER|EDI|2026-12": null,
+  "BER|BUD|2026-05": {
+    "price_eur": 71.0,
+    "duration_h": 3.0
+  },
+  "BER|BUD|2026-06": {
+    "price_eur": 41.0,
+    "duration_h": 3.0
+  },
+  "BER|BUD|2026-07": {
+    "price_eur": 66.0,
+    "duration_h": 3.0
+  },
+  "BER|BUD|2026-08": {
+    "price_eur": 78.0,
+    "duration_h": 3.0
+  },
+  "BER|BUD|2026-09": {
+    "price_eur": 64.0,
+    "duration_h": 3.0
+  },
+  "BER|BUD|2026-10": {
+    "price_eur": 75.0,
+    "duration_h": 3.0
+  },
+  "BER|BUD|2026-11": null,
+  "BER|BUD|2026-12": {
+    "price_eur": 143.0,
+    "duration_h": 3.0
+  },
+  "BER|LJU|2026-05": {
+    "price_eur": 224.0,
+    "duration_h": 23.166666666666668
+  },
+  "BER|LJU|2026-06": {
+    "price_eur": 193.0,
+    "duration_h": 24.416666666666668
+  },
+  "BER|LJU|2026-07": {
+    "price_eur": 191.0,
+    "duration_h": 46.333333333333336
+  },
+  "BER|LJU|2026-08": {
+    "price_eur": 193.0,
+    "duration_h": 29.833333333333332
+  },
+  "BER|LJU|2026-09": null,
+  "BER|LJU|2026-10": null,
+  "BER|LJU|2026-11": null,
+  "BER|LJU|2026-12": null,
+  "BER|ZAG|2026-05": {
+    "price_eur": 254.0,
+    "duration_h": 57.583333333333336
+  },
+  "BER|ZAG|2026-06": {
+    "price_eur": 131.0,
+    "duration_h": 20.916666666666668
+  },
+  "BER|ZAG|2026-07": {
+    "price_eur": 161.0,
+    "duration_h": 33.166666666666664
+  },
+  "BER|ZAG|2026-08": null,
+  "BER|ZAG|2026-09": {
+    "price_eur": 160.0,
+    "duration_h": 39.583333333333336
+  },
+  "BER|ZAG|2026-10": null,
+  "BER|ZAG|2026-11": null,
+  "BER|ZAG|2026-12": null,
+  "BER|ATH|2026-05": {
+    "price_eur": 129.0,
+    "duration_h": 5.833333333333333
+  },
+  "BER|ATH|2026-06": {
+    "price_eur": 111.0,
+    "duration_h": 32.25
+  },
+  "BER|ATH|2026-07": {
+    "price_eur": 155.0,
+    "duration_h": 20.166666666666668
+  },
+  "BER|ATH|2026-08": {
+    "price_eur": 217.0,
+    "duration_h": 7.833333333333333
+  },
+  "BER|ATH|2026-09": {
+    "price_eur": 163.0,
+    "duration_h": 22.083333333333332
+  },
+  "BER|ATH|2026-10": {
+    "price_eur": 156.0,
+    "duration_h": 30.583333333333332
+  },
+  "BER|ATH|2026-11": {
+    "price_eur": 137.0,
+    "duration_h": 11.25
+  },
+  "BER|ATH|2026-12": null,
+  "BER|IST|2026-05": {
+    "price_eur": 138.0,
+    "duration_h": 5.916666666666667
+  },
+  "BER|IST|2026-06": {
+    "price_eur": 115.0,
+    "duration_h": 5.916666666666667
+  },
+  "BER|IST|2026-07": {
+    "price_eur": 178.0,
+    "duration_h": 12.916666666666666
+  },
+  "BER|IST|2026-08": {
+    "price_eur": 163.0,
+    "duration_h": 18.916666666666668
+  },
+  "BER|IST|2026-09": {
+    "price_eur": 132.0,
+    "duration_h": 5.916666666666667
+  },
+  "BER|IST|2026-10": {
+    "price_eur": 162.0,
+    "duration_h": 5.75
+  },
+  "BER|IST|2026-11": {
+    "price_eur": 167.0,
+    "duration_h": 5.833333333333333
+  },
+  "BER|IST|2026-12": null,
+  "BER|SOF|2026-05": {
+    "price_eur": 180.0,
+    "duration_h": 37.833333333333336
+  },
+  "BER|SOF|2026-06": {
+    "price_eur": 110.0,
+    "duration_h": 8.5
+  },
+  "BER|SOF|2026-07": {
+    "price_eur": 156.0,
+    "duration_h": 39.833333333333336
+  },
+  "BER|SOF|2026-08": null,
+  "BER|SOF|2026-09": null,
+  "BER|SOF|2026-10": {
+    "price_eur": 160.0,
+    "duration_h": 28.083333333333332
+  },
+  "BER|SOF|2026-11": null,
+  "BER|SOF|2026-12": null,
+  "BER|OTP|2026-05": {
+    "price_eur": 47.0,
+    "duration_h": 4.416666666666667
+  },
+  "BER|OTP|2026-06": {
+    "price_eur": 56.0,
+    "duration_h": 4.416666666666667
+  },
+  "BER|OTP|2026-07": {
+    "price_eur": 91.0,
+    "duration_h": 16.666666666666668
+  },
+  "BER|OTP|2026-08": {
+    "price_eur": 145.0,
+    "duration_h": 4.416666666666667
+  },
+  "BER|OTP|2026-09": {
+    "price_eur": 81.0,
+    "duration_h": 4.416666666666667
+  },
+  "BER|OTP|2026-10": null,
+  "BER|OTP|2026-11": null,
+  "BER|OTP|2026-12": null,
+  "BER|TLL|2026-05": {
+    "price_eur": 78.0,
+    "duration_h": 3.8333333333333335
+  },
+  "BER|TLL|2026-06": {
+    "price_eur": 50.0,
+    "duration_h": 3.8333333333333335
+  },
+  "BER|TLL|2026-07": {
+    "price_eur": 158.0,
+    "duration_h": 3.8333333333333335
+  },
+  "BER|TLL|2026-08": {
+    "price_eur": 114.0,
+    "duration_h": 3.8333333333333335
+  },
+  "BER|TLL|2026-09": null,
+  "BER|TLL|2026-10": {
+    "price_eur": 142.0,
+    "duration_h": 10.5
+  },
+  "BER|TLL|2026-11": {
+    "price_eur": 187.0,
+    "duration_h": 10.083333333333334
+  },
+  "BER|TLL|2026-12": null,
+  "BER|RIX|2026-05": {
+    "price_eur": 197.0,
+    "duration_h": 16.833333333333332
+  },
+  "BER|RIX|2026-06": {
+    "price_eur": 135.0,
+    "duration_h": 21.333333333333332
+  },
+  "BER|RIX|2026-07": {
+    "price_eur": 170.0,
+    "duration_h": 24.0
+  },
+  "BER|RIX|2026-08": {
+    "price_eur": 181.0,
+    "duration_h": 31.666666666666668
+  },
+  "BER|RIX|2026-09": {
+    "price_eur": 167.0,
+    "duration_h": 41.416666666666664
+  },
+  "BER|RIX|2026-10": null,
+  "BER|RIX|2026-11": null,
+  "BER|RIX|2026-12": null,
+  "MUC|CDG|2026-05": {
+    "price_eur": 198.0,
+    "duration_h": 3.4166666666666665
+  },
+  "MUC|CDG|2026-06": {
+    "price_eur": 151.0,
+    "duration_h": 10.916666666666666
+  },
+  "MUC|CDG|2026-07": {
+    "price_eur": 166.0,
+    "duration_h": 11.0
+  },
+  "MUC|CDG|2026-08": {
+    "price_eur": 191.0,
+    "duration_h": 11.0
+  },
+  "MUC|CDG|2026-09": null,
+  "MUC|CDG|2026-10": null,
+  "MUC|CDG|2026-11": {
+    "price_eur": 181.0,
+    "duration_h": 3.0
+  },
+  "MUC|CDG|2026-12": null,
+  "MUC|AMS|2026-05": {
+    "price_eur": 223.0,
+    "duration_h": 3.0
+  },
+  "MUC|AMS|2026-06": {
+    "price_eur": 204.0,
+    "duration_h": 2.9166666666666665
+  },
+  "MUC|AMS|2026-07": {
+    "price_eur": 202.0,
+    "duration_h": 3.0
+  },
+  "MUC|AMS|2026-08": {
+    "price_eur": 202.0,
+    "duration_h": 3.0
+  },
+  "MUC|AMS|2026-09": {
+    "price_eur": 204.0,
+    "duration_h": 3.0
+  },
+  "MUC|AMS|2026-10": null,
+  "MUC|AMS|2026-11": null,
+  "MUC|AMS|2026-12": null,
+  "MUC|BRU|2026-05": null,
+  "MUC|BRU|2026-06": {
+    "price_eur": 189.0,
+    "duration_h": 34.666666666666664
+  },
+  "MUC|BRU|2026-07": null,
+  "MUC|BRU|2026-08": null,
+  "MUC|BRU|2026-09": null,
+  "MUC|BRU|2026-10": null,
+  "MUC|BRU|2026-11": null,
+  "MUC|BRU|2026-12": null,
+  "MUC|LHR|2026-05": {
+    "price_eur": 247.0,
+    "duration_h": 4.083333333333333
+  },
+  "MUC|LHR|2026-06": {
+    "price_eur": 140.0,
+    "duration_h": 4.0
+  },
+  "MUC|LHR|2026-07": {
+    "price_eur": 145.0,
+    "duration_h": 4.083333333333333
+  },
+  "MUC|LHR|2026-08": null,
+  "MUC|LHR|2026-09": {
+    "price_eur": 233.0,
+    "duration_h": 8.416666666666666
+  },
+  "MUC|LHR|2026-10": {
+    "price_eur": 140.0,
+    "duration_h": 4.0
+  },
+  "MUC|LHR|2026-11": null,
+  "MUC|LHR|2026-12": null,
+  "MUC|MAD|2026-05": {
+    "price_eur": 212.0,
+    "duration_h": 5.416666666666667
+  },
+  "MUC|MAD|2026-06": {
+    "price_eur": 146.0,
+    "duration_h": 28.833333333333332
+  },
+  "MUC|MAD|2026-07": {
+    "price_eur": 162.0,
+    "duration_h": 35.5
+  },
+  "MUC|MAD|2026-08": {
+    "price_eur": 230.0,
+    "duration_h": 27.75
+  },
+  "MUC|MAD|2026-09": null,
+  "MUC|MAD|2026-10": null,
+  "MUC|MAD|2026-11": null,
+  "MUC|MAD|2026-12": {
+    "price_eur": 242.0,
+    "duration_h": 12.25
+  },
+  "MUC|BCN|2026-05": {
+    "price_eur": 117.0,
+    "duration_h": 4.5
+  },
+  "MUC|BCN|2026-06": {
+    "price_eur": 110.0,
+    "duration_h": 4.5
+  },
+  "MUC|BCN|2026-07": {
+    "price_eur": 106.0,
+    "duration_h": 4.5
+  },
+  "MUC|BCN|2026-08": {
+    "price_eur": 166.0,
+    "duration_h": 51.75
+  },
+  "MUC|BCN|2026-09": {
+    "price_eur": 146.0,
+    "duration_h": 4.5
+  },
+  "MUC|BCN|2026-10": {
+    "price_eur": 145.0,
+    "duration_h": 4.5
+  },
+  "MUC|BCN|2026-11": null,
+  "MUC|BCN|2026-12": null,
+  "MUC|LIS|2026-05": {
+    "price_eur": 282.0,
+    "duration_h": 29.416666666666668
+  },
+  "MUC|LIS|2026-06": {
+    "price_eur": 189.0,
+    "duration_h": 37.916666666666664
+  },
+  "MUC|LIS|2026-07": {
+    "price_eur": 209.0,
+    "duration_h": 35.5
+  },
+  "MUC|LIS|2026-08": {
+    "price_eur": 243.0,
+    "duration_h": 54.416666666666664
+  },
+  "MUC|LIS|2026-09": {
+    "price_eur": 193.0,
+    "duration_h": 47.333333333333336
+  },
+  "MUC|LIS|2026-10": {
+    "price_eur": 224.0,
+    "duration_h": 18.833333333333332
+  },
+  "MUC|LIS|2026-11": {
+    "price_eur": 170.0,
+    "duration_h": 17.583333333333332
+  },
+  "MUC|LIS|2026-12": null,
+  "MUC|FCO|2026-05": {
+    "price_eur": 95.0,
+    "duration_h": 3.4166666666666665
+  },
+  "MUC|FCO|2026-06": {
+    "price_eur": 64.0,
+    "duration_h": 3.4166666666666665
+  },
+  "MUC|FCO|2026-07": {
+    "price_eur": 68.0,
+    "duration_h": 3.4166666666666665
+  },
+  "MUC|FCO|2026-08": {
+    "price_eur": 62.0,
+    "duration_h": 3.4166666666666665
+  },
+  "MUC|FCO|2026-09": {
+    "price_eur": 83.0,
+    "duration_h": 3.4166666666666665
+  },
+  "MUC|FCO|2026-10": {
+    "price_eur": 98.0,
+    "duration_h": 3.4166666666666665
+  },
+  "MUC|FCO|2026-11": {
+    "price_eur": 159.0,
+    "duration_h": 18.916666666666668
+  },
+  "MUC|FCO|2026-12": null,
+  "MUC|FLR|2026-05": {
+    "price_eur": 313.0,
+    "duration_h": 10.083333333333334
+  },
+  "MUC|FLR|2026-06": {
+    "price_eur": 224.0,
+    "duration_h": 29.75
+  },
+  "MUC|FLR|2026-07": null,
+  "MUC|FLR|2026-08": {
+    "price_eur": 243.0,
+    "duration_h": 22.25
+  },
+  "MUC|FLR|2026-09": {
+    "price_eur": 210.0,
+    "duration_h": 35.25
+  },
+  "MUC|FLR|2026-10": null,
+  "MUC|FLR|2026-11": null,
+  "MUC|FLR|2026-12": null,
+  "MUC|NAP|2026-05": {
+    "price_eur": 216.0,
+    "duration_h": 31.083333333333332
+  },
+  "MUC|NAP|2026-06": {
+    "price_eur": 106.0,
+    "duration_h": 27.666666666666668
+  },
+  "MUC|NAP|2026-07": {
+    "price_eur": 155.0,
+    "duration_h": 24.416666666666668
+  },
+  "MUC|NAP|2026-08": {
+    "price_eur": 171.0,
+    "duration_h": 3.5
+  },
+  "MUC|NAP|2026-09": {
+    "price_eur": 182.0,
+    "duration_h": 13.916666666666666
+  },
+  "MUC|NAP|2026-10": null,
+  "MUC|NAP|2026-11": null,
+  "MUC|NAP|2026-12": null,
+  "MUC|GVA|2026-05": null,
+  "MUC|GVA|2026-06": {
+    "price_eur": 221.0,
+    "duration_h": 27.0
+  },
+  "MUC|GVA|2026-07": null,
+  "MUC|GVA|2026-08": null,
+  "MUC|GVA|2026-09": null,
+  "MUC|GVA|2026-10": null,
+  "MUC|GVA|2026-11": null,
+  "MUC|GVA|2026-12": null,
+  "MUC|HAM|2026-05": {
+    "price_eur": 206.0,
+    "duration_h": 2.5833333333333335
+  },
+  "MUC|HAM|2026-06": null,
+  "MUC|HAM|2026-07": {
+    "price_eur": 243.0,
+    "duration_h": 2.5833333333333335
+  },
+  "MUC|HAM|2026-08": null,
+  "MUC|HAM|2026-09": {
+    "price_eur": 234.0,
+    "duration_h": 2.6666666666666665
+  },
+  "MUC|HAM|2026-10": null,
+  "MUC|HAM|2026-11": null,
+  "MUC|HAM|2026-12": null,
+  "MUC|CPH|2026-05": {
+    "price_eur": 254.0,
+    "duration_h": 14.916666666666666
+  },
+  "MUC|CPH|2026-06": {
+    "price_eur": 227.0,
+    "duration_h": 28.25
+  },
+  "MUC|CPH|2026-07": {
+    "price_eur": 236.0,
+    "duration_h": 53.083333333333336
+  },
+  "MUC|CPH|2026-08": null,
+  "MUC|CPH|2026-09": {
+    "price_eur": 200.0,
+    "duration_h": 3.25
+  },
+  "MUC|CPH|2026-10": {
+    "price_eur": 213.0,
+    "duration_h": 8.916666666666666
+  },
+  "MUC|CPH|2026-11": null,
+  "MUC|CPH|2026-12": null,
+  "MUC|ARN|2026-05": {
+    "price_eur": 278.0,
+    "duration_h": 19.083333333333332
+  },
+  "MUC|ARN|2026-06": {
+    "price_eur": 254.0,
+    "duration_h": 24.083333333333332
+  },
+  "MUC|ARN|2026-07": {
+    "price_eur": 226.0,
+    "duration_h": 11.083333333333334
+  },
+  "MUC|ARN|2026-08": null,
+  "MUC|ARN|2026-09": null,
+  "MUC|ARN|2026-10": null,
+  "MUC|ARN|2026-11": null,
+  "MUC|ARN|2026-12": null,
+  "MUC|OSL|2026-05": {
+    "price_eur": 230.0,
+    "duration_h": 4.416666666666667
+  },
+  "MUC|OSL|2026-06": {
+    "price_eur": 260.0,
+    "duration_h": 6.416666666666667
+  },
+  "MUC|OSL|2026-07": {
+    "price_eur": 274.0,
+    "duration_h": 33.75
+  },
+  "MUC|OSL|2026-08": {
+    "price_eur": 219.0,
+    "duration_h": 15.5
+  },
+  "MUC|OSL|2026-09": {
+    "price_eur": 205.0,
+    "duration_h": 4.416666666666667
+  },
+  "MUC|OSL|2026-10": null,
+  "MUC|OSL|2026-11": null,
+  "MUC|OSL|2026-12": null,
+  "MUC|HEL|2026-05": {
+    "price_eur": 294.0,
+    "duration_h": 16.0
+  },
+  "MUC|HEL|2026-06": null,
+  "MUC|HEL|2026-07": {
+    "price_eur": 214.0,
+    "duration_h": 15.666666666666666
+  },
+  "MUC|HEL|2026-08": null,
+  "MUC|HEL|2026-09": null,
+  "MUC|HEL|2026-10": null,
+  "MUC|HEL|2026-11": null,
+  "MUC|HEL|2026-12": null,
+  "MUC|KEF|2026-05": null,
+  "MUC|KEF|2026-06": {
+    "price_eur": 326.0,
+    "duration_h": 48.25
+  },
+  "MUC|KEF|2026-07": {
+    "price_eur": 394.0,
+    "duration_h": 47.0
+  },
+  "MUC|KEF|2026-08": {
+    "price_eur": 316.0,
+    "duration_h": 49.166666666666664
+  },
+  "MUC|KEF|2026-09": {
+    "price_eur": 284.0,
+    "duration_h": 29.333333333333332
+  },
+  "MUC|KEF|2026-10": {
+    "price_eur": 258.0,
+    "duration_h": 25.916666666666668
+  },
+  "MUC|KEF|2026-11": null,
+  "MUC|KEF|2026-12": null,
+  "MUC|DUB|2026-05": {
+    "price_eur": 193.0,
+    "duration_h": 30.5
+  },
+  "MUC|DUB|2026-06": null,
+  "MUC|DUB|2026-07": null,
+  "MUC|DUB|2026-08": {
+    "price_eur": 196.0,
+    "duration_h": 5.083333333333333
+  },
+  "MUC|DUB|2026-09": {
+    "price_eur": 213.0,
+    "duration_h": 35.916666666666664
+  },
+  "MUC|DUB|2026-10": {
+    "price_eur": 216.0,
+    "duration_h": 11.25
+  },
+  "MUC|DUB|2026-11": null,
+  "MUC|DUB|2026-12": null,
+  "MUC|EDI|2026-05": null,
+  "MUC|EDI|2026-06": {
+    "price_eur": 300.0,
+    "duration_h": 28.5
+  },
+  "MUC|EDI|2026-07": null,
+  "MUC|EDI|2026-08": null,
+  "MUC|EDI|2026-09": {
+    "price_eur": 230.0,
+    "duration_h": 39.333333333333336
+  },
+  "MUC|EDI|2026-10": null,
+  "MUC|EDI|2026-11": null,
+  "MUC|EDI|2026-12": null,
+  "MUC|WAW|2026-05": {
+    "price_eur": 210.0,
+    "duration_h": 22.666666666666668
+  },
+  "MUC|WAW|2026-06": {
+    "price_eur": 152.0,
+    "duration_h": 36.333333333333336
+  },
+  "MUC|WAW|2026-07": {
+    "price_eur": 168.0,
+    "duration_h": 3.25
+  },
+  "MUC|WAW|2026-08": null,
+  "MUC|WAW|2026-09": {
+    "price_eur": 196.0,
+    "duration_h": 3.25
+  },
+  "MUC|WAW|2026-10": null,
+  "MUC|WAW|2026-11": null,
+  "MUC|WAW|2026-12": null,
+  "MUC|KRK|2026-05": {
+    "price_eur": 195.0,
+    "duration_h": 44.083333333333336
+  },
+  "MUC|KRK|2026-06": {
+    "price_eur": 200.0,
+    "duration_h": 29.833333333333332
+  },
+  "MUC|KRK|2026-07": {
+    "price_eur": 145.0,
+    "duration_h": 12.25
+  },
+  "MUC|KRK|2026-08": null,
+  "MUC|KRK|2026-09": null,
+  "MUC|KRK|2026-10": null,
+  "MUC|KRK|2026-11": null,
+  "MUC|KRK|2026-12": {
+    "price_eur": 199.0,
+    "duration_h": 2.75
+  },
+  "MUC|ATH|2026-05": {
+    "price_eur": 172.0,
+    "duration_h": 5.25
+  },
+  "MUC|ATH|2026-06": {
+    "price_eur": 149.0,
+    "duration_h": 25.25
+  },
+  "MUC|ATH|2026-07": {
+    "price_eur": 174.0,
+    "duration_h": 14.25
+  },
+  "MUC|ATH|2026-08": {
+    "price_eur": 224.0,
+    "duration_h": 7.833333333333333
+  },
+  "MUC|ATH|2026-09": {
+    "price_eur": 178.0,
+    "duration_h": 18.5
+  },
+  "MUC|ATH|2026-10": {
+    "price_eur": 217.0,
+    "duration_h": 27.666666666666668
+  },
+  "MUC|ATH|2026-11": {
+    "price_eur": 155.0,
+    "duration_h": 5.166666666666667
+  },
+  "MUC|ATH|2026-12": null,
+  "MUC|IST|2026-05": {
+    "price_eur": 163.0,
+    "duration_h": 17.75
+  },
+  "MUC|IST|2026-06": {
+    "price_eur": 122.0,
+    "duration_h": 5.5
+  },
+  "MUC|IST|2026-07": {
+    "price_eur": 173.0,
+    "duration_h": 5.416666666666667
+  },
+  "MUC|IST|2026-08": {
+    "price_eur": 155.0,
+    "duration_h": 5.416666666666667
+  },
+  "MUC|IST|2026-09": {
+    "price_eur": 137.0,
+    "duration_h": 5.5
+  },
+  "MUC|IST|2026-10": {
+    "price_eur": 179.0,
+    "duration_h": 5.583333333333333
+  },
+  "MUC|IST|2026-11": {
+    "price_eur": 106.0,
+    "duration_h": 5.583333333333333
+  },
+  "MUC|IST|2026-12": {
+    "price_eur": 160.0,
+    "duration_h": 5.416666666666667
+  },
+  "MUC|SOF|2026-05": {
+    "price_eur": 269.0,
+    "duration_h": 22.75
+  },
+  "MUC|SOF|2026-06": {
+    "price_eur": 168.0,
+    "duration_h": 20.583333333333332
+  },
+  "MUC|SOF|2026-07": null,
+  "MUC|SOF|2026-08": {
+    "price_eur": 159.0,
+    "duration_h": 39.25
+  },
+  "MUC|SOF|2026-09": null,
+  "MUC|SOF|2026-10": null,
+  "MUC|SOF|2026-11": null,
+  "MUC|SOF|2026-12": null,
+  "MUC|OTP|2026-05": {
+    "price_eur": 233.0,
+    "duration_h": 18.666666666666668
+  },
+  "MUC|OTP|2026-06": {
+    "price_eur": 138.0,
+    "duration_h": 4.166666666666667
+  },
+  "MUC|OTP|2026-07": null,
+  "MUC|OTP|2026-08": null,
+  "MUC|OTP|2026-09": null,
+  "MUC|OTP|2026-10": null,
+  "MUC|OTP|2026-11": null,
+  "MUC|OTP|2026-12": null,
+  "MUC|TLL|2026-05": {
+    "price_eur": 235.0,
+    "duration_h": 23.25
+  },
+  "MUC|TLL|2026-06": {
+    "price_eur": 193.0,
+    "duration_h": 28.583333333333332
+  },
+  "MUC|TLL|2026-07": {
+    "price_eur": 203.0,
+    "duration_h": 15.25
+  },
+  "MUC|TLL|2026-08": {
+    "price_eur": 228.0,
+    "duration_h": 14.0
+  },
+  "MUC|TLL|2026-09": null,
+  "MUC|TLL|2026-10": {
+    "price_eur": 213.0,
+    "duration_h": 15.583333333333334
+  },
+  "MUC|TLL|2026-11": null,
+  "MUC|TLL|2026-12": null,
+  "MUC|RIX|2026-05": {
+    "price_eur": 197.0,
+    "duration_h": 18.666666666666668
+  },
+  "MUC|RIX|2026-06": {
+    "price_eur": 242.0,
+    "duration_h": 4.25
+  },
+  "MUC|RIX|2026-07": {
+    "price_eur": 230.0,
+    "duration_h": 31.75
+  },
+  "MUC|RIX|2026-08": {
+    "price_eur": 210.0,
+    "duration_h": 4.25
+  },
+  "MUC|RIX|2026-09": {
+    "price_eur": 205.0,
+    "duration_h": 4.25
+  },
+  "MUC|RIX|2026-10": null,
+  "MUC|RIX|2026-11": null,
+  "MUC|RIX|2026-12": null,
+  "VIE|CDG|2026-05": {
+    "price_eur": 129.0,
+    "duration_h": 4.083333333333333
+  },
+  "VIE|CDG|2026-06": {
+    "price_eur": 127.0,
+    "duration_h": 13.416666666666666
+  },
+  "VIE|CDG|2026-07": {
+    "price_eur": 157.0,
+    "duration_h": 16.25
+  },
+  "VIE|CDG|2026-08": {
+    "price_eur": 187.0,
+    "duration_h": 4.083333333333333
+  },
+  "VIE|CDG|2026-09": {
+    "price_eur": 168.0,
+    "duration_h": 17.916666666666668
+  },
+  "VIE|CDG|2026-10": {
+    "price_eur": 142.0,
+    "duration_h": 4.166666666666667
+  },
+  "VIE|CDG|2026-11": {
+    "price_eur": 136.0,
+    "duration_h": 4.0
+  },
+  "VIE|CDG|2026-12": {
+    "price_eur": 250.0,
+    "duration_h": 4.0
+  },
+  "VIE|AMS|2026-05": {
+    "price_eur": 240.0,
+    "duration_h": 41.666666666666664
+  },
+  "VIE|AMS|2026-06": {
+    "price_eur": 161.0,
+    "duration_h": 34.833333333333336
+  },
+  "VIE|AMS|2026-07": {
+    "price_eur": 199.0,
+    "duration_h": 58.083333333333336
+  },
+  "VIE|AMS|2026-08": null,
+  "VIE|AMS|2026-09": null,
+  "VIE|AMS|2026-10": {
+    "price_eur": 217.0,
+    "duration_h": 3.75
+  },
+  "VIE|AMS|2026-11": null,
+  "VIE|AMS|2026-12": null,
+  "VIE|BRU|2026-05": {
+    "price_eur": 60.0,
+    "duration_h": 3.5
+  },
+  "VIE|BRU|2026-06": {
+    "price_eur": 91.0,
+    "duration_h": 31.083333333333332
+  },
+  "VIE|BRU|2026-07": {
+    "price_eur": 88.0,
+    "duration_h": 3.5
+  },
+  "VIE|BRU|2026-08": null,
+  "VIE|BRU|2026-09": null,
+  "VIE|BRU|2026-10": null,
+  "VIE|BRU|2026-11": null,
+  "VIE|BRU|2026-12": null,
+  "VIE|LHR|2026-05": {
+    "price_eur": 233.0,
+    "duration_h": 4.583333333333333
+  },
+  "VIE|LHR|2026-06": {
+    "price_eur": 218.0,
+    "duration_h": 4.833333333333333
+  },
+  "VIE|LHR|2026-07": {
+    "price_eur": 264.0,
+    "duration_h": 4.5
+  },
+  "VIE|LHR|2026-08": {
+    "price_eur": 247.0,
+    "duration_h": 19.083333333333332
+  },
+  "VIE|LHR|2026-09": {
+    "price_eur": 184.0,
+    "duration_h": 4.583333333333333
+  },
+  "VIE|LHR|2026-10": {
+    "price_eur": 271.0,
+    "duration_h": 10.666666666666666
+  },
+  "VIE|LHR|2026-11": null,
+  "VIE|LHR|2026-12": null,
+  "VIE|MAD|2026-05": {
+    "price_eur": 128.0,
+    "duration_h": 58.666666666666664
+  },
+  "VIE|MAD|2026-06": {
+    "price_eur": 81.0,
+    "duration_h": 6.166666666666667
+  },
+  "VIE|MAD|2026-07": {
+    "price_eur": 97.0,
+    "duration_h": 6.166666666666667
+  },
+  "VIE|MAD|2026-08": {
+    "price_eur": 177.0,
+    "duration_h": 32.25
+  },
+  "VIE|MAD|2026-09": {
+    "price_eur": 118.0,
+    "duration_h": 6.166666666666667
+  },
+  "VIE|MAD|2026-10": {
+    "price_eur": 124.0,
+    "duration_h": 20.416666666666668
+  },
+  "VIE|MAD|2026-11": {
+    "price_eur": 156.0,
+    "duration_h": 49.166666666666664
+  },
+  "VIE|MAD|2026-12": null,
+  "VIE|BCN|2026-05": {
+    "price_eur": 67.0,
+    "duration_h": 13.25
+  },
+  "VIE|BCN|2026-06": {
+    "price_eur": 80.0,
+    "duration_h": 16.833333333333332
+  },
+  "VIE|BCN|2026-07": {
+    "price_eur": 90.0,
+    "duration_h": 30.75
+  },
+  "VIE|BCN|2026-08": {
+    "price_eur": 125.0,
+    "duration_h": 21.5
+  },
+  "VIE|BCN|2026-09": {
+    "price_eur": 111.0,
+    "duration_h": 33.333333333333336
+  },
+  "VIE|BCN|2026-10": {
+    "price_eur": 57.0,
+    "duration_h": 4.916666666666667
+  },
+  "VIE|BCN|2026-11": null,
+  "VIE|BCN|2026-12": null,
+  "VIE|LIS|2026-05": {
+    "price_eur": 162.0,
+    "duration_h": 30.666666666666668
+  },
+  "VIE|LIS|2026-06": {
+    "price_eur": 131.0,
+    "duration_h": 31.333333333333332
+  },
+  "VIE|LIS|2026-07": {
+    "price_eur": 152.0,
+    "duration_h": 46.083333333333336
+  },
+  "VIE|LIS|2026-08": {
+    "price_eur": 168.0,
+    "duration_h": 28.333333333333332
+  },
+  "VIE|LIS|2026-09": {
+    "price_eur": 175.0,
+    "duration_h": 33.916666666666664
+  },
+  "VIE|LIS|2026-10": {
+    "price_eur": 159.0,
+    "duration_h": 33.583333333333336
+  },
+  "VIE|LIS|2026-11": null,
+  "VIE|LIS|2026-12": null,
+  "VIE|FCO|2026-05": {
+    "price_eur": 41.0,
+    "duration_h": 3.5
+  },
+  "VIE|FCO|2026-06": {
+    "price_eur": 35.0,
+    "duration_h": 3.5
+  },
+  "VIE|FCO|2026-07": {
+    "price_eur": 52.0,
+    "duration_h": 3.5
+  },
+  "VIE|FCO|2026-08": {
+    "price_eur": 77.0,
+    "duration_h": 3.5
+  },
+  "VIE|FCO|2026-09": {
+    "price_eur": 94.0,
+    "duration_h": 3.5
+  },
+  "VIE|FCO|2026-10": null,
+  "VIE|FCO|2026-11": null,
+  "VIE|FCO|2026-12": null,
+  "VIE|MXP|2026-05": {
+    "price_eur": 35.0,
+    "duration_h": 3.0
+  },
+  "VIE|MXP|2026-06": {
+    "price_eur": 45.0,
+    "duration_h": 3.0
+  },
+  "VIE|MXP|2026-07": {
+    "price_eur": 42.0,
+    "duration_h": 3.0
+  },
+  "VIE|MXP|2026-08": {
+    "price_eur": 301.0,
+    "duration_h": 9.166666666666666
+  },
+  "VIE|MXP|2026-09": null,
+  "VIE|MXP|2026-10": {
+    "price_eur": 55.0,
+    "duration_h": 3.0
+  },
+  "VIE|MXP|2026-11": {
+    "price_eur": 59.0,
+    "duration_h": 3.0
+  },
+  "VIE|MXP|2026-12": null,
+  "VIE|FLR|2026-05": null,
+  "VIE|FLR|2026-06": {
+    "price_eur": 288.0,
+    "duration_h": 25.583333333333332
+  },
+  "VIE|FLR|2026-07": {
+    "price_eur": 227.0,
+    "duration_h": 61.5
+  },
+  "VIE|FLR|2026-08": {
+    "price_eur": 224.0,
+    "duration_h": 35.5
+  },
+  "VIE|FLR|2026-09": {
+    "price_eur": 199.0,
+    "duration_h": 28.75
+  },
+  "VIE|FLR|2026-10": null,
+  "VIE|FLR|2026-11": null,
+  "VIE|FLR|2026-12": null,
+  "VIE|NAP|2026-05": {
+    "price_eur": 43.0,
+    "duration_h": 3.3333333333333335
+  },
+  "VIE|NAP|2026-06": {
+    "price_eur": 61.0,
+    "duration_h": 3.3333333333333335
+  },
+  "VIE|NAP|2026-07": {
+    "price_eur": 77.0,
+    "duration_h": 3.3333333333333335
+  },
+  "VIE|NAP|2026-08": {
+    "price_eur": 108.0,
+    "duration_h": 3.3333333333333335
+  },
+  "VIE|NAP|2026-09": null,
+  "VIE|NAP|2026-10": null,
+  "VIE|NAP|2026-11": null,
+  "VIE|NAP|2026-12": null,
+  "VIE|GVA|2026-05": {
+    "price_eur": 166.0,
+    "duration_h": 22.25
+  },
+  "VIE|GVA|2026-06": {
+    "price_eur": 146.0,
+    "duration_h": 25.5
+  },
+  "VIE|GVA|2026-07": {
+    "price_eur": 188.0,
+    "duration_h": 3.1666666666666665
+  },
+  "VIE|GVA|2026-08": null,
+  "VIE|GVA|2026-09": null,
+  "VIE|GVA|2026-10": null,
+  "VIE|GVA|2026-11": null,
+  "VIE|GVA|2026-12": {
+    "price_eur": 210.0,
+    "duration_h": 3.1666666666666665
+  },
+  "VIE|HAM|2026-05": null,
+  "VIE|HAM|2026-06": {
+    "price_eur": 134.0,
+    "duration_h": 3.0
+  },
+  "VIE|HAM|2026-07": {
+    "price_eur": 170.0,
+    "duration_h": 3.0833333333333335
+  },
+  "VIE|HAM|2026-08": {
+    "price_eur": 149.0,
+    "duration_h": 29.25
+  },
+  "VIE|HAM|2026-09": null,
+  "VIE|HAM|2026-10": null,
+  "VIE|HAM|2026-11": null,
+  "VIE|HAM|2026-12": null,
+  "VIE|CGN|2026-05": {
+    "price_eur": 135.0,
+    "duration_h": 14.916666666666666
+  },
+  "VIE|CGN|2026-06": {
+    "price_eur": 150.0,
+    "duration_h": 3.0833333333333335
+  },
+  "VIE|CGN|2026-07": {
+    "price_eur": 150.0,
+    "duration_h": 19.833333333333332
+  },
+  "VIE|CGN|2026-08": {
+    "price_eur": 133.0,
+    "duration_h": 3.0833333333333335
+  },
+  "VIE|CGN|2026-09": {
+    "price_eur": 127.0,
+    "duration_h": 26.416666666666668
+  },
+  "VIE|CGN|2026-10": {
+    "price_eur": 121.0,
+    "duration_h": 3.1666666666666665
+  },
+  "VIE|CGN|2026-11": null,
+  "VIE|CGN|2026-12": null,
+  "VIE|CPH|2026-05": {
+    "price_eur": 76.0,
+    "duration_h": 3.5
+  },
+  "VIE|CPH|2026-06": {
+    "price_eur": 87.0,
+    "duration_h": 3.5
+  },
+  "VIE|CPH|2026-07": {
+    "price_eur": 129.0,
+    "duration_h": 3.5
+  },
+  "VIE|CPH|2026-08": {
+    "price_eur": 125.0,
+    "duration_h": 3.4166666666666665
+  },
+  "VIE|CPH|2026-09": {
+    "price_eur": 147.0,
+    "duration_h": 49.666666666666664
+  },
+  "VIE|CPH|2026-10": null,
+  "VIE|CPH|2026-11": null,
+  "VIE|CPH|2026-12": null,
+  "VIE|ARN|2026-05": {
+    "price_eur": 66.0,
+    "duration_h": 4.5
+  },
+  "VIE|ARN|2026-06": {
+    "price_eur": 115.0,
+    "duration_h": 4.5
+  },
+  "VIE|ARN|2026-07": {
+    "price_eur": 185.0,
+    "duration_h": 40.75
+  },
+  "VIE|ARN|2026-08": {
+    "price_eur": 100.0,
+    "duration_h": 4.5
+  },
+  "VIE|ARN|2026-09": null,
+  "VIE|ARN|2026-10": null,
+  "VIE|ARN|2026-11": null,
+  "VIE|ARN|2026-12": null,
+  "VIE|OSL|2026-05": {
+    "price_eur": 119.0,
+    "duration_h": 31.833333333333332
+  },
+  "VIE|OSL|2026-06": {
+    "price_eur": 126.0,
+    "duration_h": 49.5
+  },
+  "VIE|OSL|2026-07": {
+    "price_eur": 154.0,
+    "duration_h": 41.333333333333336
+  },
+  "VIE|OSL|2026-08": {
+    "price_eur": 158.0,
+    "duration_h": 44.75
+  },
+  "VIE|OSL|2026-09": null,
+  "VIE|OSL|2026-10": null,
+  "VIE|OSL|2026-11": null,
+  "VIE|OSL|2026-12": {
+    "price_eur": 173.0,
+    "duration_h": 29.0
+  },
+  "VIE|HEL|2026-05": {
+    "price_eur": 76.0,
+    "duration_h": 5.0
+  },
+  "VIE|HEL|2026-06": {
+    "price_eur": 94.0,
+    "duration_h": 5.0
+  },
+  "VIE|HEL|2026-07": {
+    "price_eur": 190.0,
+    "duration_h": 4.916666666666667
+  },
+  "VIE|HEL|2026-08": {
+    "price_eur": 143.0,
+    "duration_h": 5.0
+  },
+  "VIE|HEL|2026-09": {
+    "price_eur": 160.0,
+    "duration_h": 14.583333333333334
+  },
+  "VIE|HEL|2026-10": null,
+  "VIE|HEL|2026-11": null,
+  "VIE|HEL|2026-12": null,
+  "VIE|KEF|2026-05": null,
+  "VIE|KEF|2026-06": {
+    "price_eur": 262.0,
+    "duration_h": 40.0
+  },
+  "VIE|KEF|2026-07": {
+    "price_eur": 425.0,
+    "duration_h": 37.166666666666664
+  },
+  "VIE|KEF|2026-08": {
+    "price_eur": 382.0,
+    "duration_h": 51.416666666666664
+  },
+  "VIE|KEF|2026-09": null,
+  "VIE|KEF|2026-10": null,
+  "VIE|KEF|2026-11": null,
+  "VIE|KEF|2026-12": null,
+  "VIE|DUB|2026-05": {
+    "price_eur": 122.0,
+    "duration_h": 9.75
+  },
+  "VIE|DUB|2026-06": null,
+  "VIE|DUB|2026-07": {
+    "price_eur": 250.0,
+    "duration_h": 5.666666666666667
+  },
+  "VIE|DUB|2026-08": {
+    "price_eur": 184.0,
+    "duration_h": 40.916666666666664
+  },
+  "VIE|DUB|2026-09": null,
+  "VIE|DUB|2026-10": null,
+  "VIE|DUB|2026-11": null,
+  "VIE|DUB|2026-12": null,
+  "VIE|EDI|2026-05": {
+    "price_eur": 127.0,
+    "duration_h": 29.833333333333332
+  },
+  "VIE|EDI|2026-06": null,
+  "VIE|EDI|2026-07": null,
+  "VIE|EDI|2026-08": {
+    "price_eur": 133.0,
+    "duration_h": 41.083333333333336
+  },
+  "VIE|EDI|2026-09": null,
+  "VIE|EDI|2026-10": null,
+  "VIE|EDI|2026-11": null,
+  "VIE|EDI|2026-12": null,
+  "VIE|ATH|2026-05": {
+    "price_eur": 105.0,
+    "duration_h": 4.5
+  },
+  "VIE|ATH|2026-06": {
+    "price_eur": 61.0,
+    "duration_h": 4.5
+  },
+  "VIE|ATH|2026-07": {
+    "price_eur": 85.0,
+    "duration_h": 4.5
+  },
+  "VIE|ATH|2026-08": {
+    "price_eur": 173.0,
+    "duration_h": 4.5
+  },
+  "VIE|ATH|2026-09": {
+    "price_eur": 137.0,
+    "duration_h": 4.333333333333333
+  },
+  "VIE|ATH|2026-10": {
+    "price_eur": 128.0,
+    "duration_h": 30.666666666666668
+  },
+  "VIE|ATH|2026-11": null,
+  "VIE|ATH|2026-12": null,
+  "VIE|IST|2026-05": {
+    "price_eur": 121.0,
+    "duration_h": 4.75
+  },
+  "VIE|IST|2026-06": {
+    "price_eur": 118.0,
+    "duration_h": 4.75
+  },
+  "VIE|IST|2026-07": {
+    "price_eur": 161.0,
+    "duration_h": 4.75
+  },
+  "VIE|IST|2026-08": {
+    "price_eur": 147.0,
+    "duration_h": 4.75
+  },
+  "VIE|IST|2026-09": {
+    "price_eur": 117.0,
+    "duration_h": 4.75
+  },
+  "VIE|IST|2026-10": {
+    "price_eur": 152.0,
+    "duration_h": 4.583333333333333
+  },
+  "VIE|IST|2026-11": null,
+  "VIE|IST|2026-12": {
+    "price_eur": 202.0,
+    "duration_h": 36.166666666666664
+  },
+  "VIE|SOF|2026-05": {
+    "price_eur": 81.0,
+    "duration_h": 3.25
+  },
+  "VIE|SOF|2026-06": {
+    "price_eur": 75.0,
+    "duration_h": 6.083333333333333
+  },
+  "VIE|SOF|2026-07": {
+    "price_eur": 99.0,
+    "duration_h": 8.083333333333334
+  },
+  "VIE|SOF|2026-08": null,
+  "VIE|SOF|2026-09": null,
+  "VIE|SOF|2026-10": null,
+  "VIE|SOF|2026-11": null,
+  "VIE|SOF|2026-12": null,
+  "VIE|OTP|2026-05": {
+    "price_eur": 134.0,
+    "duration_h": 30.166666666666668
+  },
+  "VIE|OTP|2026-06": {
+    "price_eur": 50.0,
+    "duration_h": 3.3333333333333335
+  },
+  "VIE|OTP|2026-07": null,
+  "VIE|OTP|2026-08": null,
+  "VIE|OTP|2026-09": null,
+  "VIE|OTP|2026-10": null,
+  "VIE|OTP|2026-11": null,
+  "VIE|OTP|2026-12": null,
+  "VIE|TLL|2026-05": {
+    "price_eur": 183.0,
+    "duration_h": 13.833333333333334
+  },
+  "VIE|TLL|2026-06": {
+    "price_eur": 140.0,
+    "duration_h": 29.833333333333332
+  },
+  "VIE|TLL|2026-07": {
+    "price_eur": 224.0,
+    "duration_h": 27.083333333333332
+  },
+  "VIE|TLL|2026-08": null,
+  "VIE|TLL|2026-09": null,
+  "VIE|TLL|2026-10": {
+    "price_eur": 182.0,
+    "duration_h": 26.25
+  },
+  "VIE|TLL|2026-11": null,
+  "VIE|TLL|2026-12": null,
+  "VIE|RIX|2026-05": {
+    "price_eur": 112.0,
+    "duration_h": 35.5
+  },
+  "VIE|RIX|2026-06": {
+    "price_eur": 200.0,
+    "duration_h": 22.916666666666668
+  },
+  "VIE|RIX|2026-07": {
+    "price_eur": 198.0,
+    "duration_h": 3.9166666666666665
+  },
+  "VIE|RIX|2026-08": null,
+  "VIE|RIX|2026-09": {
+    "price_eur": 173.0,
+    "duration_h": 69.91666666666667
+  },
+  "VIE|RIX|2026-10": {
+    "price_eur": 213.0,
+    "duration_h": 14.583333333333334
+  },
+  "VIE|RIX|2026-11": null,
+  "VIE|RIX|2026-12": null,
+  "PRG|CDG|2026-05": {
+    "price_eur": 127.0,
+    "duration_h": 3.5
+  },
+  "PRG|CDG|2026-06": {
+    "price_eur": 117.0,
+    "duration_h": 3.5
+  },
+  "PRG|CDG|2026-07": {
+    "price_eur": 115.0,
+    "duration_h": 3.5833333333333335
+  },
+  "PRG|CDG|2026-08": {
+    "price_eur": 119.0,
+    "duration_h": 3.5833333333333335
+  },
+  "PRG|CDG|2026-09": {
+    "price_eur": 122.0,
+    "duration_h": 3.5
+  },
+  "PRG|CDG|2026-10": {
+    "price_eur": 122.0,
+    "duration_h": 3.5
+  },
+  "PRG|CDG|2026-11": {
+    "price_eur": 118.0,
+    "duration_h": 3.5
+  },
+  "PRG|CDG|2026-12": null,
+  "PRG|AMS|2026-05": {
+    "price_eur": 161.0,
+    "duration_h": 2.9166666666666665
+  },
+  "PRG|AMS|2026-06": {
+    "price_eur": 126.0,
+    "duration_h": 3.1666666666666665
+  },
+  "PRG|AMS|2026-07": {
+    "price_eur": 132.0,
+    "duration_h": 3.1666666666666665
+  },
+  "PRG|AMS|2026-08": {
+    "price_eur": 173.0,
+    "duration_h": 3.0833333333333335
+  },
+  "PRG|AMS|2026-09": null,
+  "PRG|AMS|2026-10": {
+    "price_eur": 154.0,
+    "duration_h": 3.0833333333333335
+  },
+  "PRG|AMS|2026-11": null,
+  "PRG|AMS|2026-12": null,
+  "PRG|BRU|2026-05": {
+    "price_eur": 47.0,
+    "duration_h": 3.0
+  },
+  "PRG|BRU|2026-06": {
+    "price_eur": 45.0,
+    "duration_h": 3.0
+  },
+  "PRG|BRU|2026-07": {
+    "price_eur": 102.0,
+    "duration_h": 3.0
+  },
+  "PRG|BRU|2026-08": null,
+  "PRG|BRU|2026-09": null,
+  "PRG|BRU|2026-10": {
+    "price_eur": 111.0,
+    "duration_h": 3.0
+  },
+  "PRG|BRU|2026-11": null,
+  "PRG|BRU|2026-12": null,
+  "PRG|LHR|2026-05": {
+    "price_eur": 183.0,
+    "duration_h": 4.166666666666667
+  },
+  "PRG|LHR|2026-06": {
+    "price_eur": 163.0,
+    "duration_h": 4.083333333333333
+  },
+  "PRG|LHR|2026-07": {
+    "price_eur": 205.0,
+    "duration_h": 4.083333333333333
+  },
+  "PRG|LHR|2026-08": null,
+  "PRG|LHR|2026-09": {
+    "price_eur": 139.0,
+    "duration_h": 4.083333333333333
+  },
+  "PRG|LHR|2026-10": null,
+  "PRG|LHR|2026-11": null,
+  "PRG|LHR|2026-12": null,
+  "PRG|MAD|2026-05": {
+    "price_eur": 150.0,
+    "duration_h": 27.166666666666668
+  },
+  "PRG|MAD|2026-06": {
+    "price_eur": 115.0,
+    "duration_h": 22.166666666666668
+  },
+  "PRG|MAD|2026-07": {
+    "price_eur": 130.0,
+    "duration_h": 26.416666666666668
+  },
+  "PRG|MAD|2026-08": {
+    "price_eur": 179.0,
+    "duration_h": 27.083333333333332
+  },
+  "PRG|MAD|2026-09": null,
+  "PRG|MAD|2026-10": null,
+  "PRG|MAD|2026-11": {
+    "price_eur": 144.0,
+    "duration_h": 6.083333333333333
+  },
+  "PRG|MAD|2026-12": null,
+  "PRG|BCN|2026-05": {
+    "price_eur": 91.0,
+    "duration_h": 40.916666666666664
+  },
+  "PRG|BCN|2026-06": {
+    "price_eur": 88.0,
+    "duration_h": 25.083333333333332
+  },
+  "PRG|BCN|2026-07": {
+    "price_eur": 103.0,
+    "duration_h": 22.916666666666668
+  },
+  "PRG|BCN|2026-08": {
+    "price_eur": 110.0,
+    "duration_h": 18.25
+  },
+  "PRG|BCN|2026-09": {
+    "price_eur": 79.0,
+    "duration_h": 5.083333333333333
+  },
+  "PRG|BCN|2026-10": {
+    "price_eur": 107.0,
+    "duration_h": 36.166666666666664
+  },
+  "PRG|BCN|2026-11": null,
+  "PRG|BCN|2026-12": {
+    "price_eur": 144.0,
+    "duration_h": 5.0
+  },
+  "PRG|LIS|2026-05": {
+    "price_eur": 173.0,
+    "duration_h": 46.0
+  },
+  "PRG|LIS|2026-06": {
+    "price_eur": 142.0,
+    "duration_h": 37.25
+  },
+  "PRG|LIS|2026-07": {
+    "price_eur": 167.0,
+    "duration_h": 51.083333333333336
+  },
+  "PRG|LIS|2026-08": {
+    "price_eur": 194.0,
+    "duration_h": 7.083333333333333
+  },
+  "PRG|LIS|2026-09": {
+    "price_eur": 181.0,
+    "duration_h": 32.666666666666664
+  },
+  "PRG|LIS|2026-10": {
+    "price_eur": 227.0,
+    "duration_h": 51.166666666666664
+  },
+  "PRG|LIS|2026-11": null,
+  "PRG|LIS|2026-12": null,
+  "PRG|FCO|2026-05": {
+    "price_eur": 61.0,
+    "duration_h": 3.9166666666666665
+  },
+  "PRG|FCO|2026-06": {
+    "price_eur": 26.0,
+    "duration_h": 3.9166666666666665
+  },
+  "PRG|FCO|2026-07": {
+    "price_eur": 24.0,
+    "duration_h": 3.9166666666666665
+  },
+  "PRG|FCO|2026-08": {
+    "price_eur": 49.0,
+    "duration_h": 3.9166666666666665
+  },
+  "PRG|FCO|2026-09": {
+    "price_eur": 82.0,
+    "duration_h": 3.9166666666666665
+  },
+  "PRG|FCO|2026-10": {
+    "price_eur": 60.0,
+    "duration_h": 3.9166666666666665
+  },
+  "PRG|FCO|2026-11": {
+    "price_eur": 101.0,
+    "duration_h": 3.8333333333333335
+  },
+  "PRG|FCO|2026-12": null,
+  "PRG|MXP|2026-05": {
+    "price_eur": 49.0,
+    "duration_h": 3.0
+  },
+  "PRG|MXP|2026-06": {
+    "price_eur": 60.0,
+    "duration_h": 3.0
+  },
+  "PRG|MXP|2026-07": {
+    "price_eur": 57.0,
+    "duration_h": 3.0
+  },
+  "PRG|MXP|2026-08": {
+    "price_eur": 88.0,
+    "duration_h": 3.0
+  },
+  "PRG|MXP|2026-09": null,
+  "PRG|MXP|2026-10": {
+    "price_eur": 106.0,
+    "duration_h": 3.0
+  },
+  "PRG|MXP|2026-11": null,
+  "PRG|MXP|2026-12": null,
+  "PRG|FLR|2026-05": {
+    "price_eur": 246.0,
+    "duration_h": 26.75
+  },
+  "PRG|FLR|2026-06": null,
+  "PRG|FLR|2026-07": {
+    "price_eur": 80.0,
+    "duration_h": 3.1666666666666665
+  },
+  "PRG|FLR|2026-08": null,
+  "PRG|FLR|2026-09": {
+    "price_eur": 273.0,
+    "duration_h": 36.75
+  },
+  "PRG|FLR|2026-10": null,
+  "PRG|FLR|2026-11": null,
+  "PRG|FLR|2026-12": null,
+  "PRG|NAP|2026-05": {
+    "price_eur": 101.0,
+    "duration_h": 30.083333333333332
+  },
+  "PRG|NAP|2026-06": {
+    "price_eur": 83.0,
+    "duration_h": 44.083333333333336
+  },
+  "PRG|NAP|2026-07": {
+    "price_eur": 118.0,
+    "duration_h": 48.333333333333336
+  },
+  "PRG|NAP|2026-08": null,
+  "PRG|NAP|2026-09": {
+    "price_eur": 101.0,
+    "duration_h": 23.666666666666668
+  },
+  "PRG|NAP|2026-10": null,
+  "PRG|NAP|2026-11": null,
+  "PRG|NAP|2026-12": null,
+  "PRG|GVA|2026-05": {
+    "price_eur": 231.0,
+    "duration_h": 10.166666666666666
+  },
+  "PRG|GVA|2026-06": {
+    "price_eur": 114.0,
+    "duration_h": 3.1666666666666665
+  },
+  "PRG|GVA|2026-07": {
+    "price_eur": 212.0,
+    "duration_h": 15.916666666666666
+  },
+  "PRG|GVA|2026-08": null,
+  "PRG|GVA|2026-09": {
+    "price_eur": 79.0,
+    "duration_h": 3.1666666666666665
+  },
+  "PRG|GVA|2026-10": null,
+  "PRG|GVA|2026-11": null,
+  "PRG|GVA|2026-12": null,
+  "PRG|CPH|2026-05": {
+    "price_eur": 76.0,
+    "duration_h": 2.8333333333333335
+  },
+  "PRG|CPH|2026-06": {
+    "price_eur": 47.0,
+    "duration_h": 2.8333333333333335
+  },
+  "PRG|CPH|2026-07": null,
+  "PRG|CPH|2026-08": {
+    "price_eur": 107.0,
+    "duration_h": 23.833333333333332
+  },
+  "PRG|CPH|2026-09": {
+    "price_eur": 70.0,
+    "duration_h": 2.8333333333333335
+  },
+  "PRG|CPH|2026-10": {
+    "price_eur": 126.0,
+    "duration_h": 2.8333333333333335
+  },
+  "PRG|CPH|2026-11": null,
+  "PRG|CPH|2026-12": null,
+  "PRG|ARN|2026-05": {
+    "price_eur": 93.0,
+    "duration_h": 40.583333333333336
+  },
+  "PRG|ARN|2026-06": {
+    "price_eur": 129.0,
+    "duration_h": 42.75
+  },
+  "PRG|ARN|2026-07": {
+    "price_eur": 152.0,
+    "duration_h": 24.333333333333332
+  },
+  "PRG|ARN|2026-08": {
+    "price_eur": 98.0,
+    "duration_h": 34.5
+  },
+  "PRG|ARN|2026-09": {
+    "price_eur": 109.0,
+    "duration_h": 3.8333333333333335
+  },
+  "PRG|ARN|2026-10": {
+    "price_eur": 166.0,
+    "duration_h": 8.916666666666666
+  },
+  "PRG|ARN|2026-11": null,
+  "PRG|ARN|2026-12": null,
+  "PRG|OSL|2026-05": {
+    "price_eur": 97.0,
+    "duration_h": 27.333333333333332
+  },
+  "PRG|OSL|2026-06": null,
+  "PRG|OSL|2026-07": {
+    "price_eur": 126.0,
+    "duration_h": 47.916666666666664
+  },
+  "PRG|OSL|2026-08": {
+    "price_eur": 90.0,
+    "duration_h": 29.583333333333332
+  },
+  "PRG|OSL|2026-09": null,
+  "PRG|OSL|2026-10": null,
+  "PRG|OSL|2026-11": null,
+  "PRG|OSL|2026-12": null,
+  "PRG|HEL|2026-05": {
+    "price_eur": 185.0,
+    "duration_h": 27.083333333333332
+  },
+  "PRG|HEL|2026-06": {
+    "price_eur": 218.0,
+    "duration_h": 35.833333333333336
+  },
+  "PRG|HEL|2026-07": {
+    "price_eur": 185.0,
+    "duration_h": 14.5
+  },
+  "PRG|HEL|2026-08": {
+    "price_eur": 170.0,
+    "duration_h": 28.0
+  },
+  "PRG|HEL|2026-09": null,
+  "PRG|HEL|2026-10": null,
+  "PRG|HEL|2026-11": null,
+  "PRG|HEL|2026-12": null,
+  "PRG|KEF|2026-05": {
+    "price_eur": 276.0,
+    "duration_h": 38.583333333333336
+  },
+  "PRG|KEF|2026-06": {
+    "price_eur": 233.0,
+    "duration_h": 26.583333333333332
+  },
+  "PRG|KEF|2026-07": {
+    "price_eur": 299.0,
+    "duration_h": 37.666666666666664
+  },
+  "PRG|KEF|2026-08": {
+    "price_eur": 320.0,
+    "duration_h": 22.75
+  },
+  "PRG|KEF|2026-09": null,
+  "PRG|KEF|2026-10": null,
+  "PRG|KEF|2026-11": {
+    "price_eur": 224.0,
+    "duration_h": 46.25
+  },
+  "PRG|KEF|2026-12": null,
+  "PRG|DUB|2026-05": {
+    "price_eur": 115.0,
+    "duration_h": 19.5
+  },
+  "PRG|DUB|2026-06": {
+    "price_eur": 151.0,
+    "duration_h": 16.416666666666668
+  },
+  "PRG|DUB|2026-07": {
+    "price_eur": 147.0,
+    "duration_h": 51.75
+  },
+  "PRG|DUB|2026-08": null,
+  "PRG|DUB|2026-09": {
+    "price_eur": 155.0,
+    "duration_h": 43.75
+  },
+  "PRG|DUB|2026-10": null,
+  "PRG|DUB|2026-11": null,
+  "PRG|DUB|2026-12": null,
+  "PRG|EDI|2026-05": {
+    "price_eur": 162.0,
+    "duration_h": 31.916666666666668
+  },
+  "PRG|EDI|2026-06": null,
+  "PRG|EDI|2026-07": {
+    "price_eur": 218.0,
+    "duration_h": 19.833333333333332
+  },
+  "PRG|EDI|2026-08": null,
+  "PRG|EDI|2026-09": {
+    "price_eur": 147.0,
+    "duration_h": 34.083333333333336
+  },
+  "PRG|EDI|2026-10": null,
+  "PRG|EDI|2026-11": null,
+  "PRG|EDI|2026-12": null,
+  "PRG|ATH|2026-05": {
+    "price_eur": 127.0,
+    "duration_h": 47.25
+  },
+  "PRG|ATH|2026-06": {
+    "price_eur": 112.0,
+    "duration_h": 37.25
+  },
+  "PRG|ATH|2026-07": {
+    "price_eur": 143.0,
+    "duration_h": 56.25
+  },
+  "PRG|ATH|2026-08": {
+    "price_eur": 177.0,
+    "duration_h": 40.666666666666664
+  },
+  "PRG|ATH|2026-09": null,
+  "PRG|ATH|2026-10": null,
+  "PRG|ATH|2026-11": null,
+  "PRG|ATH|2026-12": null,
+  "PRG|IST|2026-05": {
+    "price_eur": 115.0,
+    "duration_h": 5.25
+  },
+  "PRG|IST|2026-06": {
+    "price_eur": 123.0,
+    "duration_h": 5.25
+  },
+  "PRG|IST|2026-07": {
+    "price_eur": 153.0,
+    "duration_h": 5.25
+  },
+  "PRG|IST|2026-08": {
+    "price_eur": 185.0,
+    "duration_h": 5.25
+  },
+  "PRG|IST|2026-09": {
+    "price_eur": 156.0,
+    "duration_h": 5.25
+  },
+  "PRG|IST|2026-10": {
+    "price_eur": 125.0,
+    "duration_h": 5.25
+  },
+  "PRG|IST|2026-11": {
+    "price_eur": 153.0,
+    "duration_h": 21.5
+  },
+  "PRG|IST|2026-12": {
+    "price_eur": 197.0,
+    "duration_h": 8.333333333333334
+  },
+  "PRG|SOF|2026-05": {
+    "price_eur": 67.0,
+    "duration_h": 3.9166666666666665
+  },
+  "PRG|SOF|2026-06": {
+    "price_eur": 60.0,
+    "duration_h": 3.9166666666666665
+  },
+  "PRG|SOF|2026-07": {
+    "price_eur": 57.0,
+    "duration_h": 3.9166666666666665
+  },
+  "PRG|SOF|2026-08": {
+    "price_eur": 122.0,
+    "duration_h": 3.9166666666666665
+  },
+  "PRG|SOF|2026-09": {
+    "price_eur": 77.0,
+    "duration_h": 3.9166666666666665
+  },
+  "PRG|SOF|2026-10": null,
+  "PRG|SOF|2026-11": null,
+  "PRG|SOF|2026-12": null,
+  "PRG|OTP|2026-05": {
+    "price_eur": 131.0,
+    "duration_h": 15.25
+  },
+  "PRG|OTP|2026-06": {
+    "price_eur": 61.0,
+    "duration_h": 4.0
+  },
+  "PRG|OTP|2026-07": {
+    "price_eur": 58.0,
+    "duration_h": 4.0
+  },
+  "PRG|OTP|2026-08": {
+    "price_eur": 118.0,
+    "duration_h": 4.0
+  },
+  "PRG|OTP|2026-09": null,
+  "PRG|OTP|2026-10": null,
+  "PRG|OTP|2026-11": null,
+  "PRG|OTP|2026-12": null,
+  "PRG|TLL|2026-05": {
+    "price_eur": 153.0,
+    "duration_h": 18.916666666666668
+  },
+  "PRG|TLL|2026-06": {
+    "price_eur": 123.0,
+    "duration_h": 31.666666666666668
+  },
+  "PRG|TLL|2026-07": {
+    "price_eur": 128.0,
+    "duration_h": 33.416666666666664
+  },
+  "PRG|TLL|2026-08": {
+    "price_eur": 141.0,
+    "duration_h": 55.0
+  },
+  "PRG|TLL|2026-09": null,
+  "PRG|TLL|2026-10": null,
+  "PRG|TLL|2026-11": null,
+  "PRG|TLL|2026-12": null,
+  "PRG|RIX|2026-05": {
+    "price_eur": 64.0,
+    "duration_h": 3.75
+  },
+  "PRG|RIX|2026-06": {
+    "price_eur": 59.0,
+    "duration_h": 3.75
+  },
+  "PRG|RIX|2026-07": {
+    "price_eur": 83.0,
+    "duration_h": 3.75
+  },
+  "PRG|RIX|2026-08": {
+    "price_eur": 111.0,
+    "duration_h": 15.666666666666666
+  },
+  "PRG|RIX|2026-09": {
+    "price_eur": 133.0,
+    "duration_h": 3.5833333333333335
+  },
+  "PRG|RIX|2026-10": null,
+  "PRG|RIX|2026-11": null,
+  "PRG|RIX|2026-12": null,
+  "LHR|MAD|2026-05": {
+    "price_eur": 209.0,
+    "duration_h": 4.833333333333333
+  },
+  "LHR|MAD|2026-06": {
+    "price_eur": 136.0,
+    "duration_h": 4.833333333333333
+  },
+  "LHR|MAD|2026-07": {
+    "price_eur": 171.0,
+    "duration_h": 4.666666666666667
+  },
+  "LHR|MAD|2026-08": {
+    "price_eur": 191.0,
+    "duration_h": 4.666666666666667
+  },
+  "LHR|MAD|2026-09": null,
+  "LHR|MAD|2026-10": null,
+  "LHR|MAD|2026-11": null,
+  "LHR|MAD|2026-12": null,
+  "LHR|BCN|2026-05": {
+    "price_eur": 70.0,
+    "duration_h": 5.0
+  },
+  "LHR|BCN|2026-06": {
+    "price_eur": 88.0,
+    "duration_h": 5.0
+  },
+  "LHR|BCN|2026-07": {
+    "price_eur": 98.0,
+    "duration_h": 4.833333333333333
+  },
+  "LHR|BCN|2026-08": {
+    "price_eur": 121.0,
+    "duration_h": 4.833333333333333
+  },
+  "LHR|BCN|2026-09": null,
+  "LHR|BCN|2026-10": null,
+  "LHR|BCN|2026-11": {
+    "price_eur": 85.0,
+    "duration_h": 4.666666666666667
+  },
+  "LHR|BCN|2026-12": {
+    "price_eur": 80.0,
+    "duration_h": 4.583333333333333
+  },
+  "LHR|LIS|2026-05": {
+    "price_eur": 183.0,
+    "duration_h": 5.583333333333333
+  },
+  "LHR|LIS|2026-06": {
+    "price_eur": 195.0,
+    "duration_h": 5.583333333333333
+  },
+  "LHR|LIS|2026-07": {
+    "price_eur": 210.0,
+    "duration_h": 18.25
+  },
+  "LHR|LIS|2026-08": {
+    "price_eur": 298.0,
+    "duration_h": 5.583333333333333
+  },
+  "LHR|LIS|2026-09": {
+    "price_eur": 224.0,
+    "duration_h": 25.0
+  },
+  "LHR|LIS|2026-10": {
+    "price_eur": 170.0,
+    "duration_h": 5.583333333333333
+  },
+  "LHR|LIS|2026-11": null,
+  "LHR|LIS|2026-12": {
+    "price_eur": 318.0,
+    "duration_h": 47.833333333333336
+  },
+  "LHR|FCO|2026-05": {
+    "price_eur": 166.0,
+    "duration_h": 5.083333333333333
+  },
+  "LHR|FCO|2026-06": {
+    "price_eur": 180.0,
+    "duration_h": 5.166666666666667
+  },
+  "LHR|FCO|2026-07": {
+    "price_eur": 229.0,
+    "duration_h": 14.416666666666666
+  },
+  "LHR|FCO|2026-08": {
+    "price_eur": 236.0,
+    "duration_h": 5.5
+  },
+  "LHR|FCO|2026-09": {
+    "price_eur": 176.0,
+    "duration_h": 5.083333333333333
+  },
+  "LHR|FCO|2026-10": {
+    "price_eur": 189.0,
+    "duration_h": 5.166666666666667
+  },
+  "LHR|FCO|2026-11": null,
+  "LHR|FCO|2026-12": null,
+  "LHR|MXP|2026-05": {
+    "price_eur": 195.0,
+    "duration_h": 4.0
+  },
+  "LHR|MXP|2026-06": {
+    "price_eur": 151.0,
+    "duration_h": 3.9166666666666665
+  },
+  "LHR|MXP|2026-07": {
+    "price_eur": 130.0,
+    "duration_h": 16.916666666666668
+  },
+  "LHR|MXP|2026-08": {
+    "price_eur": 235.0,
+    "duration_h": 4.166666666666667
+  },
+  "LHR|MXP|2026-09": null,
+  "LHR|MXP|2026-10": {
+    "price_eur": 186.0,
+    "duration_h": 26.583333333333332
+  },
+  "LHR|MXP|2026-11": null,
+  "LHR|MXP|2026-12": {
+    "price_eur": 139.0,
+    "duration_h": 4.166666666666667
+  },
+  "LHR|FLR|2026-05": {
+    "price_eur": 233.0,
+    "duration_h": 18.333333333333332
+  },
+  "LHR|FLR|2026-06": {
+    "price_eur": 212.0,
+    "duration_h": 22.583333333333332
+  },
+  "LHR|FLR|2026-07": null,
+  "LHR|FLR|2026-08": null,
+  "LHR|FLR|2026-09": {
+    "price_eur": 321.0,
+    "duration_h": 10.416666666666666
+  },
+  "LHR|FLR|2026-10": null,
+  "LHR|FLR|2026-11": null,
+  "LHR|FLR|2026-12": null,
+  "LHR|VCE|2026-05": {
+    "price_eur": 195.0,
+    "duration_h": 4.5
+  },
+  "LHR|VCE|2026-06": {
+    "price_eur": 240.0,
+    "duration_h": 10.0
+  },
+  "LHR|VCE|2026-07": {
+    "price_eur": 225.0,
+    "duration_h": 40.416666666666664
+  },
+  "LHR|VCE|2026-08": {
+    "price_eur": 254.0,
+    "duration_h": 12.583333333333334
+  },
+  "LHR|VCE|2026-09": {
+    "price_eur": 224.0,
+    "duration_h": 30.75
+  },
+  "LHR|VCE|2026-10": null,
+  "LHR|VCE|2026-11": {
+    "price_eur": 153.0,
+    "duration_h": 4.833333333333333
+  },
+  "LHR|VCE|2026-12": null,
+  "LHR|NAP|2026-05": {
+    "price_eur": 181.0,
+    "duration_h": 15.0
+  },
+  "LHR|NAP|2026-06": {
+    "price_eur": 206.0,
+    "duration_h": 18.0
+  },
+  "LHR|NAP|2026-07": null,
+  "LHR|NAP|2026-08": {
+    "price_eur": 243.0,
+    "duration_h": 20.25
+  },
+  "LHR|NAP|2026-09": {
+    "price_eur": 255.0,
+    "duration_h": 19.333333333333332
+  },
+  "LHR|NAP|2026-10": {
+    "price_eur": 234.0,
+    "duration_h": 5.666666666666667
+  },
+  "LHR|NAP|2026-11": null,
+  "LHR|NAP|2026-12": null,
+  "LHR|VIE|2026-05": {
+    "price_eur": 251.0,
+    "duration_h": 11.75
+  },
+  "LHR|VIE|2026-06": {
+    "price_eur": 216.0,
+    "duration_h": 4.666666666666667
+  },
+  "LHR|VIE|2026-07": {
+    "price_eur": 301.0,
+    "duration_h": 4.666666666666667
+  },
+  "LHR|VIE|2026-08": {
+    "price_eur": 242.0,
+    "duration_h": 13.666666666666666
+  },
+  "LHR|VIE|2026-09": {
+    "price_eur": 216.0,
+    "duration_h": 11.5
+  },
+  "LHR|VIE|2026-10": null,
+  "LHR|VIE|2026-11": null,
+  "LHR|VIE|2026-12": null,
+  "LHR|SZG|2026-05": null,
+  "LHR|SZG|2026-06": null,
+  "LHR|SZG|2026-07": {
+    "price_eur": 350.0,
+    "duration_h": 8.0
+  },
+  "LHR|SZG|2026-08": null,
+  "LHR|SZG|2026-09": null,
+  "LHR|SZG|2026-10": null,
+  "LHR|SZG|2026-11": null,
+  "LHR|SZG|2026-12": null,
+  "LHR|ZRH|2026-05": {
+    "price_eur": 240.0,
+    "duration_h": 5.833333333333333
+  },
+  "LHR|ZRH|2026-06": {
+    "price_eur": 179.0,
+    "duration_h": 3.5
+  },
+  "LHR|ZRH|2026-07": {
+    "price_eur": 208.0,
+    "duration_h": 3.5
+  },
+  "LHR|ZRH|2026-08": {
+    "price_eur": 185.0,
+    "duration_h": 3.6666666666666665
+  },
+  "LHR|ZRH|2026-09": {
+    "price_eur": 123.0,
+    "duration_h": 3.5
+  },
+  "LHR|ZRH|2026-10": null,
+  "LHR|ZRH|2026-11": null,
+  "LHR|ZRH|2026-12": null,
+  "LHR|GVA|2026-05": {
+    "price_eur": 183.0,
+    "duration_h": 3.3333333333333335
+  },
+  "LHR|GVA|2026-06": {
+    "price_eur": 135.0,
+    "duration_h": 3.3333333333333335
+  },
+  "LHR|GVA|2026-07": {
+    "price_eur": 211.0,
+    "duration_h": 3.25
+  },
+  "LHR|GVA|2026-08": null,
+  "LHR|GVA|2026-09": null,
+  "LHR|GVA|2026-10": null,
+  "LHR|GVA|2026-11": null,
+  "LHR|GVA|2026-12": {
+    "price_eur": 256.0,
+    "duration_h": 12.083333333333334
+  },
+  "LHR|MUC|2026-05": {
+    "price_eur": 186.0,
+    "duration_h": 4.0
+  },
+  "LHR|MUC|2026-06": {
+    "price_eur": 165.0,
+    "duration_h": 4.0
+  },
+  "LHR|MUC|2026-07": {
+    "price_eur": 170.0,
+    "duration_h": 4.0
+  },
+  "LHR|MUC|2026-08": null,
+  "LHR|MUC|2026-09": null,
+  "LHR|MUC|2026-10": {
+    "price_eur": 216.0,
+    "duration_h": 9.25
+  },
+  "LHR|MUC|2026-11": null,
+  "LHR|MUC|2026-12": null,
+  "LHR|HAM|2026-05": {
+    "price_eur": 298.0,
+    "duration_h": 30.75
+  },
+  "LHR|HAM|2026-06": {
+    "price_eur": 230.0,
+    "duration_h": 14.166666666666666
+  },
+  "LHR|HAM|2026-07": null,
+  "LHR|HAM|2026-08": null,
+  "LHR|HAM|2026-09": null,
+  "LHR|HAM|2026-10": null,
+  "LHR|HAM|2026-11": null,
+  "LHR|HAM|2026-12": null,
+  "LHR|FRA|2026-05": {
+    "price_eur": 185.0,
+    "duration_h": 3.4166666666666665
+  },
+  "LHR|FRA|2026-06": {
+    "price_eur": 198.0,
+    "duration_h": 3.4166666666666665
+  },
+  "LHR|FRA|2026-07": {
+    "price_eur": 189.0,
+    "duration_h": 3.25
+  },
+  "LHR|FRA|2026-08": null,
+  "LHR|FRA|2026-09": null,
+  "LHR|FRA|2026-10": null,
+  "LHR|FRA|2026-11": null,
+  "LHR|FRA|2026-12": null,
+  "LHR|CPH|2026-05": {
+    "price_eur": 171.0,
+    "duration_h": 3.8333333333333335
+  },
+  "LHR|CPH|2026-06": {
+    "price_eur": 170.0,
+    "duration_h": 3.8333333333333335
+  },
+  "LHR|CPH|2026-07": {
+    "price_eur": 248.0,
+    "duration_h": 3.75
+  },
+  "LHR|CPH|2026-08": {
+    "price_eur": 278.0,
+    "duration_h": 4.0
+  },
+  "LHR|CPH|2026-09": null,
+  "LHR|CPH|2026-10": null,
+  "LHR|CPH|2026-11": null,
+  "LHR|CPH|2026-12": null,
+  "LHR|ARN|2026-05": {
+    "price_eur": 227.0,
+    "duration_h": 27.25
+  },
+  "LHR|ARN|2026-06": {
+    "price_eur": 194.0,
+    "duration_h": 5.0
+  },
+  "LHR|ARN|2026-07": {
+    "price_eur": 235.0,
+    "duration_h": 34.0
+  },
+  "LHR|ARN|2026-08": null,
+  "LHR|ARN|2026-09": null,
+  "LHR|ARN|2026-10": null,
+  "LHR|ARN|2026-11": null,
+  "LHR|ARN|2026-12": null,
+  "LHR|OSL|2026-05": {
+    "price_eur": 197.0,
+    "duration_h": 13.833333333333334
+  },
+  "LHR|OSL|2026-06": {
+    "price_eur": 184.0,
+    "duration_h": 4.583333333333333
+  },
+  "LHR|OSL|2026-07": {
+    "price_eur": 273.0,
+    "duration_h": 29.333333333333332
+  },
+  "LHR|OSL|2026-08": null,
+  "LHR|OSL|2026-09": null,
+  "LHR|OSL|2026-10": {
+    "price_eur": 130.0,
+    "duration_h": 4.916666666666667
+  },
+  "LHR|OSL|2026-11": {
+    "price_eur": 117.0,
+    "duration_h": 4.833333333333333
+  },
+  "LHR|OSL|2026-12": {
+    "price_eur": 182.0,
+    "duration_h": 5.0
+  },
+  "LHR|HEL|2026-05": {
+    "price_eur": 222.0,
+    "duration_h": 10.0
+  },
+  "LHR|HEL|2026-06": {
+    "price_eur": 261.0,
+    "duration_h": 19.583333333333332
+  },
+  "LHR|HEL|2026-07": {
+    "price_eur": 262.0,
+    "duration_h": 20.083333333333332
+  },
+  "LHR|HEL|2026-08": {
+    "price_eur": 297.0,
+    "duration_h": 6.0
+  },
+  "LHR|HEL|2026-09": {
+    "price_eur": 222.0,
+    "duration_h": 30.25
+  },
+  "LHR|HEL|2026-10": null,
+  "LHR|HEL|2026-11": null,
+  "LHR|HEL|2026-12": null,
+  "LHR|KEF|2026-05": null,
+  "LHR|KEF|2026-06": {
+    "price_eur": 274.0,
+    "duration_h": 21.75
+  },
+  "LHR|KEF|2026-07": {
+    "price_eur": 396.0,
+    "duration_h": 6.333333333333333
+  },
+  "LHR|KEF|2026-08": {
+    "price_eur": 291.0,
+    "duration_h": 6.416666666666667
+  },
+  "LHR|KEF|2026-09": {
+    "price_eur": 247.0,
+    "duration_h": 6.416666666666667
+  },
+  "LHR|KEF|2026-10": null,
+  "LHR|KEF|2026-11": null,
+  "LHR|KEF|2026-12": null,
+  "LHR|DUB|2026-05": {
+    "price_eur": 125.0,
+    "duration_h": 2.6666666666666665
+  },
+  "LHR|DUB|2026-06": {
+    "price_eur": 106.0,
+    "duration_h": 2.6666666666666665
+  },
+  "LHR|DUB|2026-07": {
+    "price_eur": 105.0,
+    "duration_h": 2.6666666666666665
+  },
+  "LHR|DUB|2026-08": {
+    "price_eur": 117.0,
+    "duration_h": 2.6666666666666665
+  },
+  "LHR|DUB|2026-09": null,
+  "LHR|DUB|2026-10": {
+    "price_eur": 109.0,
+    "duration_h": 2.6666666666666665
+  },
+  "LHR|DUB|2026-11": null,
+  "LHR|DUB|2026-12": null,
+  "LHR|EDI|2026-05": {
+    "price_eur": 153.0,
+    "duration_h": 2.75
+  },
+  "LHR|EDI|2026-06": {
+    "price_eur": 131.0,
+    "duration_h": 2.75
+  },
+  "LHR|EDI|2026-07": {
+    "price_eur": 116.0,
+    "duration_h": 2.75
+  },
+  "LHR|EDI|2026-08": {
+    "price_eur": 161.0,
+    "duration_h": 2.5833333333333335
+  },
+  "LHR|EDI|2026-09": {
+    "price_eur": 132.0,
+    "duration_h": 2.75
+  },
+  "LHR|EDI|2026-10": {
+    "price_eur": 128.0,
+    "duration_h": 2.75
+  },
+  "LHR|EDI|2026-11": null,
+  "LHR|EDI|2026-12": null,
+  "LHR|WAW|2026-05": {
+    "price_eur": 236.0,
+    "duration_h": 22.5
+  },
+  "LHR|WAW|2026-06": {
+    "price_eur": 158.0,
+    "duration_h": 5.333333333333333
+  },
+  "LHR|WAW|2026-07": {
+    "price_eur": 203.0,
+    "duration_h": 11.5
+  },
+  "LHR|WAW|2026-08": {
+    "price_eur": 123.0,
+    "duration_h": 5.333333333333333
+  },
+  "LHR|WAW|2026-09": {
+    "price_eur": 242.0,
+    "duration_h": 5.25
+  },
+  "LHR|WAW|2026-10": {
+    "price_eur": 108.0,
+    "duration_h": 5.333333333333333
+  },
+  "LHR|WAW|2026-11": {
+    "price_eur": 138.0,
+    "duration_h": 5.25
+  },
+  "LHR|WAW|2026-12": null,
+  "LHR|KRK|2026-05": {
+    "price_eur": 169.0,
+    "duration_h": 5.083333333333333
+  },
+  "LHR|KRK|2026-06": {
+    "price_eur": 199.0,
+    "duration_h": 8.833333333333334
+  },
+  "LHR|KRK|2026-07": {
+    "price_eur": 206.0,
+    "duration_h": 14.833333333333334
+  },
+  "LHR|KRK|2026-08": {
+    "price_eur": 169.0,
+    "duration_h": 17.166666666666668
+  },
+  "LHR|KRK|2026-09": null,
+  "LHR|KRK|2026-10": null,
+  "LHR|KRK|2026-11": {
+    "price_eur": 167.0,
+    "duration_h": 13.0
+  },
+  "LHR|KRK|2026-12": {
+    "price_eur": 198.0,
+    "duration_h": 11.916666666666666
+  },
+  "LHR|PRG|2026-05": {
+    "price_eur": 143.0,
+    "duration_h": 3.9166666666666665
+  },
+  "LHR|PRG|2026-06": {
+    "price_eur": 142.0,
+    "duration_h": 4.083333333333333
+  },
+  "LHR|PRG|2026-07": {
+    "price_eur": 217.0,
+    "duration_h": 3.9166666666666665
+  },
+  "LHR|PRG|2026-08": {
+    "price_eur": 231.0,
+    "duration_h": 3.8333333333333335
+  },
+  "LHR|PRG|2026-09": null,
+  "LHR|PRG|2026-10": null,
+  "LHR|PRG|2026-11": null,
+  "LHR|PRG|2026-12": {
+    "price_eur": 185.0,
+    "duration_h": 4.416666666666667
+  },
+  "LHR|BUD|2026-05": {
+    "price_eur": 224.0,
+    "duration_h": 23.916666666666668
+  },
+  "LHR|BUD|2026-06": {
+    "price_eur": 215.0,
+    "duration_h": 5.083333333333333
+  },
+  "LHR|BUD|2026-07": {
+    "price_eur": 237.0,
+    "duration_h": 17.666666666666668
+  },
+  "LHR|BUD|2026-08": {
+    "price_eur": 245.0,
+    "duration_h": 10.083333333333334
+  },
+  "LHR|BUD|2026-09": null,
+  "LHR|BUD|2026-10": null,
+  "LHR|BUD|2026-11": {
+    "price_eur": 183.0,
+    "duration_h": 5.333333333333333
+  },
+  "LHR|BUD|2026-12": {
+    "price_eur": 204.0,
+    "duration_h": 18.916666666666668
+  },
+  "LHR|BTS|2026-05": {
+    "price_eur": 317.0,
+    "duration_h": 46.25
+  },
+  "LHR|BTS|2026-06": {
+    "price_eur": 1125.0,
+    "duration_h": 32.166666666666664
+  },
+  "LHR|BTS|2026-07": null,
+  "LHR|BTS|2026-08": null,
+  "LHR|BTS|2026-09": null,
+  "LHR|BTS|2026-10": {
+    "price_eur": 238.0,
+    "duration_h": 17.833333333333332
+  },
+  "LHR|BTS|2026-11": null,
+  "LHR|BTS|2026-12": {
+    "price_eur": 275.0,
+    "duration_h": 29.083333333333332
+  },
+  "LHR|LJU|2026-05": {
+    "price_eur": 283.0,
+    "duration_h": 16.666666666666668
+  },
+  "LHR|LJU|2026-06": {
+    "price_eur": 225.0,
+    "duration_h": 9.416666666666666
+  },
+  "LHR|LJU|2026-07": {
+    "price_eur": 307.0,
+    "duration_h": 14.75
+  },
+  "LHR|LJU|2026-08": null,
+  "LHR|LJU|2026-09": null,
+  "LHR|LJU|2026-10": null,
+  "LHR|LJU|2026-11": null,
+  "LHR|LJU|2026-12": null,
+  "LHR|ZAG|2026-05": {
+    "price_eur": 281.0,
+    "duration_h": 9.75
+  },
+  "LHR|ZAG|2026-06": {
+    "price_eur": 234.0,
+    "duration_h": 6.583333333333333
+  },
+  "LHR|ZAG|2026-07": {
+    "price_eur": 251.0,
+    "duration_h": 16.666666666666668
+  },
+  "LHR|ZAG|2026-08": null,
+  "LHR|ZAG|2026-09": null,
+  "LHR|ZAG|2026-10": null,
+  "LHR|ZAG|2026-11": null,
+  "LHR|ZAG|2026-12": null,
+  "LHR|ATH|2026-05": {
+    "price_eur": 219.0,
+    "duration_h": 7.416666666666667
+  },
+  "LHR|ATH|2026-06": {
+    "price_eur": 199.0,
+    "duration_h": 7.416666666666667
+  },
+  "LHR|ATH|2026-07": {
+    "price_eur": 279.0,
+    "duration_h": 15.666666666666666
+  },
+  "LHR|ATH|2026-08": {
+    "price_eur": 217.0,
+    "duration_h": 17.833333333333332
+  },
+  "LHR|ATH|2026-09": {
+    "price_eur": 235.0,
+    "duration_h": 13.083333333333334
+  },
+  "LHR|ATH|2026-10": null,
+  "LHR|ATH|2026-11": null,
+  "LHR|ATH|2026-12": null,
+  "LHR|IST|2026-05": {
+    "price_eur": 209.0,
+    "duration_h": 7.833333333333333
+  },
+  "LHR|IST|2026-06": {
+    "price_eur": 191.0,
+    "duration_h": 7.833333333333333
+  },
+  "LHR|IST|2026-07": {
+    "price_eur": 217.0,
+    "duration_h": 7.666666666666667
+  },
+  "LHR|IST|2026-08": {
+    "price_eur": 273.0,
+    "duration_h": 28.0
+  },
+  "LHR|IST|2026-09": {
+    "price_eur": 210.0,
+    "duration_h": 7.833333333333333
+  },
+  "LHR|IST|2026-10": {
+    "price_eur": 201.0,
+    "duration_h": 12.583333333333334
+  },
+  "LHR|IST|2026-11": {
+    "price_eur": 201.0,
+    "duration_h": 8.166666666666666
+  },
+  "LHR|IST|2026-12": {
+    "price_eur": 266.0,
+    "duration_h": 28.833333333333332
+  },
+  "LHR|SOF|2026-05": {
+    "price_eur": 231.0,
+    "duration_h": 17.0
+  },
+  "LHR|SOF|2026-06": {
+    "price_eur": 199.0,
+    "duration_h": 17.5
+  },
+  "LHR|SOF|2026-07": {
+    "price_eur": 183.0,
+    "duration_h": 23.25
+  },
+  "LHR|SOF|2026-08": {
+    "price_eur": 250.0,
+    "duration_h": 21.916666666666668
+  },
+  "LHR|SOF|2026-09": null,
+  "LHR|SOF|2026-10": null,
+  "LHR|SOF|2026-11": null,
+  "LHR|SOF|2026-12": {
+    "price_eur": 240.0,
+    "duration_h": 40.416666666666664
+  },
+  "LHR|OTP|2026-05": {
+    "price_eur": 190.0,
+    "duration_h": 12.833333333333334
+  },
+  "LHR|OTP|2026-06": {
+    "price_eur": 203.0,
+    "duration_h": 12.25
+  },
+  "LHR|OTP|2026-07": {
+    "price_eur": 243.0,
+    "duration_h": 15.583333333333334
+  },
+  "LHR|OTP|2026-08": {
+    "price_eur": 265.0,
+    "duration_h": 22.166666666666668
+  },
+  "LHR|OTP|2026-09": null,
+  "LHR|OTP|2026-10": null,
+  "LHR|OTP|2026-11": null,
+  "LHR|OTP|2026-12": null,
+  "LHR|TLL|2026-05": {
+    "price_eur": 273.0,
+    "duration_h": 13.583333333333334
+  },
+  "LHR|TLL|2026-06": {
+    "price_eur": 269.0,
+    "duration_h": 18.916666666666668
+  },
+  "LHR|TLL|2026-07": {
+    "price_eur": 255.0,
+    "duration_h": 18.916666666666668
+  },
+  "LHR|TLL|2026-08": null,
+  "LHR|TLL|2026-09": {
+    "price_eur": 202.0,
+    "duration_h": 26.833333333333332
+  },
+  "LHR|TLL|2026-10": null,
+  "LHR|TLL|2026-11": null,
+  "LHR|TLL|2026-12": {
+    "price_eur": 206.0,
+    "duration_h": 54.333333333333336
+  },
+  "LHR|RIX|2026-05": {
+    "price_eur": 248.0,
+    "duration_h": 27.75
+  },
+  "LHR|RIX|2026-06": {
+    "price_eur": 202.0,
+    "duration_h": 22.333333333333332
+  },
+  "LHR|RIX|2026-07": {
+    "price_eur": 223.0,
+    "duration_h": 22.333333333333332
+  },
+  "LHR|RIX|2026-08": {
+    "price_eur": 235.0,
+    "duration_h": 11.166666666666666
+  },
+  "LHR|RIX|2026-09": {
+    "price_eur": 215.0,
+    "duration_h": 10.166666666666666
+  },
+  "LHR|RIX|2026-10": null,
+  "LHR|RIX|2026-11": null,
+  "LHR|RIX|2026-12": null,
+  "IST|CDG|2026-05": {
+    "price_eur": 228.0,
+    "duration_h": 21.166666666666668
+  },
+  "IST|CDG|2026-06": {
+    "price_eur": 197.0,
+    "duration_h": 13.416666666666666
+  },
+  "IST|CDG|2026-07": {
+    "price_eur": 224.0,
+    "duration_h": 13.5
+  },
+  "IST|CDG|2026-08": {
+    "price_eur": 249.0,
+    "duration_h": 13.416666666666666
+  },
+  "IST|CDG|2026-09": {
+    "price_eur": 190.0,
+    "duration_h": 9.333333333333334
+  },
+  "IST|CDG|2026-10": {
+    "price_eur": 178.0,
+    "duration_h": 7.5
+  },
+  "IST|CDG|2026-11": {
+    "price_eur": 204.0,
+    "duration_h": 34.583333333333336
+  },
+  "IST|CDG|2026-12": {
+    "price_eur": 203.0,
+    "duration_h": 39.916666666666664
+  },
+  "IST|AMS|2026-05": {
+    "price_eur": 223.0,
+    "duration_h": 7.25
+  },
+  "IST|AMS|2026-06": {
+    "price_eur": 204.0,
+    "duration_h": 7.25
+  },
+  "IST|AMS|2026-07": {
+    "price_eur": 280.0,
+    "duration_h": 21.083333333333332
+  },
+  "IST|AMS|2026-08": {
+    "price_eur": 243.0,
+    "duration_h": 9.25
+  },
+  "IST|AMS|2026-09": {
+    "price_eur": 210.0,
+    "duration_h": 9.25
+  },
+  "IST|AMS|2026-10": {
+    "price_eur": 199.0,
+    "duration_h": 7.333333333333333
+  },
+  "IST|AMS|2026-11": {
+    "price_eur": 192.0,
+    "duration_h": 7.25
+  },
+  "IST|AMS|2026-12": null,
+  "IST|BRU|2026-05": {
+    "price_eur": 158.0,
+    "duration_h": 9.666666666666666
+  },
+  "IST|BRU|2026-06": {
+    "price_eur": 145.0,
+    "duration_h": 7.0
+  },
+  "IST|BRU|2026-07": {
+    "price_eur": 134.0,
+    "duration_h": 6.916666666666667
+  },
+  "IST|BRU|2026-08": {
+    "price_eur": 229.0,
+    "duration_h": 27.833333333333332
+  },
+  "IST|BRU|2026-09": {
+    "price_eur": 191.0,
+    "duration_h": 6.916666666666667
+  },
+  "IST|BRU|2026-10": {
+    "price_eur": 211.0,
+    "duration_h": 23.25
+  },
+  "IST|BRU|2026-11": {
+    "price_eur": 192.0,
+    "duration_h": 6.833333333333333
+  },
+  "IST|BRU|2026-12": null,
+  "IST|LHR|2026-05": {
+    "price_eur": 225.0,
+    "duration_h": 8.0
+  },
+  "IST|LHR|2026-06": {
+    "price_eur": 193.0,
+    "duration_h": 7.833333333333333
+  },
+  "IST|LHR|2026-07": {
+    "price_eur": 219.0,
+    "duration_h": 8.083333333333334
+  },
+  "IST|LHR|2026-08": {
+    "price_eur": 240.0,
+    "duration_h": 21.583333333333332
+  },
+  "IST|LHR|2026-09": {
+    "price_eur": 211.0,
+    "duration_h": 7.833333333333333
+  },
+  "IST|LHR|2026-10": {
+    "price_eur": 207.0,
+    "duration_h": 7.833333333333333
+  },
+  "IST|LHR|2026-11": {
+    "price_eur": 194.0,
+    "duration_h": 8.166666666666666
+  },
+  "IST|LHR|2026-12": {
+    "price_eur": 210.0,
+    "duration_h": 18.083333333333332
+  },
+  "IST|MAD|2026-05": {
+    "price_eur": 206.0,
+    "duration_h": 22.666666666666668
+  },
+  "IST|MAD|2026-06": {
+    "price_eur": 172.0,
+    "duration_h": 28.0
+  },
+  "IST|MAD|2026-07": {
+    "price_eur": 207.0,
+    "duration_h": 23.666666666666668
+  },
+  "IST|MAD|2026-08": {
+    "price_eur": 205.0,
+    "duration_h": 16.083333333333332
+  },
+  "IST|MAD|2026-09": {
+    "price_eur": 205.0,
+    "duration_h": 22.333333333333332
+  },
+  "IST|MAD|2026-10": {
+    "price_eur": 238.0,
+    "duration_h": 21.666666666666668
+  },
+  "IST|MAD|2026-11": {
+    "price_eur": 231.0,
+    "duration_h": 34.25
+  },
+  "IST|MAD|2026-12": null,
+  "IST|BCN|2026-05": {
+    "price_eur": 170.0,
+    "duration_h": 17.916666666666668
+  },
+  "IST|BCN|2026-06": {
+    "price_eur": 156.0,
+    "duration_h": 7.583333333333333
+  },
+  "IST|BCN|2026-07": {
+    "price_eur": 171.0,
+    "duration_h": 23.916666666666668
+  },
+  "IST|BCN|2026-08": {
+    "price_eur": 199.0,
+    "duration_h": 33.666666666666664
+  },
+  "IST|BCN|2026-09": {
+    "price_eur": 146.0,
+    "duration_h": 45.833333333333336
+  },
+  "IST|BCN|2026-10": {
+    "price_eur": 168.0,
+    "duration_h": 47.833333333333336
+  },
+  "IST|BCN|2026-11": {
+    "price_eur": 159.0,
+    "duration_h": 7.25
+  },
+  "IST|BCN|2026-12": {
+    "price_eur": 214.0,
+    "duration_h": 7.25
+  },
+  "IST|LIS|2026-05": {
+    "price_eur": 296.0,
+    "duration_h": 73.66666666666667
+  },
+  "IST|LIS|2026-06": {
+    "price_eur": 193.0,
+    "duration_h": 27.75
+  },
+  "IST|LIS|2026-07": {
+    "price_eur": 190.0,
+    "duration_h": 36.0
+  },
+  "IST|LIS|2026-08": {
+    "price_eur": 267.0,
+    "duration_h": 38.083333333333336
+  },
+  "IST|LIS|2026-09": {
+    "price_eur": 241.0,
+    "duration_h": 38.666666666666664
+  },
+  "IST|LIS|2026-10": {
+    "price_eur": 211.0,
+    "duration_h": 42.5
+  },
+  "IST|LIS|2026-11": {
+    "price_eur": 226.0,
+    "duration_h": 29.166666666666668
+  },
+  "IST|LIS|2026-12": {
+    "price_eur": 163.0,
+    "duration_h": 29.166666666666668
+  },
+  "IST|FCO|2026-05": {
+    "price_eur": 147.0,
+    "duration_h": 5.416666666666667
+  },
+  "IST|FCO|2026-06": {
+    "price_eur": 141.0,
+    "duration_h": 35.25
+  },
+  "IST|FCO|2026-07": {
+    "price_eur": 178.0,
+    "duration_h": 46.666666666666664
+  },
+  "IST|FCO|2026-08": {
+    "price_eur": 151.0,
+    "duration_h": 28.833333333333332
+  },
+  "IST|FCO|2026-09": {
+    "price_eur": 165.0,
+    "duration_h": 28.916666666666668
+  },
+  "IST|FCO|2026-10": {
+    "price_eur": 132.0,
+    "duration_h": 5.583333333333333
+  },
+  "IST|FCO|2026-11": {
+    "price_eur": 175.0,
+    "duration_h": 24.833333333333332
+  },
+  "IST|FCO|2026-12": {
+    "price_eur": 166.0,
+    "duration_h": 33.25
+  },
+  "IST|MXP|2026-05": {
+    "price_eur": 157.0,
+    "duration_h": 41.166666666666664
+  },
+  "IST|MXP|2026-06": {
+    "price_eur": 125.0,
+    "duration_h": 31.083333333333332
+  },
+  "IST|MXP|2026-07": {
+    "price_eur": 144.0,
+    "duration_h": 40.75
+  },
+  "IST|MXP|2026-08": {
+    "price_eur": 147.0,
+    "duration_h": 23.333333333333332
+  },
+  "IST|MXP|2026-09": {
+    "price_eur": 159.0,
+    "duration_h": 31.25
+  },
+  "IST|MXP|2026-10": {
+    "price_eur": 167.0,
+    "duration_h": 11.583333333333334
+  },
+  "IST|MXP|2026-11": {
+    "price_eur": 196.0,
+    "duration_h": 46.75
+  },
+  "IST|MXP|2026-12": {
+    "price_eur": 163.0,
+    "duration_h": 33.416666666666664
+  },
+  "IST|FLR|2026-05": {
+    "price_eur": 380.0,
+    "duration_h": 31.916666666666668
+  },
+  "IST|FLR|2026-06": {
+    "price_eur": 226.0,
+    "duration_h": 16.333333333333332
+  },
+  "IST|FLR|2026-07": {
+    "price_eur": 275.0,
+    "duration_h": 20.333333333333332
+  },
+  "IST|FLR|2026-08": {
+    "price_eur": 279.0,
+    "duration_h": 44.833333333333336
+  },
+  "IST|FLR|2026-09": {
+    "price_eur": 275.0,
+    "duration_h": 23.416666666666668
+  },
+  "IST|FLR|2026-10": null,
+  "IST|FLR|2026-11": null,
+  "IST|FLR|2026-12": null,
+  "IST|VCE|2026-05": {
+    "price_eur": 200.0,
+    "duration_h": 33.333333333333336
+  },
+  "IST|VCE|2026-06": {
+    "price_eur": 147.0,
+    "duration_h": 25.833333333333332
+  },
+  "IST|VCE|2026-07": {
+    "price_eur": 171.0,
+    "duration_h": 31.416666666666668
+  },
+  "IST|VCE|2026-08": {
+    "price_eur": 182.0,
+    "duration_h": 30.416666666666668
+  },
+  "IST|VCE|2026-09": {
+    "price_eur": 178.0,
+    "duration_h": 11.25
+  },
+  "IST|VCE|2026-10": {
+    "price_eur": 195.0,
+    "duration_h": 44.666666666666664
+  },
+  "IST|VCE|2026-11": null,
+  "IST|VCE|2026-12": {
+    "price_eur": 148.0,
+    "duration_h": 26.75
+  },
+  "IST|NAP|2026-05": {
+    "price_eur": 158.0,
+    "duration_h": 25.0
+  },
+  "IST|NAP|2026-06": {
+    "price_eur": 145.0,
+    "duration_h": 29.75
+  },
+  "IST|NAP|2026-07": {
+    "price_eur": 168.0,
+    "duration_h": 27.583333333333332
+  },
+  "IST|NAP|2026-08": {
+    "price_eur": 231.0,
+    "duration_h": 37.083333333333336
+  },
+  "IST|NAP|2026-09": {
+    "price_eur": 182.0,
+    "duration_h": 27.416666666666668
+  },
+  "IST|NAP|2026-10": {
+    "price_eur": 163.0,
+    "duration_h": 19.0
+  },
+  "IST|NAP|2026-11": null,
+  "IST|NAP|2026-12": null,
+  "IST|VIE|2026-05": {
+    "price_eur": 147.0,
+    "duration_h": 4.583333333333333
+  },
+  "IST|VIE|2026-06": {
+    "price_eur": 135.0,
+    "duration_h": 4.75
+  },
+  "IST|VIE|2026-07": {
+    "price_eur": 133.0,
+    "duration_h": 4.583333333333333
+  },
+  "IST|VIE|2026-08": {
+    "price_eur": 165.0,
+    "duration_h": 4.583333333333333
+  },
+  "IST|VIE|2026-09": {
+    "price_eur": 154.0,
+    "duration_h": 4.75
+  },
+  "IST|VIE|2026-10": {
+    "price_eur": 199.0,
+    "duration_h": 14.416666666666666
+  },
+  "IST|VIE|2026-11": null,
+  "IST|VIE|2026-12": {
+    "price_eur": 205.0,
+    "duration_h": 4.75
+  },
+  "IST|SZG|2026-05": {
+    "price_eur": 462.0,
+    "duration_h": 50.25
+  },
+  "IST|SZG|2026-06": {
+    "price_eur": 245.0,
+    "duration_h": 8.916666666666666
+  },
+  "IST|SZG|2026-07": {
+    "price_eur": 405.0,
+    "duration_h": 46.083333333333336
+  },
+  "IST|SZG|2026-08": null,
+  "IST|SZG|2026-09": null,
+  "IST|SZG|2026-10": null,
+  "IST|SZG|2026-11": null,
+  "IST|SZG|2026-12": {
+    "price_eur": 289.0,
+    "duration_h": 5.166666666666667
+  },
+  "IST|ZRH|2026-05": {
+    "price_eur": 158.0,
+    "duration_h": 6.083333333333333
+  },
+  "IST|ZRH|2026-06": {
+    "price_eur": 147.0,
+    "duration_h": 5.916666666666667
+  },
+  "IST|ZRH|2026-07": {
+    "price_eur": 174.0,
+    "duration_h": 16.666666666666668
+  },
+  "IST|ZRH|2026-08": {
+    "price_eur": 217.0,
+    "duration_h": 8.083333333333334
+  },
+  "IST|ZRH|2026-09": {
+    "price_eur": 184.0,
+    "duration_h": 5.916666666666667
+  },
+  "IST|ZRH|2026-10": {
+    "price_eur": 195.0,
+    "duration_h": 22.166666666666668
+  },
+  "IST|ZRH|2026-11": null,
+  "IST|ZRH|2026-12": {
+    "price_eur": 138.0,
+    "duration_h": 6.083333333333333
+  },
+  "IST|GVA|2026-05": {
+    "price_eur": 166.0,
+    "duration_h": 6.416666666666667
+  },
+  "IST|GVA|2026-06": {
+    "price_eur": 153.0,
+    "duration_h": 6.333333333333333
+  },
+  "IST|GVA|2026-07": {
+    "price_eur": 207.0,
+    "duration_h": 27.083333333333332
+  },
+  "IST|GVA|2026-08": {
+    "price_eur": 338.0,
+    "duration_h": 16.083333333333332
+  },
+  "IST|GVA|2026-09": null,
+  "IST|GVA|2026-10": null,
+  "IST|GVA|2026-11": null,
+  "IST|GVA|2026-12": null,
+  "IST|MUC|2026-05": {
+    "price_eur": 136.0,
+    "duration_h": 14.666666666666666
+  },
+  "IST|MUC|2026-06": {
+    "price_eur": 139.0,
+    "duration_h": 5.416666666666667
+  },
+  "IST|MUC|2026-07": {
+    "price_eur": 172.0,
+    "duration_h": 5.333333333333333
+  },
+  "IST|MUC|2026-08": {
+    "price_eur": 137.0,
+    "duration_h": 5.416666666666667
+  },
+  "IST|MUC|2026-09": {
+    "price_eur": 165.0,
+    "duration_h": 5.333333333333333
+  },
+  "IST|MUC|2026-10": {
+    "price_eur": 175.0,
+    "duration_h": 5.583333333333333
+  },
+  "IST|MUC|2026-11": null,
+  "IST|MUC|2026-12": {
+    "price_eur": 180.0,
+    "duration_h": 5.333333333333333
+  },
+  "IST|HAM|2026-05": {
+    "price_eur": 154.0,
+    "duration_h": 6.333333333333333
+  },
+  "IST|HAM|2026-06": {
+    "price_eur": 132.0,
+    "duration_h": 6.583333333333333
+  },
+  "IST|HAM|2026-07": {
+    "price_eur": 223.0,
+    "duration_h": 6.416666666666667
+  },
+  "IST|HAM|2026-08": {
+    "price_eur": 185.0,
+    "duration_h": 8.416666666666666
+  },
+  "IST|HAM|2026-09": {
+    "price_eur": 142.0,
+    "duration_h": 6.583333333333333
+  },
+  "IST|HAM|2026-10": {
+    "price_eur": 198.0,
+    "duration_h": 9.75
+  },
+  "IST|HAM|2026-11": null,
+  "IST|HAM|2026-12": null,
+  "IST|FRA|2026-05": {
+    "price_eur": 147.0,
+    "duration_h": 6.333333333333333
+  },
+  "IST|FRA|2026-06": {
+    "price_eur": 137.0,
+    "duration_h": 6.416666666666667
+  },
+  "IST|FRA|2026-07": {
+    "price_eur": 176.0,
+    "duration_h": 6.416666666666667
+  },
+  "IST|FRA|2026-08": {
+    "price_eur": 195.0,
+    "duration_h": 20.416666666666668
+  },
+  "IST|FRA|2026-09": {
+    "price_eur": 226.0,
+    "duration_h": 6.25
+  },
+  "IST|FRA|2026-10": {
+    "price_eur": 159.0,
+    "duration_h": 6.333333333333333
+  },
+  "IST|FRA|2026-11": {
+    "price_eur": 151.0,
+    "duration_h": 6.25
+  },
+  "IST|FRA|2026-12": null,
+  "IST|CGN|2026-05": {
+    "price_eur": 174.0,
+    "duration_h": 6.75
+  },
+  "IST|CGN|2026-06": {
+    "price_eur": 158.0,
+    "duration_h": 6.75
+  },
+  "IST|CGN|2026-07": {
+    "price_eur": 145.0,
+    "duration_h": 6.75
+  },
+  "IST|CGN|2026-08": {
+    "price_eur": 203.0,
+    "duration_h": 6.75
+  },
+  "IST|CGN|2026-09": {
+    "price_eur": 146.0,
+    "duration_h": 6.75
+  },
+  "IST|CGN|2026-10": {
+    "price_eur": 214.0,
+    "duration_h": 6.583333333333333
+  },
+  "IST|CGN|2026-11": null,
+  "IST|CGN|2026-12": null,
+  "IST|CPH|2026-05": {
+    "price_eur": 229.0,
+    "duration_h": 51.75
+  },
+  "IST|CPH|2026-06": {
+    "price_eur": 175.0,
+    "duration_h": 10.416666666666666
+  },
+  "IST|CPH|2026-07": {
+    "price_eur": 233.0,
+    "duration_h": 15.166666666666666
+  },
+  "IST|CPH|2026-08": {
+    "price_eur": 224.0,
+    "duration_h": 30.666666666666668
+  },
+  "IST|CPH|2026-09": {
+    "price_eur": 141.0,
+    "duration_h": 6.833333333333333
+  },
+  "IST|CPH|2026-10": null,
+  "IST|CPH|2026-11": null,
+  "IST|CPH|2026-12": null,
+  "IST|ARN|2026-05": {
+    "price_eur": 139.0,
+    "duration_h": 7.416666666666667
+  },
+  "IST|ARN|2026-06": {
+    "price_eur": 194.0,
+    "duration_h": 8.833333333333334
+  },
+  "IST|ARN|2026-07": {
+    "price_eur": 178.0,
+    "duration_h": 31.583333333333332
+  },
+  "IST|ARN|2026-08": {
+    "price_eur": 240.0,
+    "duration_h": 22.5
+  },
+  "IST|ARN|2026-09": {
+    "price_eur": 184.0,
+    "duration_h": 22.583333333333332
+  },
+  "IST|ARN|2026-10": null,
+  "IST|ARN|2026-11": null,
+  "IST|ARN|2026-12": null,
+  "IST|OSL|2026-05": {
+    "price_eur": 254.0,
+    "duration_h": 7.666666666666667
+  },
+  "IST|OSL|2026-06": {
+    "price_eur": 213.0,
+    "duration_h": 73.0
+  },
+  "IST|OSL|2026-07": {
+    "price_eur": 226.0,
+    "duration_h": 21.25
+  },
+  "IST|OSL|2026-08": null,
+  "IST|OSL|2026-09": null,
+  "IST|OSL|2026-10": null,
+  "IST|OSL|2026-11": null,
+  "IST|OSL|2026-12": null,
+  "IST|HEL|2026-05": {
+    "price_eur": 237.0,
+    "duration_h": 21.583333333333332
+  },
+  "IST|HEL|2026-06": {
+    "price_eur": 189.0,
+    "duration_h": 21.583333333333332
+  },
+  "IST|HEL|2026-07": {
+    "price_eur": 257.0,
+    "duration_h": 22.5
+  },
+  "IST|HEL|2026-08": {
+    "price_eur": 229.0,
+    "duration_h": 26.583333333333332
+  },
+  "IST|HEL|2026-09": null,
+  "IST|HEL|2026-10": {
+    "price_eur": 186.0,
+    "duration_h": 40.166666666666664
+  },
+  "IST|HEL|2026-11": null,
+  "IST|HEL|2026-12": null,
+  "IST|KEF|2026-05": {
+    "price_eur": 394.0,
+    "duration_h": 53.083333333333336
+  },
+  "IST|KEF|2026-06": {
+    "price_eur": 357.0,
+    "duration_h": 53.916666666666664
+  },
+  "IST|KEF|2026-07": {
+    "price_eur": 471.0,
+    "duration_h": 51.666666666666664
+  },
+  "IST|KEF|2026-08": {
+    "price_eur": 433.0,
+    "duration_h": 55.833333333333336
+  },
+  "IST|KEF|2026-09": {
+    "price_eur": 346.0,
+    "duration_h": 22.333333333333332
+  },
+  "IST|KEF|2026-10": {
+    "price_eur": 345.0,
+    "duration_h": 47.0
+  },
+  "IST|KEF|2026-11": {
+    "price_eur": 306.0,
+    "duration_h": 31.0
+  },
+  "IST|KEF|2026-12": {
+    "price_eur": 247.0,
+    "duration_h": 29.166666666666668
+  },
+  "IST|DUB|2026-05": {
+    "price_eur": 239.0,
+    "duration_h": 21.583333333333332
+  },
+  "IST|DUB|2026-06": {
+    "price_eur": 296.0,
+    "duration_h": 22.75
+  },
+  "IST|DUB|2026-07": {
+    "price_eur": 230.0,
+    "duration_h": 20.833333333333332
+  },
+  "IST|DUB|2026-08": {
+    "price_eur": 308.0,
+    "duration_h": 20.25
+  },
+  "IST|DUB|2026-09": {
+    "price_eur": 289.0,
+    "duration_h": 17.0
+  },
+  "IST|DUB|2026-10": {
+    "price_eur": 271.0,
+    "duration_h": 29.0
+  },
+  "IST|DUB|2026-11": {
+    "price_eur": 220.0,
+    "duration_h": 15.5
+  },
+  "IST|DUB|2026-12": null,
+  "IST|EDI|2026-05": {
+    "price_eur": 290.0,
+    "duration_h": 15.0
+  },
+  "IST|EDI|2026-06": {
+    "price_eur": 159.0,
+    "duration_h": 22.583333333333332
+  },
+  "IST|EDI|2026-07": {
+    "price_eur": 288.0,
+    "duration_h": 25.333333333333332
+  },
+  "IST|EDI|2026-08": {
+    "price_eur": 265.0,
+    "duration_h": 23.0
+  },
+  "IST|EDI|2026-09": {
+    "price_eur": 188.0,
+    "duration_h": 58.666666666666664
+  },
+  "IST|EDI|2026-10": {
+    "price_eur": 211.0,
+    "duration_h": 18.583333333333332
+  },
+  "IST|EDI|2026-11": null,
+  "IST|EDI|2026-12": {
+    "price_eur": 260.0,
+    "duration_h": 16.5
+  },
+  "IST|WAW|2026-05": {
+    "price_eur": 159.0,
+    "duration_h": 35.25
+  },
+  "IST|WAW|2026-06": {
+    "price_eur": 134.0,
+    "duration_h": 33.333333333333336
+  },
+  "IST|WAW|2026-07": {
+    "price_eur": 161.0,
+    "duration_h": 5.25
+  },
+  "IST|WAW|2026-08": {
+    "price_eur": 154.0,
+    "duration_h": 37.083333333333336
+  },
+  "IST|WAW|2026-09": {
+    "price_eur": 182.0,
+    "duration_h": 36.833333333333336
+  },
+  "IST|WAW|2026-10": null,
+  "IST|WAW|2026-11": null,
+  "IST|WAW|2026-12": null,
+  "IST|KRK|2026-05": {
+    "price_eur": 244.0,
+    "duration_h": 48.75
+  },
+  "IST|KRK|2026-06": {
+    "price_eur": 173.0,
+    "duration_h": 33.166666666666664
+  },
+  "IST|KRK|2026-07": {
+    "price_eur": 152.0,
+    "duration_h": 10.333333333333334
+  },
+  "IST|KRK|2026-08": {
+    "price_eur": 156.0,
+    "duration_h": 9.833333333333334
+  },
+  "IST|KRK|2026-09": {
+    "price_eur": 140.0,
+    "duration_h": 4.75
+  },
+  "IST|KRK|2026-10": null,
+  "IST|KRK|2026-11": {
+    "price_eur": 138.0,
+    "duration_h": 4.75
+  },
+  "IST|KRK|2026-12": null,
+  "IST|PRG|2026-05": {
+    "price_eur": 130.0,
+    "duration_h": 5.25
+  },
+  "IST|PRG|2026-06": {
+    "price_eur": 113.0,
+    "duration_h": 5.25
+  },
+  "IST|PRG|2026-07": {
+    "price_eur": 175.0,
+    "duration_h": 46.333333333333336
+  },
+  "IST|PRG|2026-08": {
+    "price_eur": 215.0,
+    "duration_h": 5.25
+  },
+  "IST|PRG|2026-09": {
+    "price_eur": 142.0,
+    "duration_h": 5.25
+  },
+  "IST|PRG|2026-10": {
+    "price_eur": 232.0,
+    "duration_h": 23.25
+  },
+  "IST|PRG|2026-11": {
+    "price_eur": 144.0,
+    "duration_h": 5.25
+  },
+  "IST|PRG|2026-12": {
+    "price_eur": 165.0,
+    "duration_h": 5.25
+  },
+  "IST|BUD|2026-05": {
+    "price_eur": 103.0,
+    "duration_h": 4.25
+  },
+  "IST|BUD|2026-06": {
+    "price_eur": 85.0,
+    "duration_h": 4.25
+  },
+  "IST|BUD|2026-07": {
+    "price_eur": 86.0,
+    "duration_h": 4.25
+  },
+  "IST|BUD|2026-08": {
+    "price_eur": 85.0,
+    "duration_h": 4.25
+  },
+  "IST|BUD|2026-09": {
+    "price_eur": 86.0,
+    "duration_h": 4.25
+  },
+  "IST|BUD|2026-10": {
+    "price_eur": 86.0,
+    "duration_h": 4.25
+  },
+  "IST|BUD|2026-11": {
+    "price_eur": 88.0,
+    "duration_h": 4.333333333333333
+  },
+  "IST|BUD|2026-12": {
+    "price_eur": 82.0,
+    "duration_h": 4.333333333333333
+  },
+  "IST|BTS|2026-05": {
+    "price_eur": 195.0,
+    "duration_h": 40.583333333333336
+  },
+  "IST|BTS|2026-06": {
+    "price_eur": 169.0,
+    "duration_h": 21.666666666666668
+  },
+  "IST|BTS|2026-07": {
+    "price_eur": 204.0,
+    "duration_h": 4.416666666666667
+  },
+  "IST|BTS|2026-08": {
+    "price_eur": 256.0,
+    "duration_h": 12.083333333333334
+  },
+  "IST|BTS|2026-09": {
+    "price_eur": 189.0,
+    "duration_h": 4.416666666666667
+  },
+  "IST|BTS|2026-10": null,
+  "IST|BTS|2026-11": null,
+  "IST|BTS|2026-12": {
+    "price_eur": 210.0,
+    "duration_h": 35.666666666666664
+  },
+  "IST|LJU|2026-05": {
+    "price_eur": 155.0,
+    "duration_h": 4.666666666666667
+  },
+  "IST|LJU|2026-06": {
+    "price_eur": 140.0,
+    "duration_h": 4.666666666666667
+  },
+  "IST|LJU|2026-07": {
+    "price_eur": 191.0,
+    "duration_h": 50.0
+  },
+  "IST|LJU|2026-08": {
+    "price_eur": 197.0,
+    "duration_h": 4.666666666666667
+  },
+  "IST|LJU|2026-09": {
+    "price_eur": 175.0,
+    "duration_h": 4.666666666666667
+  },
+  "IST|LJU|2026-10": {
+    "price_eur": 183.0,
+    "duration_h": 4.666666666666667
+  },
+  "IST|LJU|2026-11": null,
+  "IST|LJU|2026-12": {
+    "price_eur": 179.0,
+    "duration_h": 4.583333333333333
+  },
+  "IST|ZAG|2026-05": {
+    "price_eur": 144.0,
+    "duration_h": 4.25
+  },
+  "IST|ZAG|2026-06": {
+    "price_eur": 140.0,
+    "duration_h": 4.25
+  },
+  "IST|ZAG|2026-07": {
+    "price_eur": 168.0,
+    "duration_h": 4.25
+  },
+  "IST|ZAG|2026-08": {
+    "price_eur": 196.0,
+    "duration_h": 13.416666666666666
+  },
+  "IST|ZAG|2026-09": {
+    "price_eur": 174.0,
+    "duration_h": 4.25
+  },
+  "IST|ZAG|2026-10": {
+    "price_eur": 175.0,
+    "duration_h": 21.666666666666668
+  },
+  "IST|ZAG|2026-11": null,
+  "IST|ZAG|2026-12": null,
+  "IST|ATH|2026-05": {
+    "price_eur": 89.0,
+    "duration_h": 2.9166666666666665
+  },
+  "IST|ATH|2026-06": {
+    "price_eur": 92.0,
+    "duration_h": 3.0
+  },
+  "IST|ATH|2026-07": {
+    "price_eur": 99.0,
+    "duration_h": 2.9166666666666665
+  },
+  "IST|ATH|2026-08": {
+    "price_eur": 99.0,
+    "duration_h": 2.9166666666666665
+  },
+  "IST|ATH|2026-09": {
+    "price_eur": 101.0,
+    "duration_h": 3.0
+  },
+  "IST|ATH|2026-10": {
+    "price_eur": 88.0,
+    "duration_h": 2.9166666666666665
+  },
+  "IST|ATH|2026-11": {
+    "price_eur": 92.0,
+    "duration_h": 2.9166666666666665
+  },
+  "IST|ATH|2026-12": null,
+  "IST|SOF|2026-05": {
+    "price_eur": 107.0,
+    "duration_h": 2.5833333333333335
+  },
+  "IST|SOF|2026-06": {
+    "price_eur": 96.0,
+    "duration_h": 2.5833333333333335
+  },
+  "IST|SOF|2026-07": {
+    "price_eur": 124.0,
+    "duration_h": 2.5833333333333335
+  },
+  "IST|SOF|2026-08": {
+    "price_eur": 158.0,
+    "duration_h": 16.5
+  },
+  "IST|SOF|2026-09": null,
+  "IST|SOF|2026-10": null,
+  "IST|SOF|2026-11": null,
+  "IST|SOF|2026-12": null,
+  "IST|OTP|2026-05": {
+    "price_eur": 166.0,
+    "duration_h": 2.75
+  },
+  "IST|OTP|2026-06": {
+    "price_eur": 105.0,
+    "duration_h": 3.1666666666666665
+  },
+  "IST|OTP|2026-07": {
+    "price_eur": 128.0,
+    "duration_h": 3.1666666666666665
+  },
+  "IST|OTP|2026-08": {
+    "price_eur": 114.0,
+    "duration_h": 10.333333333333334
+  },
+  "IST|OTP|2026-09": {
+    "price_eur": 113.0,
+    "duration_h": 3.1666666666666665
+  },
+  "IST|OTP|2026-10": {
+    "price_eur": 122.0,
+    "duration_h": 3.1666666666666665
+  },
+  "IST|OTP|2026-11": {
+    "price_eur": 119.0,
+    "duration_h": 2.5
+  },
+  "IST|OTP|2026-12": null,
+  "IST|TLL|2026-05": {
+    "price_eur": 319.0,
+    "duration_h": 59.666666666666664
+  },
+  "IST|TLL|2026-06": {
+    "price_eur": 217.0,
+    "duration_h": 77.5
+  },
+  "IST|TLL|2026-07": null,
+  "IST|TLL|2026-08": {
+    "price_eur": 234.0,
+    "duration_h": 25.75
+  },
+  "IST|TLL|2026-09": null,
+  "IST|TLL|2026-10": null,
+  "IST|TLL|2026-11": null,
+  "IST|TLL|2026-12": null,
+  "IST|RIX|2026-05": {
+    "price_eur": 175.0,
+    "duration_h": 38.25
+  },
+  "IST|RIX|2026-06": {
+    "price_eur": 199.0,
+    "duration_h": 23.0
+  },
+  "IST|RIX|2026-07": {
+    "price_eur": 174.0,
+    "duration_h": 24.0
+  },
+  "IST|RIX|2026-08": {
+    "price_eur": 204.0,
+    "duration_h": 29.333333333333332
+  },
+  "IST|RIX|2026-09": null,
+  "IST|RIX|2026-10": null,
+  "IST|RIX|2026-11": {
+    "price_eur": 187.0,
+    "duration_h": 11.25
+  },
+  "IST|RIX|2026-12": null,
+  "CDG|MAD|2026-05": {
+    "price_eur": 181.0,
+    "duration_h": 4.25
+  },
+  "CDG|MAD|2026-06": {
+    "price_eur": 141.0,
+    "duration_h": 4.25
+  },
+  "CDG|MAD|2026-07": {
+    "price_eur": 165.0,
+    "duration_h": 4.25
+  },
+  "CDG|MAD|2026-08": {
+    "price_eur": 192.0,
+    "duration_h": 4.333333333333333
+  },
+  "CDG|MAD|2026-09": {
+    "price_eur": 153.0,
+    "duration_h": 4.25
+  },
+  "CDG|MAD|2026-10": null,
+  "CDG|MAD|2026-11": {
+    "price_eur": 192.0,
+    "duration_h": 4.333333333333333
+  },
+  "CDG|MAD|2026-12": {
+    "price_eur": 201.0,
+    "duration_h": 4.416666666666667
+  },
+  "CDG|BCN|2026-05": {
+    "price_eur": 85.0,
+    "duration_h": 3.9166666666666665
+  },
+  "CDG|BCN|2026-06": {
+    "price_eur": 65.0,
+    "duration_h": 3.9166666666666665
+  },
+  "CDG|BCN|2026-07": {
+    "price_eur": 116.0,
+    "duration_h": 3.9166666666666665
+  },
+  "CDG|BCN|2026-08": {
+    "price_eur": 101.0,
+    "duration_h": 3.9166666666666665
+  },
+  "CDG|BCN|2026-09": {
+    "price_eur": 101.0,
+    "duration_h": 3.6666666666666665
+  },
+  "CDG|BCN|2026-10": {
+    "price_eur": 90.0,
+    "duration_h": 3.9166666666666665
+  },
+  "CDG|BCN|2026-11": {
+    "price_eur": 86.0,
+    "duration_h": 4.0
+  },
+  "CDG|BCN|2026-12": null,
+  "CDG|LIS|2026-05": {
+    "price_eur": 186.0,
+    "duration_h": 43.416666666666664
+  },
+  "CDG|LIS|2026-06": {
+    "price_eur": 191.0,
+    "duration_h": 5.166666666666667
+  },
+  "CDG|LIS|2026-07": {
+    "price_eur": 183.0,
+    "duration_h": 24.916666666666668
+  },
+  "CDG|LIS|2026-08": {
+    "price_eur": 238.0,
+    "duration_h": 19.5
+  },
+  "CDG|LIS|2026-09": {
+    "price_eur": 199.0,
+    "duration_h": 5.166666666666667
+  },
+  "CDG|LIS|2026-10": null,
+  "CDG|LIS|2026-11": null,
+  "CDG|LIS|2026-12": null,
+  "CDG|FCO|2026-05": {
+    "price_eur": 143.0,
+    "duration_h": 18.0
+  },
+  "CDG|FCO|2026-06": {
+    "price_eur": 145.0,
+    "duration_h": 21.916666666666668
+  },
+  "CDG|FCO|2026-07": {
+    "price_eur": 171.0,
+    "duration_h": 4.25
+  },
+  "CDG|FCO|2026-08": {
+    "price_eur": 189.0,
+    "duration_h": 17.083333333333332
+  },
+  "CDG|FCO|2026-09": {
+    "price_eur": 156.0,
+    "duration_h": 4.166666666666667
+  },
+  "CDG|FCO|2026-10": {
+    "price_eur": 164.0,
+    "duration_h": 9.666666666666666
+  },
+  "CDG|FCO|2026-11": {
+    "price_eur": 144.0,
+    "duration_h": 4.333333333333333
+  },
+  "CDG|FCO|2026-12": null,
+  "CDG|MXP|2026-05": {
+    "price_eur": 62.0,
+    "duration_h": 3.0833333333333335
+  },
+  "CDG|MXP|2026-06": {
+    "price_eur": 49.0,
+    "duration_h": 3.0833333333333335
+  },
+  "CDG|MXP|2026-07": {
+    "price_eur": 67.0,
+    "duration_h": 3.0833333333333335
+  },
+  "CDG|MXP|2026-08": {
+    "price_eur": 119.0,
+    "duration_h": 3.0
+  },
+  "CDG|MXP|2026-09": {
+    "price_eur": 73.0,
+    "duration_h": 3.0833333333333335
+  },
+  "CDG|MXP|2026-10": null,
+  "CDG|MXP|2026-11": {
+    "price_eur": 76.0,
+    "duration_h": 3.0833333333333335
+  },
+  "CDG|MXP|2026-12": null,
+  "CDG|FLR|2026-05": {
+    "price_eur": 175.0,
+    "duration_h": 3.4166666666666665
+  },
+  "CDG|FLR|2026-06": {
+    "price_eur": 142.0,
+    "duration_h": 3.4166666666666665
+  },
+  "CDG|FLR|2026-07": {
+    "price_eur": 174.0,
+    "duration_h": 3.5
+  },
+  "CDG|FLR|2026-08": null,
+  "CDG|FLR|2026-09": null,
+  "CDG|FLR|2026-10": null,
+  "CDG|FLR|2026-11": null,
+  "CDG|FLR|2026-12": null,
+  "CDG|VCE|2026-05": {
+    "price_eur": 116.0,
+    "duration_h": 3.6666666666666665
+  },
+  "CDG|VCE|2026-06": {
+    "price_eur": 73.0,
+    "duration_h": 3.6666666666666665
+  },
+  "CDG|VCE|2026-07": {
+    "price_eur": 150.0,
+    "duration_h": 3.5833333333333335
+  },
+  "CDG|VCE|2026-08": {
+    "price_eur": 224.0,
+    "duration_h": 10.25
+  },
+  "CDG|VCE|2026-09": {
+    "price_eur": 100.0,
+    "duration_h": 3.6666666666666665
+  },
+  "CDG|VCE|2026-10": {
+    "price_eur": 101.0,
+    "duration_h": 3.6666666666666665
+  },
+  "CDG|VCE|2026-11": {
+    "price_eur": 126.0,
+    "duration_h": 3.5833333333333335
+  },
+  "CDG|VCE|2026-12": null,
+  "CDG|NAP|2026-05": {
+    "price_eur": 123.0,
+    "duration_h": 4.666666666666667
+  },
+  "CDG|NAP|2026-06": {
+    "price_eur": 141.0,
+    "duration_h": 4.583333333333333
+  },
+  "CDG|NAP|2026-07": {
+    "price_eur": 187.0,
+    "duration_h": 16.166666666666668
+  },
+  "CDG|NAP|2026-08": {
+    "price_eur": 189.0,
+    "duration_h": 31.0
+  },
+  "CDG|NAP|2026-09": null,
+  "CDG|NAP|2026-10": null,
+  "CDG|NAP|2026-11": null,
+  "CDG|NAP|2026-12": null,
+  "CDG|VIE|2026-05": {
+    "price_eur": 153.0,
+    "duration_h": 12.166666666666666
+  },
+  "CDG|VIE|2026-06": {
+    "price_eur": 159.0,
+    "duration_h": 3.9166666666666665
+  },
+  "CDG|VIE|2026-07": {
+    "price_eur": 164.0,
+    "duration_h": 3.9166666666666665
+  },
+  "CDG|VIE|2026-08": {
+    "price_eur": 173.0,
+    "duration_h": 3.9166666666666665
+  },
+  "CDG|VIE|2026-09": null,
+  "CDG|VIE|2026-10": {
+    "price_eur": 146.0,
+    "duration_h": 3.9166666666666665
+  },
+  "CDG|VIE|2026-11": {
+    "price_eur": 190.0,
+    "duration_h": 4.0
+  },
+  "CDG|VIE|2026-12": null,
+  "CDG|SZG|2026-05": null,
+  "CDG|SZG|2026-06": null,
+  "CDG|SZG|2026-07": null,
+  "CDG|SZG|2026-08": null,
+  "CDG|SZG|2026-09": null,
+  "CDG|SZG|2026-10": null,
+  "CDG|SZG|2026-11": null,
+  "CDG|SZG|2026-12": null,
+  "CDG|GVA|2026-05": {
+    "price_eur": 157.0,
+    "duration_h": 2.4166666666666665
+  },
+  "CDG|GVA|2026-06": null,
+  "CDG|GVA|2026-07": {
+    "price_eur": 218.0,
+    "duration_h": 2.5
+  },
+  "CDG|GVA|2026-08": {
+    "price_eur": 223.0,
+    "duration_h": 25.583333333333332
+  },
+  "CDG|GVA|2026-09": null,
+  "CDG|GVA|2026-10": {
+    "price_eur": 150.0,
+    "duration_h": 2.4166666666666665
+  },
+  "CDG|GVA|2026-11": null,
+  "CDG|GVA|2026-12": null,
+  "CDG|MUC|2026-05": {
+    "price_eur": 193.0,
+    "duration_h": 3.4166666666666665
+  },
+  "CDG|MUC|2026-06": {
+    "price_eur": 184.0,
+    "duration_h": 10.916666666666666
+  },
+  "CDG|MUC|2026-07": {
+    "price_eur": 159.0,
+    "duration_h": 3.0833333333333335
+  },
+  "CDG|MUC|2026-08": null,
+  "CDG|MUC|2026-09": {
+    "price_eur": 223.0,
+    "duration_h": 3.0833333333333335
+  },
+  "CDG|MUC|2026-10": {
+    "price_eur": 167.0,
+    "duration_h": 3.4166666666666665
+  },
+  "CDG|MUC|2026-11": null,
+  "CDG|MUC|2026-12": null,
+  "CDG|HAM|2026-05": null,
+  "CDG|HAM|2026-06": {
+    "price_eur": 142.0,
+    "duration_h": 3.0
+  },
+  "CDG|HAM|2026-07": {
+    "price_eur": 153.0,
+    "duration_h": 9.0
+  },
+  "CDG|HAM|2026-08": null,
+  "CDG|HAM|2026-09": null,
+  "CDG|HAM|2026-10": null,
+  "CDG|HAM|2026-11": null,
+  "CDG|HAM|2026-12": {
+    "price_eur": 162.0,
+    "duration_h": 11.5
+  },
+  "CDG|CPH|2026-05": {
+    "price_eur": 107.0,
+    "duration_h": 3.9166666666666665
+  },
+  "CDG|CPH|2026-06": {
+    "price_eur": 169.0,
+    "duration_h": 3.9166666666666665
+  },
+  "CDG|CPH|2026-07": {
+    "price_eur": 163.0,
+    "duration_h": 3.9166666666666665
+  },
+  "CDG|CPH|2026-08": {
+    "price_eur": 156.0,
+    "duration_h": 3.9166666666666665
+  },
+  "CDG|CPH|2026-09": {
+    "price_eur": 153.0,
+    "duration_h": 3.9166666666666665
+  },
+  "CDG|CPH|2026-10": null,
+  "CDG|CPH|2026-11": null,
+  "CDG|CPH|2026-12": null,
+  "CDG|ARN|2026-05": {
+    "price_eur": 207.0,
+    "duration_h": 41.25
+  },
+  "CDG|ARN|2026-06": {
+    "price_eur": 203.0,
+    "duration_h": 31.416666666666668
+  },
+  "CDG|ARN|2026-07": {
+    "price_eur": 215.0,
+    "duration_h": 26.083333333333332
+  },
+  "CDG|ARN|2026-08": {
+    "price_eur": 161.0,
+    "duration_h": 41.5
+  },
+  "CDG|ARN|2026-09": {
+    "price_eur": 202.0,
+    "duration_h": 5.333333333333333
+  },
+  "CDG|ARN|2026-10": null,
+  "CDG|ARN|2026-11": {
+    "price_eur": 207.0,
+    "duration_h": 22.583333333333332
+  },
+  "CDG|ARN|2026-12": null,
+  "CDG|OSL|2026-05": {
+    "price_eur": 155.0,
+    "duration_h": 4.666666666666667
+  },
+  "CDG|OSL|2026-06": {
+    "price_eur": 147.0,
+    "duration_h": 20.0
+  },
+  "CDG|OSL|2026-07": null,
+  "CDG|OSL|2026-08": {
+    "price_eur": 152.0,
+    "duration_h": 4.666666666666667
+  },
+  "CDG|OSL|2026-09": {
+    "price_eur": 149.0,
+    "duration_h": 4.666666666666667
+  },
+  "CDG|OSL|2026-10": {
+    "price_eur": 185.0,
+    "duration_h": 4.666666666666667
+  },
+  "CDG|OSL|2026-11": null,
+  "CDG|OSL|2026-12": null,
+  "CDG|HEL|2026-05": {
+    "price_eur": 221.0,
+    "duration_h": 10.5
+  },
+  "CDG|HEL|2026-06": {
+    "price_eur": 256.0,
+    "duration_h": 21.166666666666668
+  },
+  "CDG|HEL|2026-07": {
+    "price_eur": 266.0,
+    "duration_h": 9.583333333333334
+  },
+  "CDG|HEL|2026-08": {
+    "price_eur": 216.0,
+    "duration_h": 15.416666666666666
+  },
+  "CDG|HEL|2026-09": {
+    "price_eur": 207.0,
+    "duration_h": 22.5
+  },
+  "CDG|HEL|2026-10": {
+    "price_eur": 198.0,
+    "duration_h": 10.166666666666666
+  },
+  "CDG|HEL|2026-11": null,
+  "CDG|HEL|2026-12": null,
+  "CDG|KEF|2026-05": {
+    "price_eur": 132.0,
+    "duration_h": 7.333333333333333
+  },
+  "CDG|KEF|2026-06": {
+    "price_eur": 183.0,
+    "duration_h": 7.333333333333333
+  },
+  "CDG|KEF|2026-07": {
+    "price_eur": 271.0,
+    "duration_h": 38.083333333333336
+  },
+  "CDG|KEF|2026-08": {
+    "price_eur": 280.0,
+    "duration_h": 7.333333333333333
+  },
+  "CDG|KEF|2026-09": {
+    "price_eur": 209.0,
+    "duration_h": 7.333333333333333
+  },
+  "CDG|KEF|2026-10": {
+    "price_eur": 240.0,
+    "duration_h": 36.166666666666664
+  },
+  "CDG|KEF|2026-11": null,
+  "CDG|KEF|2026-12": null,
+  "CDG|DUB|2026-05": {
+    "price_eur": 156.0,
+    "duration_h": 3.6666666666666665
+  },
+  "CDG|DUB|2026-06": {
+    "price_eur": 130.0,
+    "duration_h": 3.8333333333333335
+  },
+  "CDG|DUB|2026-07": {
+    "price_eur": 149.0,
+    "duration_h": 3.5
+  },
+  "CDG|DUB|2026-08": null,
+  "CDG|DUB|2026-09": {
+    "price_eur": 216.0,
+    "duration_h": 8.833333333333334
+  },
+  "CDG|DUB|2026-10": {
+    "price_eur": 186.0,
+    "duration_h": 15.75
+  },
+  "CDG|DUB|2026-11": null,
+  "CDG|DUB|2026-12": null,
+  "CDG|EDI|2026-05": null,
+  "CDG|EDI|2026-06": {
+    "price_eur": 125.0,
+    "duration_h": 3.6666666666666665
+  },
+  "CDG|EDI|2026-07": {
+    "price_eur": 150.0,
+    "duration_h": 3.6666666666666665
+  },
+  "CDG|EDI|2026-08": null,
+  "CDG|EDI|2026-09": null,
+  "CDG|EDI|2026-10": {
+    "price_eur": 202.0,
+    "duration_h": 6.083333333333333
+  },
+  "CDG|EDI|2026-11": null,
+  "CDG|EDI|2026-12": null,
+  "CDG|WAW|2026-05": {
+    "price_eur": 193.0,
+    "duration_h": 38.416666666666664
+  },
+  "CDG|WAW|2026-06": {
+    "price_eur": 122.0,
+    "duration_h": 32.083333333333336
+  },
+  "CDG|WAW|2026-07": {
+    "price_eur": 161.0,
+    "duration_h": 14.416666666666666
+  },
+  "CDG|WAW|2026-08": {
+    "price_eur": 178.0,
+    "duration_h": 36.916666666666664
+  },
+  "CDG|WAW|2026-09": null,
+  "CDG|WAW|2026-10": {
+    "price_eur": 215.0,
+    "duration_h": 9.583333333333334
+  },
+  "CDG|WAW|2026-11": {
+    "price_eur": 190.0,
+    "duration_h": 10.916666666666666
+  },
+  "CDG|WAW|2026-12": null,
+  "CDG|KRK|2026-05": {
+    "price_eur": 192.0,
+    "duration_h": 11.5
+  },
+  "CDG|KRK|2026-06": null,
+  "CDG|KRK|2026-07": {
+    "price_eur": 153.0,
+    "duration_h": 4.5
+  },
+  "CDG|KRK|2026-08": {
+    "price_eur": 186.0,
+    "duration_h": 19.25
+  },
+  "CDG|KRK|2026-09": {
+    "price_eur": 87.0,
+    "duration_h": 4.5
+  },
+  "CDG|KRK|2026-10": {
+    "price_eur": 113.0,
+    "duration_h": 4.5
+  },
+  "CDG|KRK|2026-11": null,
+  "CDG|KRK|2026-12": null,
+  "CDG|PRG|2026-05": {
+    "price_eur": 151.0,
+    "duration_h": 11.416666666666666
+  },
+  "CDG|PRG|2026-06": {
+    "price_eur": 145.0,
+    "duration_h": 3.5
+  },
+  "CDG|PRG|2026-07": {
+    "price_eur": 157.0,
+    "duration_h": 9.5
+  },
+  "CDG|PRG|2026-08": null,
+  "CDG|PRG|2026-09": {
+    "price_eur": 184.0,
+    "duration_h": 3.5833333333333335
+  },
+  "CDG|PRG|2026-10": null,
+  "CDG|PRG|2026-11": null,
+  "CDG|PRG|2026-12": {
+    "price_eur": 143.0,
+    "duration_h": 3.5
+  },
+  "CDG|BUD|2026-05": {
+    "price_eur": 156.0,
+    "duration_h": 4.666666666666667
+  },
+  "CDG|BUD|2026-06": {
+    "price_eur": 179.0,
+    "duration_h": 47.666666666666664
+  },
+  "CDG|BUD|2026-07": {
+    "price_eur": 153.0,
+    "duration_h": 4.75
+  },
+  "CDG|BUD|2026-08": {
+    "price_eur": 189.0,
+    "duration_h": 17.833333333333332
+  },
+  "CDG|BUD|2026-09": {
+    "price_eur": 179.0,
+    "duration_h": 4.583333333333333
+  },
+  "CDG|BUD|2026-10": {
+    "price_eur": 130.0,
+    "duration_h": 4.666666666666667
+  },
+  "CDG|BUD|2026-11": null,
+  "CDG|BUD|2026-12": {
+    "price_eur": 194.0,
+    "duration_h": 15.75
+  },
+  "CDG|BTS|2026-05": {
+    "price_eur": 243.0,
+    "duration_h": 46.75
+  },
+  "CDG|BTS|2026-06": null,
+  "CDG|BTS|2026-07": null,
+  "CDG|BTS|2026-08": null,
+  "CDG|BTS|2026-09": null,
+  "CDG|BTS|2026-10": null,
+  "CDG|BTS|2026-11": null,
+  "CDG|BTS|2026-12": null,
+  "CDG|LJU|2026-05": {
+    "price_eur": 219.0,
+    "duration_h": 31.666666666666668
+  },
+  "CDG|LJU|2026-06": null,
+  "CDG|LJU|2026-07": null,
+  "CDG|LJU|2026-08": {
+    "price_eur": 246.0,
+    "duration_h": 26.0
+  },
+  "CDG|LJU|2026-09": null,
+  "CDG|LJU|2026-10": null,
+  "CDG|LJU|2026-11": null,
+  "CDG|LJU|2026-12": null,
+  "CDG|ZAG|2026-05": {
+    "price_eur": 216.0,
+    "duration_h": 4.166666666666667
+  },
+  "CDG|ZAG|2026-06": null,
+  "CDG|ZAG|2026-07": {
+    "price_eur": 179.0,
+    "duration_h": 4.166666666666667
+  },
+  "CDG|ZAG|2026-08": null,
+  "CDG|ZAG|2026-09": {
+    "price_eur": 169.0,
+    "duration_h": 4.0
+  },
+  "CDG|ZAG|2026-10": null,
+  "CDG|ZAG|2026-11": null,
+  "CDG|ZAG|2026-12": null,
+  "CDG|ATH|2026-05": {
+    "price_eur": 171.0,
+    "duration_h": 19.916666666666668
+  },
+  "CDG|ATH|2026-06": {
+    "price_eur": 170.0,
+    "duration_h": 8.583333333333334
+  },
+  "CDG|ATH|2026-07": {
+    "price_eur": 221.0,
+    "duration_h": 32.416666666666664
+  },
+  "CDG|ATH|2026-08": {
+    "price_eur": 159.0,
+    "duration_h": 16.083333333333332
+  },
+  "CDG|ATH|2026-09": {
+    "price_eur": 186.0,
+    "duration_h": 26.583333333333332
+  },
+  "CDG|ATH|2026-10": null,
+  "CDG|ATH|2026-11": null,
+  "CDG|ATH|2026-12": {
+    "price_eur": 207.0,
+    "duration_h": 8.75
+  },
+  "CDG|IST|2026-05": {
+    "price_eur": 207.0,
+    "duration_h": 7.5
+  },
+  "CDG|IST|2026-06": {
+    "price_eur": 190.0,
+    "duration_h": 13.25
+  },
+  "CDG|IST|2026-07": {
+    "price_eur": 258.0,
+    "duration_h": 13.333333333333334
+  },
+  "CDG|IST|2026-08": {
+    "price_eur": 230.0,
+    "duration_h": 9.333333333333334
+  },
+  "CDG|IST|2026-09": {
+    "price_eur": 181.0,
+    "duration_h": 7.5
+  },
+  "CDG|IST|2026-10": {
+    "price_eur": 224.0,
+    "duration_h": 11.666666666666666
+  },
+  "CDG|IST|2026-11": {
+    "price_eur": 262.0,
+    "duration_h": 7.25
+  },
+  "CDG|IST|2026-12": {
+    "price_eur": 246.0,
+    "duration_h": 11.5
+  },
+  "CDG|SOF|2026-05": {
+    "price_eur": 218.0,
+    "duration_h": 17.666666666666668
+  },
+  "CDG|SOF|2026-06": {
+    "price_eur": 127.0,
+    "duration_h": 17.666666666666668
+  },
+  "CDG|SOF|2026-07": {
+    "price_eur": 166.0,
+    "duration_h": 37.416666666666664
+  },
+  "CDG|SOF|2026-08": null,
+  "CDG|SOF|2026-09": null,
+  "CDG|SOF|2026-10": null,
+  "CDG|SOF|2026-11": null,
+  "CDG|SOF|2026-12": null,
+  "CDG|OTP|2026-05": {
+    "price_eur": 202.0,
+    "duration_h": 40.5
+  },
+  "CDG|OTP|2026-06": {
+    "price_eur": 128.0,
+    "duration_h": 15.333333333333334
+  },
+  "CDG|OTP|2026-07": {
+    "price_eur": 230.0,
+    "duration_h": 10.416666666666666
+  },
+  "CDG|OTP|2026-08": null,
+  "CDG|OTP|2026-09": null,
+  "CDG|OTP|2026-10": null,
+  "CDG|OTP|2026-11": null,
+  "CDG|OTP|2026-12": null,
+  "CDG|TLL|2026-05": {
+    "price_eur": 198.0,
+    "duration_h": 33.916666666666664
+  },
+  "CDG|TLL|2026-06": {
+    "price_eur": 183.0,
+    "duration_h": 10.916666666666666
+  },
+  "CDG|TLL|2026-07": {
+    "price_eur": 266.0,
+    "duration_h": 19.666666666666668
+  },
+  "CDG|TLL|2026-08": {
+    "price_eur": 197.0,
+    "duration_h": 23.583333333333332
+  },
+  "CDG|TLL|2026-09": {
+    "price_eur": 196.0,
+    "duration_h": 16.5
+  },
+  "CDG|TLL|2026-10": null,
+  "CDG|TLL|2026-11": null,
+  "CDG|TLL|2026-12": {
+    "price_eur": 288.0,
+    "duration_h": 51.916666666666664
+  },
+  "CDG|RIX|2026-05": {
+    "price_eur": 182.0,
+    "duration_h": 14.916666666666666
+  },
+  "CDG|RIX|2026-06": {
+    "price_eur": 187.0,
+    "duration_h": 21.833333333333332
+  },
+  "CDG|RIX|2026-07": {
+    "price_eur": 209.0,
+    "duration_h": 14.916666666666666
+  },
+  "CDG|RIX|2026-08": {
+    "price_eur": 230.0,
+    "duration_h": 22.5
+  },
+  "CDG|RIX|2026-09": {
+    "price_eur": 202.0,
+    "duration_h": 42.0
+  },
+  "CDG|RIX|2026-10": null,
+  "CDG|RIX|2026-11": {
+    "price_eur": 210.0,
+    "duration_h": 18.75
+  },
+  "CDG|RIX|2026-12": null,
+  "AMS|MAD|2026-05": {
+    "price_eur": 162.0,
+    "duration_h": 5.25
+  },
+  "AMS|MAD|2026-06": {
+    "price_eur": 160.0,
+    "duration_h": 54.5
+  },
+  "AMS|MAD|2026-07": {
+    "price_eur": 163.0,
+    "duration_h": 5.416666666666667
+  },
+  "AMS|MAD|2026-08": {
+    "price_eur": 177.0,
+    "duration_h": 5.333333333333333
+  },
+  "AMS|MAD|2026-09": {
+    "price_eur": 189.0,
+    "duration_h": 22.083333333333332
+  },
+  "AMS|MAD|2026-10": {
+    "price_eur": 231.0,
+    "duration_h": 28.0
+  },
+  "AMS|MAD|2026-11": null,
+  "AMS|MAD|2026-12": null,
+  "AMS|BCN|2026-05": {
+    "price_eur": 135.0,
+    "duration_h": 4.583333333333333
+  },
+  "AMS|BCN|2026-06": {
+    "price_eur": 103.0,
+    "duration_h": 4.583333333333333
+  },
+  "AMS|BCN|2026-07": {
+    "price_eur": 146.0,
+    "duration_h": 4.916666666666667
+  },
+  "AMS|BCN|2026-08": {
+    "price_eur": 124.0,
+    "duration_h": 4.833333333333333
+  },
+  "AMS|BCN|2026-09": {
+    "price_eur": 124.0,
+    "duration_h": 4.583333333333333
+  },
+  "AMS|BCN|2026-10": {
+    "price_eur": 141.0,
+    "duration_h": 4.833333333333333
+  },
+  "AMS|BCN|2026-11": null,
+  "AMS|BCN|2026-12": null,
+  "AMS|LIS|2026-05": {
+    "price_eur": 230.0,
+    "duration_h": 35.833333333333336
+  },
+  "AMS|LIS|2026-06": {
+    "price_eur": 171.0,
+    "duration_h": 6.083333333333333
+  },
+  "AMS|LIS|2026-07": {
+    "price_eur": 187.0,
+    "duration_h": 26.416666666666668
+  },
+  "AMS|LIS|2026-08": {
+    "price_eur": 230.0,
+    "duration_h": 40.833333333333336
+  },
+  "AMS|LIS|2026-09": null,
+  "AMS|LIS|2026-10": null,
+  "AMS|LIS|2026-11": null,
+  "AMS|LIS|2026-12": null,
+  "AMS|FCO|2026-05": {
+    "price_eur": 236.0,
+    "duration_h": 34.166666666666664
+  },
+  "AMS|FCO|2026-06": {
+    "price_eur": 152.0,
+    "duration_h": 42.0
+  },
+  "AMS|FCO|2026-07": {
+    "price_eur": 175.0,
+    "duration_h": 31.083333333333332
+  },
+  "AMS|FCO|2026-08": {
+    "price_eur": 236.0,
+    "duration_h": 4.5
+  },
+  "AMS|FCO|2026-09": {
+    "price_eur": 167.0,
+    "duration_h": 38.25
+  },
+  "AMS|FCO|2026-10": {
+    "price_eur": 165.0,
+    "duration_h": 16.583333333333332
+  },
+  "AMS|FCO|2026-11": null,
+  "AMS|FCO|2026-12": null,
+  "AMS|MXP|2026-05": {
+    "price_eur": 120.0,
+    "duration_h": 3.75
+  },
+  "AMS|MXP|2026-06": {
+    "price_eur": 103.0,
+    "duration_h": 3.6666666666666665
+  },
+  "AMS|MXP|2026-07": {
+    "price_eur": 150.0,
+    "duration_h": 3.75
+  },
+  "AMS|MXP|2026-08": {
+    "price_eur": 224.0,
+    "duration_h": 13.25
+  },
+  "AMS|MXP|2026-09": {
+    "price_eur": 145.0,
+    "duration_h": 3.75
+  },
+  "AMS|MXP|2026-10": {
+    "price_eur": 183.0,
+    "duration_h": 3.75
+  },
+  "AMS|MXP|2026-11": {
+    "price_eur": 153.0,
+    "duration_h": 3.75
+  },
+  "AMS|MXP|2026-12": null,
+  "AMS|FLR|2026-05": {
+    "price_eur": 309.0,
+    "duration_h": 21.583333333333332
+  },
+  "AMS|FLR|2026-06": null,
+  "AMS|FLR|2026-07": {
+    "price_eur": 222.0,
+    "duration_h": 4.0
+  },
+  "AMS|FLR|2026-08": null,
+  "AMS|FLR|2026-09": {
+    "price_eur": 260.0,
+    "duration_h": 39.333333333333336
+  },
+  "AMS|FLR|2026-10": null,
+  "AMS|FLR|2026-11": null,
+  "AMS|FLR|2026-12": null,
+  "AMS|VCE|2026-05": {
+    "price_eur": 170.0,
+    "duration_h": 3.5833333333333335
+  },
+  "AMS|VCE|2026-06": {
+    "price_eur": 158.0,
+    "duration_h": 24.0
+  },
+  "AMS|VCE|2026-07": {
+    "price_eur": 212.0,
+    "duration_h": 30.333333333333332
+  },
+  "AMS|VCE|2026-08": {
+    "price_eur": 180.0,
+    "duration_h": 12.166666666666666
+  },
+  "AMS|VCE|2026-09": {
+    "price_eur": 169.0,
+    "duration_h": 37.416666666666664
+  },
+  "AMS|VCE|2026-10": {
+    "price_eur": 215.0,
+    "duration_h": 39.916666666666664
+  },
+  "AMS|VCE|2026-11": {
+    "price_eur": 205.0,
+    "duration_h": 23.416666666666668
+  },
+  "AMS|VCE|2026-12": null,
+  "AMS|NAP|2026-05": {
+    "price_eur": 180.0,
+    "duration_h": 5.166666666666667
+  },
+  "AMS|NAP|2026-06": {
+    "price_eur": 188.0,
+    "duration_h": 40.083333333333336
+  },
+  "AMS|NAP|2026-07": {
+    "price_eur": 179.0,
+    "duration_h": 5.25
+  },
+  "AMS|NAP|2026-08": {
+    "price_eur": 186.0,
+    "duration_h": 5.083333333333333
+  },
+  "AMS|NAP|2026-09": {
+    "price_eur": 160.0,
+    "duration_h": 5.083333333333333
+  },
+  "AMS|NAP|2026-10": {
+    "price_eur": 218.0,
+    "duration_h": 63.833333333333336
+  },
+  "AMS|NAP|2026-11": null,
+  "AMS|NAP|2026-12": null,
+  "AMS|VIE|2026-05": {
+    "price_eur": 276.0,
+    "duration_h": 3.75
+  },
+  "AMS|VIE|2026-06": {
+    "price_eur": 196.0,
+    "duration_h": 38.666666666666664
+  },
+  "AMS|VIE|2026-07": {
+    "price_eur": 202.0,
+    "duration_h": 39.25
+  },
+  "AMS|VIE|2026-08": {
+    "price_eur": 247.0,
+    "duration_h": 26.75
+  },
+  "AMS|VIE|2026-09": null,
+  "AMS|VIE|2026-10": null,
+  "AMS|VIE|2026-11": null,
+  "AMS|VIE|2026-12": null,
+  "AMS|SZG|2026-05": {
+    "price_eur": 223.0,
+    "duration_h": 13.916666666666666
+  },
+  "AMS|SZG|2026-06": null,
+  "AMS|SZG|2026-07": null,
+  "AMS|SZG|2026-08": null,
+  "AMS|SZG|2026-09": null,
+  "AMS|SZG|2026-10": {
+    "price_eur": 285.0,
+    "duration_h": 21.416666666666668
+  },
+  "AMS|SZG|2026-11": null,
+  "AMS|SZG|2026-12": null,
+  "AMS|ZRH|2026-05": {
+    "price_eur": 249.0,
+    "duration_h": 3.0833333333333335
+  },
+  "AMS|ZRH|2026-06": {
+    "price_eur": 203.0,
+    "duration_h": 27.25
+  },
+  "AMS|ZRH|2026-07": {
+    "price_eur": 249.0,
+    "duration_h": 3.0
+  },
+  "AMS|ZRH|2026-08": {
+    "price_eur": 260.0,
+    "duration_h": 38.75
+  },
+  "AMS|ZRH|2026-09": null,
+  "AMS|ZRH|2026-10": null,
+  "AMS|ZRH|2026-11": null,
+  "AMS|ZRH|2026-12": null,
+  "AMS|GVA|2026-05": {
+    "price_eur": 205.0,
+    "duration_h": 3.0833333333333335
+  },
+  "AMS|GVA|2026-06": null,
+  "AMS|GVA|2026-07": {
+    "price_eur": 237.0,
+    "duration_h": 3.0833333333333335
+  },
+  "AMS|GVA|2026-08": null,
+  "AMS|GVA|2026-09": {
+    "price_eur": 132.0,
+    "duration_h": 3.1666666666666665
+  },
+  "AMS|GVA|2026-10": null,
+  "AMS|GVA|2026-11": null,
+  "AMS|GVA|2026-12": {
+    "price_eur": 201.0,
+    "duration_h": 3.0833333333333335
+  },
+  "AMS|MUC|2026-05": {
+    "price_eur": 212.0,
+    "duration_h": 3.0
+  },
+  "AMS|MUC|2026-06": {
+    "price_eur": 214.0,
+    "duration_h": 3.0
+  },
+  "AMS|MUC|2026-07": {
+    "price_eur": 214.0,
+    "duration_h": 2.9166666666666665
+  },
+  "AMS|MUC|2026-08": {
+    "price_eur": 236.0,
+    "duration_h": 3.0
+  },
+  "AMS|MUC|2026-09": null,
+  "AMS|MUC|2026-10": null,
+  "AMS|MUC|2026-11": null,
+  "AMS|MUC|2026-12": null,
+  "AMS|CPH|2026-05": {
+    "price_eur": 199.0,
+    "duration_h": 48.416666666666664
+  },
+  "AMS|CPH|2026-06": {
+    "price_eur": 143.0,
+    "duration_h": 46.583333333333336
+  },
+  "AMS|CPH|2026-07": {
+    "price_eur": 210.0,
+    "duration_h": 60.333333333333336
+  },
+  "AMS|CPH|2026-08": {
+    "price_eur": 196.0,
+    "duration_h": 2.75
+  },
+  "AMS|CPH|2026-09": {
+    "price_eur": 178.0,
+    "duration_h": 2.75
+  },
+  "AMS|CPH|2026-10": null,
+  "AMS|CPH|2026-11": null,
+  "AMS|CPH|2026-12": null,
+  "AMS|ARN|2026-05": {
+    "price_eur": 209.0,
+    "duration_h": 4.166666666666667
+  },
+  "AMS|ARN|2026-06": {
+    "price_eur": 174.0,
+    "duration_h": 4.166666666666667
+  },
+  "AMS|ARN|2026-07": {
+    "price_eur": 238.0,
+    "duration_h": 4.0
+  },
+  "AMS|ARN|2026-08": {
+    "price_eur": 166.0,
+    "duration_h": 29.416666666666668
+  },
+  "AMS|ARN|2026-09": {
+    "price_eur": 200.0,
+    "duration_h": 4.0
+  },
+  "AMS|ARN|2026-10": null,
+  "AMS|ARN|2026-11": null,
+  "AMS|ARN|2026-12": null,
+  "AMS|OSL|2026-05": {
+    "price_eur": 236.0,
+    "duration_h": 3.6666666666666665
+  },
+  "AMS|OSL|2026-06": {
+    "price_eur": 169.0,
+    "duration_h": 3.6666666666666665
+  },
+  "AMS|OSL|2026-07": {
+    "price_eur": 174.0,
+    "duration_h": 48.25
+  },
+  "AMS|OSL|2026-08": {
+    "price_eur": 260.0,
+    "duration_h": 3.6666666666666665
+  },
+  "AMS|OSL|2026-09": {
+    "price_eur": 202.0,
+    "duration_h": 39.833333333333336
+  },
+  "AMS|OSL|2026-10": null,
+  "AMS|OSL|2026-11": null,
+  "AMS|OSL|2026-12": null,
+  "AMS|HEL|2026-05": {
+    "price_eur": 248.0,
+    "duration_h": 9.916666666666666
+  },
+  "AMS|HEL|2026-06": {
+    "price_eur": 304.0,
+    "duration_h": 19.166666666666668
+  },
+  "AMS|HEL|2026-07": {
+    "price_eur": 302.0,
+    "duration_h": 4.916666666666667
+  },
+  "AMS|HEL|2026-08": {
+    "price_eur": 230.0,
+    "duration_h": 4.833333333333333
+  },
+  "AMS|HEL|2026-09": null,
+  "AMS|HEL|2026-10": null,
+  "AMS|HEL|2026-11": null,
+  "AMS|HEL|2026-12": {
+    "price_eur": 285.0,
+    "duration_h": 5.083333333333333
+  },
+  "AMS|KEF|2026-05": {
+    "price_eur": 462.0,
+    "duration_h": 20.916666666666668
+  },
+  "AMS|KEF|2026-06": {
+    "price_eur": 311.0,
+    "duration_h": 48.333333333333336
+  },
+  "AMS|KEF|2026-07": {
+    "price_eur": 363.0,
+    "duration_h": 51.583333333333336
+  },
+  "AMS|KEF|2026-08": {
+    "price_eur": 316.0,
+    "duration_h": 27.666666666666668
+  },
+  "AMS|KEF|2026-09": {
+    "price_eur": 314.0,
+    "duration_h": 47.583333333333336
+  },
+  "AMS|KEF|2026-10": null,
+  "AMS|KEF|2026-11": {
+    "price_eur": 211.0,
+    "duration_h": 6.583333333333333
+  },
+  "AMS|KEF|2026-12": null,
+  "AMS|DUB|2026-05": {
+    "price_eur": 154.0,
+    "duration_h": 3.3333333333333335
+  },
+  "AMS|DUB|2026-06": {
+    "price_eur": 71.0,
+    "duration_h": 3.3333333333333335
+  },
+  "AMS|DUB|2026-07": null,
+  "AMS|DUB|2026-08": {
+    "price_eur": 122.0,
+    "duration_h": 3.4166666666666665
+  },
+  "AMS|DUB|2026-09": null,
+  "AMS|DUB|2026-10": null,
+  "AMS|DUB|2026-11": null,
+  "AMS|DUB|2026-12": null,
+  "AMS|EDI|2026-05": null,
+  "AMS|EDI|2026-06": {
+    "price_eur": 137.0,
+    "duration_h": 36.416666666666664
+  },
+  "AMS|EDI|2026-07": null,
+  "AMS|EDI|2026-08": {
+    "price_eur": 142.0,
+    "duration_h": 22.416666666666668
+  },
+  "AMS|EDI|2026-09": null,
+  "AMS|EDI|2026-10": {
+    "price_eur": 157.0,
+    "duration_h": 3.0
+  },
+  "AMS|EDI|2026-11": null,
+  "AMS|EDI|2026-12": null,
+  "AMS|WAW|2026-05": {
+    "price_eur": 223.0,
+    "duration_h": 4.0
+  },
+  "AMS|WAW|2026-06": {
+    "price_eur": 156.0,
+    "duration_h": 36.166666666666664
+  },
+  "AMS|WAW|2026-07": {
+    "price_eur": 183.0,
+    "duration_h": 60.666666666666664
+  },
+  "AMS|WAW|2026-08": {
+    "price_eur": 206.0,
+    "duration_h": 4.083333333333333
+  },
+  "AMS|WAW|2026-09": null,
+  "AMS|WAW|2026-10": null,
+  "AMS|WAW|2026-11": {
+    "price_eur": 186.0,
+    "duration_h": 4.083333333333333
+  },
+  "AMS|WAW|2026-12": null,
+  "AMS|KRK|2026-05": {
+    "price_eur": 175.0,
+    "duration_h": 4.166666666666667
+  },
+  "AMS|KRK|2026-06": {
+    "price_eur": 164.0,
+    "duration_h": 15.5
+  },
+  "AMS|KRK|2026-07": {
+    "price_eur": 180.0,
+    "duration_h": 34.25
+  },
+  "AMS|KRK|2026-08": null,
+  "AMS|KRK|2026-09": null,
+  "AMS|KRK|2026-10": null,
+  "AMS|KRK|2026-11": null,
+  "AMS|KRK|2026-12": null,
+  "AMS|PRG|2026-05": {
+    "price_eur": 187.0,
+    "duration_h": 3.0
+  },
+  "AMS|PRG|2026-06": {
+    "price_eur": 151.0,
+    "duration_h": 3.0833333333333335
+  },
+  "AMS|PRG|2026-07": {
+    "price_eur": 197.0,
+    "duration_h": 43.0
+  },
+  "AMS|PRG|2026-08": {
+    "price_eur": 146.0,
+    "duration_h": 3.0833333333333335
+  },
+  "AMS|PRG|2026-09": null,
+  "AMS|PRG|2026-10": {
+    "price_eur": 152.0,
+    "duration_h": 3.1666666666666665
+  },
+  "AMS|PRG|2026-11": null,
+  "AMS|PRG|2026-12": {
+    "price_eur": 198.0,
+    "duration_h": 2.9166666666666665
+  },
+  "AMS|BUD|2026-05": {
+    "price_eur": 208.0,
+    "duration_h": 21.833333333333332
+  },
+  "AMS|BUD|2026-06": {
+    "price_eur": 146.0,
+    "duration_h": 33.5
+  },
+  "AMS|BUD|2026-07": {
+    "price_eur": 214.0,
+    "duration_h": 39.833333333333336
+  },
+  "AMS|BUD|2026-08": {
+    "price_eur": 226.0,
+    "duration_h": 4.0
+  },
+  "AMS|BUD|2026-09": null,
+  "AMS|BUD|2026-10": {
+    "price_eur": 235.0,
+    "duration_h": 25.583333333333332
+  },
+  "AMS|BUD|2026-11": null,
+  "AMS|BUD|2026-12": null,
+  "AMS|BTS|2026-05": {
+    "price_eur": 301.0,
+    "duration_h": 48.833333333333336
+  },
+  "AMS|BTS|2026-06": null,
+  "AMS|BTS|2026-07": {
+    "price_eur": 234.0,
+    "duration_h": 51.916666666666664
+  },
+  "AMS|BTS|2026-08": null,
+  "AMS|BTS|2026-09": {
+    "price_eur": 225.0,
+    "duration_h": 51.583333333333336
+  },
+  "AMS|BTS|2026-10": null,
+  "AMS|BTS|2026-11": null,
+  "AMS|BTS|2026-12": null,
+  "AMS|LJU|2026-05": {
+    "price_eur": 336.0,
+    "duration_h": 11.583333333333334
+  },
+  "AMS|LJU|2026-06": {
+    "price_eur": 255.0,
+    "duration_h": 10.25
+  },
+  "AMS|LJU|2026-07": {
+    "price_eur": 270.0,
+    "duration_h": 17.166666666666668
+  },
+  "AMS|LJU|2026-08": null,
+  "AMS|LJU|2026-09": null,
+  "AMS|LJU|2026-10": {
+    "price_eur": 241.0,
+    "duration_h": 40.75
+  },
+  "AMS|LJU|2026-11": null,
+  "AMS|LJU|2026-12": null,
+  "AMS|ZAG|2026-05": {
+    "price_eur": 263.0,
+    "duration_h": 9.416666666666666
+  },
+  "AMS|ZAG|2026-06": null,
+  "AMS|ZAG|2026-07": {
+    "price_eur": 243.0,
+    "duration_h": 9.416666666666666
+  },
+  "AMS|ZAG|2026-08": null,
+  "AMS|ZAG|2026-09": {
+    "price_eur": 224.0,
+    "duration_h": 40.25
+  },
+  "AMS|ZAG|2026-10": null,
+  "AMS|ZAG|2026-11": null,
+  "AMS|ZAG|2026-12": null,
+  "AMS|ATH|2026-05": {
+    "price_eur": 244.0,
+    "duration_h": 48.25
+  },
+  "AMS|ATH|2026-06": {
+    "price_eur": 222.0,
+    "duration_h": 6.666666666666667
+  },
+  "AMS|ATH|2026-07": {
+    "price_eur": 257.0,
+    "duration_h": 21.916666666666668
+  },
+  "AMS|ATH|2026-08": {
+    "price_eur": 178.0,
+    "duration_h": 16.083333333333332
+  },
+  "AMS|ATH|2026-09": null,
+  "AMS|ATH|2026-10": null,
+  "AMS|ATH|2026-11": {
+    "price_eur": 175.0,
+    "duration_h": 7.0
+  },
+  "AMS|ATH|2026-12": null,
+  "AMS|IST|2026-05": {
+    "price_eur": 174.0,
+    "duration_h": 7.083333333333333
+  },
+  "AMS|IST|2026-06": {
+    "price_eur": 173.0,
+    "duration_h": 7.25
+  },
+  "AMS|IST|2026-07": {
+    "price_eur": 250.0,
+    "duration_h": 21.416666666666668
+  },
+  "AMS|IST|2026-08": {
+    "price_eur": 233.0,
+    "duration_h": 11.083333333333334
+  },
+  "AMS|IST|2026-09": {
+    "price_eur": 192.0,
+    "duration_h": 21.833333333333332
+  },
+  "AMS|IST|2026-10": {
+    "price_eur": 236.0,
+    "duration_h": 7.166666666666667
+  },
+  "AMS|IST|2026-11": {
+    "price_eur": 145.0,
+    "duration_h": 7.25
+  },
+  "AMS|IST|2026-12": {
+    "price_eur": 146.0,
+    "duration_h": 7.416666666666667
+  },
+  "AMS|SOF|2026-05": {
+    "price_eur": 229.0,
+    "duration_h": 29.5
+  },
+  "AMS|SOF|2026-06": {
+    "price_eur": 173.0,
+    "duration_h": 45.0
+  },
+  "AMS|SOF|2026-07": {
+    "price_eur": 180.0,
+    "duration_h": 27.166666666666668
+  },
+  "AMS|SOF|2026-08": {
+    "price_eur": 274.0,
+    "duration_h": 9.666666666666666
+  },
+  "AMS|SOF|2026-09": null,
+  "AMS|SOF|2026-10": {
+    "price_eur": 213.0,
+    "duration_h": 44.0
+  },
+  "AMS|SOF|2026-11": null,
+  "AMS|SOF|2026-12": null,
+  "AMS|OTP|2026-05": {
+    "price_eur": 243.0,
+    "duration_h": 37.416666666666664
+  },
+  "AMS|OTP|2026-06": null,
+  "AMS|OTP|2026-07": {
+    "price_eur": 232.0,
+    "duration_h": 43.666666666666664
+  },
+  "AMS|OTP|2026-08": {
+    "price_eur": 226.0,
+    "duration_h": 51.583333333333336
+  },
+  "AMS|OTP|2026-09": null,
+  "AMS|OTP|2026-10": null,
+  "AMS|OTP|2026-11": null,
+  "AMS|OTP|2026-12": null,
+  "AMS|TLL|2026-05": {
+    "price_eur": 252.0,
+    "duration_h": 52.5
+  },
+  "AMS|TLL|2026-06": {
+    "price_eur": 215.0,
+    "duration_h": 61.583333333333336
+  },
+  "AMS|TLL|2026-07": {
+    "price_eur": 272.0,
+    "duration_h": 21.833333333333332
+  },
+  "AMS|TLL|2026-08": null,
+  "AMS|TLL|2026-09": null,
+  "AMS|TLL|2026-10": {
+    "price_eur": 227.0,
+    "duration_h": 4.916666666666667
+  },
+  "AMS|TLL|2026-11": null,
+  "AMS|TLL|2026-12": {
+    "price_eur": 261.0,
+    "duration_h": 4.916666666666667
+  },
+  "AMS|RIX|2026-05": {
+    "price_eur": 221.0,
+    "duration_h": 50.583333333333336
+  },
+  "AMS|RIX|2026-06": {
+    "price_eur": 247.0,
+    "duration_h": 22.416666666666668
+  },
+  "AMS|RIX|2026-07": {
+    "price_eur": 241.0,
+    "duration_h": 30.166666666666668
+  },
+  "AMS|RIX|2026-08": {
+    "price_eur": 210.0,
+    "duration_h": 38.25
+  },
+  "AMS|RIX|2026-09": null,
+  "AMS|RIX|2026-10": null,
+  "AMS|RIX|2026-11": null,
+  "AMS|RIX|2026-12": null,
+  "FRA|LHR|2026-05": {
+    "price_eur": 229.0,
+    "duration_h": 3.3333333333333335
+  },
+  "FRA|LHR|2026-06": {
+    "price_eur": 153.0,
+    "duration_h": 3.25
+  },
+  "FRA|LHR|2026-07": {
+    "price_eur": 165.0,
+    "duration_h": 3.1666666666666665
+  },
+  "FRA|LHR|2026-08": {
+    "price_eur": 160.0,
+    "duration_h": 3.25
+  },
+  "FRA|LHR|2026-09": {
+    "price_eur": 186.0,
+    "duration_h": 3.25
+  },
+  "FRA|LHR|2026-10": {
+    "price_eur": 166.0,
+    "duration_h": 3.25
+  },
+  "FRA|LHR|2026-11": null,
+  "FRA|LHR|2026-12": {
+    "price_eur": 201.0,
+    "duration_h": 3.25
+  },
+  "FRA|MAD|2026-05": {
+    "price_eur": 161.0,
+    "duration_h": 73.66666666666667
+  },
+  "FRA|MAD|2026-06": {
+    "price_eur": 107.0,
+    "duration_h": 27.25
+  },
+  "FRA|MAD|2026-07": {
+    "price_eur": 249.0,
+    "duration_h": 35.833333333333336
+  },
+  "FRA|MAD|2026-08": null,
+  "FRA|MAD|2026-09": {
+    "price_eur": 143.0,
+    "duration_h": 37.25
+  },
+  "FRA|MAD|2026-10": {
+    "price_eur": 150.0,
+    "duration_h": 44.583333333333336
+  },
+  "FRA|MAD|2026-11": null,
+  "FRA|MAD|2026-12": null,
+  "FRA|BCN|2026-05": {
+    "price_eur": 83.0,
+    "duration_h": 7.333333333333333
+  },
+  "FRA|BCN|2026-06": {
+    "price_eur": 52.0,
+    "duration_h": 4.166666666666667
+  },
+  "FRA|BCN|2026-07": {
+    "price_eur": 79.0,
+    "duration_h": 4.166666666666667
+  },
+  "FRA|BCN|2026-08": {
+    "price_eur": 70.0,
+    "duration_h": 4.166666666666667
+  },
+  "FRA|BCN|2026-09": {
+    "price_eur": 113.0,
+    "duration_h": 3.9166666666666665
+  },
+  "FRA|BCN|2026-10": {
+    "price_eur": 142.0,
+    "duration_h": 34.833333333333336
+  },
+  "FRA|BCN|2026-11": null,
+  "FRA|BCN|2026-12": null,
+  "FRA|LIS|2026-05": {
+    "price_eur": 193.0,
+    "duration_h": 53.583333333333336
+  },
+  "FRA|LIS|2026-06": {
+    "price_eur": 139.0,
+    "duration_h": 30.916666666666668
+  },
+  "FRA|LIS|2026-07": {
+    "price_eur": 162.0,
+    "duration_h": 25.083333333333332
+  },
+  "FRA|LIS|2026-08": {
+    "price_eur": 166.0,
+    "duration_h": 54.166666666666664
+  },
+  "FRA|LIS|2026-09": {
+    "price_eur": 153.0,
+    "duration_h": 50.75
+  },
+  "FRA|LIS|2026-10": {
+    "price_eur": 198.0,
+    "duration_h": 36.0
+  },
+  "FRA|LIS|2026-11": null,
+  "FRA|LIS|2026-12": null,
+  "FRA|FCO|2026-05": {
+    "price_eur": 129.0,
+    "duration_h": 3.9166666666666665
+  },
+  "FRA|FCO|2026-06": {
+    "price_eur": 68.0,
+    "duration_h": 3.9166666666666665
+  },
+  "FRA|FCO|2026-07": {
+    "price_eur": 69.0,
+    "duration_h": 3.9166666666666665
+  },
+  "FRA|FCO|2026-08": {
+    "price_eur": 71.0,
+    "duration_h": 3.9166666666666665
+  },
+  "FRA|FCO|2026-09": {
+    "price_eur": 80.0,
+    "duration_h": 3.9166666666666665
+  },
+  "FRA|FCO|2026-10": {
+    "price_eur": 85.0,
+    "duration_h": 3.9166666666666665
+  },
+  "FRA|FCO|2026-11": null,
+  "FRA|FCO|2026-12": null,
+  "FRA|FLR|2026-05": {
+    "price_eur": 235.0,
+    "duration_h": 40.333333333333336
+  },
+  "FRA|FLR|2026-06": {
+    "price_eur": 257.0,
+    "duration_h": 45.5
+  },
+  "FRA|FLR|2026-07": {
+    "price_eur": 341.0,
+    "duration_h": 3.3333333333333335
+  },
+  "FRA|FLR|2026-08": null,
+  "FRA|FLR|2026-09": null,
+  "FRA|FLR|2026-10": null,
+  "FRA|FLR|2026-11": null,
+  "FRA|FLR|2026-12": null,
+  "FRA|NAP|2026-05": {
+    "price_eur": 161.0,
+    "duration_h": 22.0
+  },
+  "FRA|NAP|2026-06": {
+    "price_eur": 98.0,
+    "duration_h": 41.083333333333336
+  },
+  "FRA|NAP|2026-07": {
+    "price_eur": 162.0,
+    "duration_h": 17.166666666666668
+  },
+  "FRA|NAP|2026-08": null,
+  "FRA|NAP|2026-09": null,
+  "FRA|NAP|2026-10": null,
+  "FRA|NAP|2026-11": null,
+  "FRA|NAP|2026-12": null,
+  "FRA|VIE|2026-05": {
+    "price_eur": 129.0,
+    "duration_h": 2.6666666666666665
+  },
+  "FRA|VIE|2026-06": {
+    "price_eur": 91.0,
+    "duration_h": 38.166666666666664
+  },
+  "FRA|VIE|2026-07": {
+    "price_eur": 114.0,
+    "duration_h": 2.6666666666666665
+  },
+  "FRA|VIE|2026-08": {
+    "price_eur": 206.0,
+    "duration_h": 2.6666666666666665
+  },
+  "FRA|VIE|2026-09": {
+    "price_eur": 122.0,
+    "duration_h": 2.6666666666666665
+  },
+  "FRA|VIE|2026-10": null,
+  "FRA|VIE|2026-11": null,
+  "FRA|VIE|2026-12": null,
+  "FRA|GVA|2026-05": {
+    "price_eur": 233.0,
+    "duration_h": 10.833333333333334
+  },
+  "FRA|GVA|2026-06": {
+    "price_eur": 149.0,
+    "duration_h": 45.75
+  },
+  "FRA|GVA|2026-07": null,
+  "FRA|GVA|2026-08": null,
+  "FRA|GVA|2026-09": null,
+  "FRA|GVA|2026-10": null,
+  "FRA|GVA|2026-11": null,
+  "FRA|GVA|2026-12": null,
+  "FRA|CPH|2026-05": {
+    "price_eur": 169.0,
+    "duration_h": 55.833333333333336
+  },
+  "FRA|CPH|2026-06": {
+    "price_eur": 118.0,
+    "duration_h": 25.666666666666668
+  },
+  "FRA|CPH|2026-07": null,
+  "FRA|CPH|2026-08": {
+    "price_eur": 104.0,
+    "duration_h": 30.166666666666668
+  },
+  "FRA|CPH|2026-09": null,
+  "FRA|CPH|2026-10": null,
+  "FRA|CPH|2026-11": null,
+  "FRA|CPH|2026-12": null,
+  "FRA|ARN|2026-05": null,
+  "FRA|ARN|2026-06": {
+    "price_eur": 148.0,
+    "duration_h": 62.416666666666664
+  },
+  "FRA|ARN|2026-07": {
+    "price_eur": 196.0,
+    "duration_h": 37.916666666666664
+  },
+  "FRA|ARN|2026-08": {
+    "price_eur": 162.0,
+    "duration_h": 51.166666666666664
+  },
+  "FRA|ARN|2026-09": {
+    "price_eur": 141.0,
+    "duration_h": 27.916666666666668
+  },
+  "FRA|ARN|2026-10": null,
+  "FRA|ARN|2026-11": null,
+  "FRA|ARN|2026-12": {
+    "price_eur": 238.0,
+    "duration_h": 20.25
+  },
+  "FRA|OSL|2026-05": {
+    "price_eur": 184.0,
+    "duration_h": 35.916666666666664
+  },
+  "FRA|OSL|2026-06": {
+    "price_eur": 123.0,
+    "duration_h": 33.666666666666664
+  },
+  "FRA|OSL|2026-07": {
+    "price_eur": 172.0,
+    "duration_h": 27.083333333333332
+  },
+  "FRA|OSL|2026-08": {
+    "price_eur": 278.0,
+    "duration_h": 31.083333333333332
+  },
+  "FRA|OSL|2026-09": null,
+  "FRA|OSL|2026-10": null,
+  "FRA|OSL|2026-11": null,
+  "FRA|OSL|2026-12": null,
+  "FRA|HEL|2026-05": {
+    "price_eur": 253.0,
+    "duration_h": 22.5
+  },
+  "FRA|HEL|2026-06": {
+    "price_eur": 267.0,
+    "duration_h": 17.0
+  },
+  "FRA|HEL|2026-07": {
+    "price_eur": 198.0,
+    "duration_h": 19.5
+  },
+  "FRA|HEL|2026-08": null,
+  "FRA|HEL|2026-09": null,
+  "FRA|HEL|2026-10": null,
+  "FRA|HEL|2026-11": {
+    "price_eur": 160.0,
+    "duration_h": 33.0
+  },
+  "FRA|HEL|2026-12": null,
+  "FRA|KEF|2026-05": {
+    "price_eur": 366.0,
+    "duration_h": 41.75
+  },
+  "FRA|KEF|2026-06": {
+    "price_eur": 252.0,
+    "duration_h": 26.25
+  },
+  "FRA|KEF|2026-07": {
+    "price_eur": 268.0,
+    "duration_h": 36.166666666666664
+  },
+  "FRA|KEF|2026-08": {
+    "price_eur": 297.0,
+    "duration_h": 53.333333333333336
+  },
+  "FRA|KEF|2026-09": null,
+  "FRA|KEF|2026-10": {
+    "price_eur": 232.0,
+    "duration_h": 30.75
+  },
+  "FRA|KEF|2026-11": null,
+  "FRA|KEF|2026-12": {
+    "price_eur": 260.0,
+    "duration_h": 45.916666666666664
+  },
+  "FRA|DUB|2026-05": {
+    "price_eur": 149.0,
+    "duration_h": 56.083333333333336
+  },
+  "FRA|DUB|2026-06": {
+    "price_eur": 85.0,
+    "duration_h": 18.0
+  },
+  "FRA|DUB|2026-07": {
+    "price_eur": 94.0,
+    "duration_h": 26.583333333333332
+  },
+  "FRA|DUB|2026-08": {
+    "price_eur": 96.0,
+    "duration_h": 35.666666666666664
+  },
+  "FRA|DUB|2026-09": {
+    "price_eur": 125.0,
+    "duration_h": 29.25
+  },
+  "FRA|DUB|2026-10": {
+    "price_eur": 115.0,
+    "duration_h": 8.833333333333334
+  },
+  "FRA|DUB|2026-11": null,
+  "FRA|DUB|2026-12": null,
+  "FRA|EDI|2026-05": {
+    "price_eur": 190.0,
+    "duration_h": 74.91666666666667
+  },
+  "FRA|EDI|2026-06": {
+    "price_eur": 115.0,
+    "duration_h": 37.666666666666664
+  },
+  "FRA|EDI|2026-07": null,
+  "FRA|EDI|2026-08": {
+    "price_eur": 291.0,
+    "duration_h": 14.166666666666666
+  },
+  "FRA|EDI|2026-09": null,
+  "FRA|EDI|2026-10": null,
+  "FRA|EDI|2026-11": null,
+  "FRA|EDI|2026-12": null,
+  "FRA|WAW|2026-05": {
+    "price_eur": 133.0,
+    "duration_h": 25.583333333333332
+  },
+  "FRA|WAW|2026-06": {
+    "price_eur": 94.0,
+    "duration_h": 45.083333333333336
+  },
+  "FRA|WAW|2026-07": {
+    "price_eur": 136.0,
+    "duration_h": 31.25
+  },
+  "FRA|WAW|2026-08": {
+    "price_eur": 148.0,
+    "duration_h": 36.583333333333336
+  },
+  "FRA|WAW|2026-09": null,
+  "FRA|WAW|2026-10": {
+    "price_eur": 340.0,
+    "duration_h": 15.75
+  },
+  "FRA|WAW|2026-11": null,
+  "FRA|WAW|2026-12": null,
+  "FRA|KRK|2026-05": {
+    "price_eur": 364.0,
+    "duration_h": 9.916666666666666
+  },
+  "FRA|KRK|2026-06": {
+    "price_eur": 149.0,
+    "duration_h": 38.25
+  },
+  "FRA|KRK|2026-07": {
+    "price_eur": 144.0,
+    "duration_h": 44.583333333333336
+  },
+  "FRA|KRK|2026-08": {
+    "price_eur": 146.0,
+    "duration_h": 7.833333333333333
+  },
+  "FRA|KRK|2026-09": null,
+  "FRA|KRK|2026-10": null,
+  "FRA|KRK|2026-11": null,
+  "FRA|KRK|2026-12": null,
+  "FRA|BUD|2026-05": {
+    "price_eur": 123.0,
+    "duration_h": 36.75
+  },
+  "FRA|BUD|2026-06": {
+    "price_eur": 95.0,
+    "duration_h": 28.583333333333332
+  },
+  "FRA|BUD|2026-07": {
+    "price_eur": 130.0,
+    "duration_h": 29.833333333333332
+  },
+  "FRA|BUD|2026-08": {
+    "price_eur": 134.0,
+    "duration_h": 22.083333333333332
+  },
+  "FRA|BUD|2026-09": {
+    "price_eur": 107.0,
+    "duration_h": 26.416666666666668
+  },
+  "FRA|BUD|2026-10": null,
+  "FRA|BUD|2026-11": null,
+  "FRA|BUD|2026-12": null,
+  "FRA|BTS|2026-05": {
+    "price_eur": 116.0,
+    "duration_h": 26.583333333333332
+  },
+  "FRA|BTS|2026-06": {
+    "price_eur": 123.0,
+    "duration_h": 23.833333333333332
+  },
+  "FRA|BTS|2026-07": {
+    "price_eur": 143.0,
+    "duration_h": 26.666666666666668
+  },
+  "FRA|BTS|2026-08": null,
+  "FRA|BTS|2026-09": null,
+  "FRA|BTS|2026-10": null,
+  "FRA|BTS|2026-11": null,
+  "FRA|BTS|2026-12": null,
+  "FRA|LJU|2026-05": {
+    "price_eur": 337.0,
+    "duration_h": 2.6666666666666665
+  },
+  "FRA|LJU|2026-06": {
+    "price_eur": 202.0,
+    "duration_h": 40.833333333333336
+  },
+  "FRA|LJU|2026-07": null,
+  "FRA|LJU|2026-08": null,
+  "FRA|LJU|2026-09": null,
+  "FRA|LJU|2026-10": null,
+  "FRA|LJU|2026-11": null,
+  "FRA|LJU|2026-12": null,
+  "FRA|ZAG|2026-05": {
+    "price_eur": 169.0,
+    "duration_h": 45.833333333333336
+  },
+  "FRA|ZAG|2026-06": {
+    "price_eur": 233.0,
+    "duration_h": 17.25
+  },
+  "FRA|ZAG|2026-07": null,
+  "FRA|ZAG|2026-08": null,
+  "FRA|ZAG|2026-09": {
+    "price_eur": 157.0,
+    "duration_h": 37.083333333333336
+  },
+  "FRA|ZAG|2026-10": null,
+  "FRA|ZAG|2026-11": null,
+  "FRA|ZAG|2026-12": null,
+  "FRA|ATH|2026-05": {
+    "price_eur": 174.0,
+    "duration_h": 48.5
+  },
+  "FRA|ATH|2026-06": {
+    "price_eur": 100.0,
+    "duration_h": 8.75
+  },
+  "FRA|ATH|2026-07": {
+    "price_eur": 167.0,
+    "duration_h": 26.333333333333332
+  },
+  "FRA|ATH|2026-08": {
+    "price_eur": 158.0,
+    "duration_h": 28.916666666666668
+  },
+  "FRA|ATH|2026-09": {
+    "price_eur": 192.0,
+    "duration_h": 30.166666666666668
+  },
+  "FRA|ATH|2026-10": {
+    "price_eur": 191.0,
+    "duration_h": 25.833333333333332
+  },
+  "FRA|ATH|2026-11": null,
+  "FRA|ATH|2026-12": null,
+  "FRA|IST|2026-05": {
+    "price_eur": 172.0,
+    "duration_h": 19.75
+  },
+  "FRA|IST|2026-06": {
+    "price_eur": 117.0,
+    "duration_h": 6.416666666666667
+  },
+  "FRA|IST|2026-07": {
+    "price_eur": 181.0,
+    "duration_h": 20.75
+  },
+  "FRA|IST|2026-08": {
+    "price_eur": 183.0,
+    "duration_h": 8.583333333333334
+  },
+  "FRA|IST|2026-09": {
+    "price_eur": 114.0,
+    "duration_h": 6.416666666666667
+  },
+  "FRA|IST|2026-10": {
+    "price_eur": 174.0,
+    "duration_h": 15.0
+  },
+  "FRA|IST|2026-11": {
+    "price_eur": 157.0,
+    "duration_h": 6.25
+  },
+  "FRA|IST|2026-12": {
+    "price_eur": 197.0,
+    "duration_h": 22.25
+  },
+  "FRA|SOF|2026-05": {
+    "price_eur": 198.0,
+    "duration_h": 14.25
+  },
+  "FRA|SOF|2026-06": {
+    "price_eur": 96.0,
+    "duration_h": 27.25
+  },
+  "FRA|SOF|2026-07": {
+    "price_eur": 162.0,
+    "duration_h": 30.416666666666668
+  },
+  "FRA|SOF|2026-08": {
+    "price_eur": 193.0,
+    "duration_h": 56.083333333333336
+  },
+  "FRA|SOF|2026-09": {
+    "price_eur": 142.0,
+    "duration_h": 41.666666666666664
+  },
+  "FRA|SOF|2026-10": {
+    "price_eur": 177.0,
+    "duration_h": 9.166666666666666
+  },
+  "FRA|SOF|2026-11": null,
+  "FRA|SOF|2026-12": null,
+  "FRA|OTP|2026-05": {
+    "price_eur": 129.0,
+    "duration_h": 24.916666666666668
+  },
+  "FRA|OTP|2026-06": {
+    "price_eur": 106.0,
+    "duration_h": 23.416666666666668
+  },
+  "FRA|OTP|2026-07": {
+    "price_eur": 179.0,
+    "duration_h": 29.916666666666668
+  },
+  "FRA|OTP|2026-08": {
+    "price_eur": 206.0,
+    "duration_h": 29.916666666666668
+  },
+  "FRA|OTP|2026-09": null,
+  "FRA|OTP|2026-10": null,
+  "FRA|OTP|2026-11": null,
+  "FRA|OTP|2026-12": null,
+  "FRA|TLL|2026-05": {
+    "price_eur": 161.0,
+    "duration_h": 28.0
+  },
+  "FRA|TLL|2026-06": {
+    "price_eur": 86.0,
+    "duration_h": 33.666666666666664
+  },
+  "FRA|TLL|2026-07": {
+    "price_eur": 165.0,
+    "duration_h": 24.333333333333332
+  },
+  "FRA|TLL|2026-08": {
+    "price_eur": 251.0,
+    "duration_h": 20.916666666666668
+  },
+  "FRA|TLL|2026-09": null,
+  "FRA|TLL|2026-10": null,
+  "FRA|TLL|2026-11": {
+    "price_eur": 160.0,
+    "duration_h": 17.916666666666668
+  },
+  "FRA|TLL|2026-12": null,
+  "FRA|RIX|2026-05": {
+    "price_eur": 236.0,
+    "duration_h": 4.5
+  },
+  "FRA|RIX|2026-06": {
+    "price_eur": 147.0,
+    "duration_h": 64.0
+  },
+  "FRA|RIX|2026-07": {
+    "price_eur": 214.0,
+    "duration_h": 4.5
+  },
+  "FRA|RIX|2026-08": {
+    "price_eur": 175.0,
+    "duration_h": 46.25
+  },
+  "FRA|RIX|2026-09": {
+    "price_eur": 170.0,
+    "duration_h": 4.5
+  },
+  "FRA|RIX|2026-10": null,
+  "FRA|RIX|2026-11": {
+    "price_eur": 191.0,
+    "duration_h": 4.583333333333333
+  },
+  "FRA|RIX|2026-12": {
+    "price_eur": 184.0,
+    "duration_h": 30.083333333333332
+  },
+  "MAD|CDG|2026-05": {
+    "price_eur": 189.0,
+    "duration_h": 4.25
+  },
+  "MAD|CDG|2026-06": {
+    "price_eur": 132.0,
+    "duration_h": 4.333333333333333
+  },
+  "MAD|CDG|2026-07": {
+    "price_eur": 149.0,
+    "duration_h": 4.25
+  },
+  "MAD|CDG|2026-08": {
+    "price_eur": 160.0,
+    "duration_h": 4.333333333333333
+  },
+  "MAD|CDG|2026-09": {
+    "price_eur": 134.0,
+    "duration_h": 4.25
+  },
+  "MAD|CDG|2026-10": null,
+  "MAD|CDG|2026-11": null,
+  "MAD|CDG|2026-12": {
+    "price_eur": 246.0,
+    "duration_h": 4.333333333333333
+  },
+  "MAD|AMS|2026-05": {
+    "price_eur": 173.0,
+    "duration_h": 5.25
+  },
+  "MAD|AMS|2026-06": {
+    "price_eur": 165.0,
+    "duration_h": 32.333333333333336
+  },
+  "MAD|AMS|2026-07": {
+    "price_eur": 203.0,
+    "duration_h": 53.0
+  },
+  "MAD|AMS|2026-08": {
+    "price_eur": 184.0,
+    "duration_h": 47.75
+  },
+  "MAD|AMS|2026-09": null,
+  "MAD|AMS|2026-10": {
+    "price_eur": 219.0,
+    "duration_h": 5.25
+  },
+  "MAD|AMS|2026-11": null,
+  "MAD|AMS|2026-12": {
+    "price_eur": 205.0,
+    "duration_h": 9.333333333333334
+  },
+  "MAD|BRU|2026-05": null,
+  "MAD|BRU|2026-06": {
+    "price_eur": 96.0,
+    "duration_h": 4.833333333333333
+  },
+  "MAD|BRU|2026-07": {
+    "price_eur": 136.0,
+    "duration_h": 4.75
+  },
+  "MAD|BRU|2026-08": null,
+  "MAD|BRU|2026-09": {
+    "price_eur": 70.0,
+    "duration_h": 4.666666666666667
+  },
+  "MAD|BRU|2026-10": null,
+  "MAD|BRU|2026-11": null,
+  "MAD|BRU|2026-12": null,
+  "MAD|LHR|2026-05": {
+    "price_eur": 204.0,
+    "duration_h": 4.833333333333333
+  },
+  "MAD|LHR|2026-06": {
+    "price_eur": 116.0,
+    "duration_h": 4.833333333333333
+  },
+  "MAD|LHR|2026-07": {
+    "price_eur": 222.0,
+    "duration_h": 4.833333333333333
+  },
+  "MAD|LHR|2026-08": {
+    "price_eur": 196.0,
+    "duration_h": 4.666666666666667
+  },
+  "MAD|LHR|2026-09": {
+    "price_eur": 210.0,
+    "duration_h": 4.833333333333333
+  },
+  "MAD|LHR|2026-10": null,
+  "MAD|LHR|2026-11": null,
+  "MAD|LHR|2026-12": null,
+  "MAD|BCN|2026-05": {
+    "price_eur": 109.0,
+    "duration_h": 2.75
+  },
+  "MAD|BCN|2026-06": {
+    "price_eur": 86.0,
+    "duration_h": 52.083333333333336
+  },
+  "MAD|BCN|2026-07": {
+    "price_eur": 103.0,
+    "duration_h": 28.583333333333332
+  },
+  "MAD|BCN|2026-08": {
+    "price_eur": 107.0,
+    "duration_h": 32.5
+  },
+  "MAD|BCN|2026-09": null,
+  "MAD|BCN|2026-10": {
+    "price_eur": 110.0,
+    "duration_h": 2.75
+  },
+  "MAD|BCN|2026-11": null,
+  "MAD|BCN|2026-12": {
+    "price_eur": 116.0,
+    "duration_h": 32.166666666666664
+  },
+  "MAD|LIS|2026-05": {
+    "price_eur": 55.0,
+    "duration_h": 2.8333333333333335
+  },
+  "MAD|LIS|2026-06": {
+    "price_eur": 37.0,
+    "duration_h": 2.8333333333333335
+  },
+  "MAD|LIS|2026-07": {
+    "price_eur": 68.0,
+    "duration_h": 2.6666666666666665
+  },
+  "MAD|LIS|2026-08": {
+    "price_eur": 57.0,
+    "duration_h": 2.75
+  },
+  "MAD|LIS|2026-09": {
+    "price_eur": 72.0,
+    "duration_h": 2.75
+  },
+  "MAD|LIS|2026-10": {
+    "price_eur": 65.0,
+    "duration_h": 2.6666666666666665
+  },
+  "MAD|LIS|2026-11": null,
+  "MAD|LIS|2026-12": null,
+  "MAD|FCO|2026-05": {
+    "price_eur": 79.0,
+    "duration_h": 28.083333333333332
+  },
+  "MAD|FCO|2026-06": {
+    "price_eur": 85.0,
+    "duration_h": 5.166666666666667
+  },
+  "MAD|FCO|2026-07": {
+    "price_eur": 87.0,
+    "duration_h": 5.166666666666667
+  },
+  "MAD|FCO|2026-08": {
+    "price_eur": 90.0,
+    "duration_h": 5.166666666666667
+  },
+  "MAD|FCO|2026-09": {
+    "price_eur": 79.0,
+    "duration_h": 5.083333333333333
+  },
+  "MAD|FCO|2026-10": null,
+  "MAD|FCO|2026-11": null,
+  "MAD|FCO|2026-12": null,
+  "MAD|MXP|2026-05": {
+    "price_eur": 80.0,
+    "duration_h": 4.75
+  },
+  "MAD|MXP|2026-06": {
+    "price_eur": 43.0,
+    "duration_h": 4.5
+  },
+  "MAD|MXP|2026-07": {
+    "price_eur": 45.0,
+    "duration_h": 4.75
+  },
+  "MAD|MXP|2026-08": {
+    "price_eur": 66.0,
+    "duration_h": 4.75
+  },
+  "MAD|MXP|2026-09": {
+    "price_eur": 61.0,
+    "duration_h": 4.5
+  },
+  "MAD|MXP|2026-10": null,
+  "MAD|MXP|2026-11": null,
+  "MAD|MXP|2026-12": null,
+  "MAD|FLR|2026-05": {
+    "price_eur": 202.0,
+    "duration_h": 36.416666666666664
+  },
+  "MAD|FLR|2026-06": {
+    "price_eur": 168.0,
+    "duration_h": 4.75
+  },
+  "MAD|FLR|2026-07": null,
+  "MAD|FLR|2026-08": null,
+  "MAD|FLR|2026-09": {
+    "price_eur": 173.0,
+    "duration_h": 32.833333333333336
+  },
+  "MAD|FLR|2026-10": null,
+  "MAD|FLR|2026-11": null,
+  "MAD|FLR|2026-12": null,
+  "MAD|VCE|2026-05": {
+    "price_eur": 89.0,
+    "duration_h": 5.25
+  },
+  "MAD|VCE|2026-06": {
+    "price_eur": 55.0,
+    "duration_h": 5.25
+  },
+  "MAD|VCE|2026-07": {
+    "price_eur": 53.0,
+    "duration_h": 5.25
+  },
+  "MAD|VCE|2026-08": null,
+  "MAD|VCE|2026-09": {
+    "price_eur": 99.0,
+    "duration_h": 7.166666666666667
+  },
+  "MAD|VCE|2026-10": {
+    "price_eur": 60.0,
+    "duration_h": 5.25
+  },
+  "MAD|VCE|2026-11": {
+    "price_eur": 83.0,
+    "duration_h": 5.166666666666667
+  },
+  "MAD|VCE|2026-12": null,
+  "MAD|NAP|2026-05": {
+    "price_eur": 132.0,
+    "duration_h": 29.166666666666668
+  },
+  "MAD|NAP|2026-06": {
+    "price_eur": 131.0,
+    "duration_h": 69.66666666666667
+  },
+  "MAD|NAP|2026-07": {
+    "price_eur": 97.0,
+    "duration_h": 38.583333333333336
+  },
+  "MAD|NAP|2026-08": {
+    "price_eur": 168.0,
+    "duration_h": 55.666666666666664
+  },
+  "MAD|NAP|2026-09": null,
+  "MAD|NAP|2026-10": null,
+  "MAD|NAP|2026-11": null,
+  "MAD|NAP|2026-12": null,
+  "MAD|VIE|2026-05": {
+    "price_eur": 126.0,
+    "duration_h": 23.583333333333332
+  },
+  "MAD|VIE|2026-06": {
+    "price_eur": 83.0,
+    "duration_h": 6.166666666666667
+  },
+  "MAD|VIE|2026-07": null,
+  "MAD|VIE|2026-08": {
+    "price_eur": 125.0,
+    "duration_h": 6.166666666666667
+  },
+  "MAD|VIE|2026-09": null,
+  "MAD|VIE|2026-10": {
+    "price_eur": 125.0,
+    "duration_h": 44.333333333333336
+  },
+  "MAD|VIE|2026-11": {
+    "price_eur": 129.0,
+    "duration_h": 30.166666666666668
+  },
+  "MAD|VIE|2026-12": null,
+  "MAD|SZG|2026-05": null,
+  "MAD|SZG|2026-06": null,
+  "MAD|SZG|2026-07": null,
+  "MAD|SZG|2026-08": null,
+  "MAD|SZG|2026-09": null,
+  "MAD|SZG|2026-10": null,
+  "MAD|SZG|2026-11": null,
+  "MAD|SZG|2026-12": null,
+  "MAD|ZRH|2026-05": null,
+  "MAD|ZRH|2026-06": null,
+  "MAD|ZRH|2026-07": {
+    "price_eur": 203.0,
+    "duration_h": 13.666666666666666
+  },
+  "MAD|ZRH|2026-08": {
+    "price_eur": 197.0,
+    "duration_h": 13.833333333333334
+  },
+  "MAD|ZRH|2026-09": null,
+  "MAD|ZRH|2026-10": null,
+  "MAD|ZRH|2026-11": null,
+  "MAD|ZRH|2026-12": null,
+  "MAD|GVA|2026-05": {
+    "price_eur": 160.0,
+    "duration_h": 4.083333333333333
+  },
+  "MAD|GVA|2026-06": {
+    "price_eur": 263.0,
+    "duration_h": 18.166666666666668
+  },
+  "MAD|GVA|2026-07": null,
+  "MAD|GVA|2026-08": null,
+  "MAD|GVA|2026-09": null,
+  "MAD|GVA|2026-10": null,
+  "MAD|GVA|2026-11": null,
+  "MAD|GVA|2026-12": {
+    "price_eur": 152.0,
+    "duration_h": 4.083333333333333
+  },
+  "MAD|MUC|2026-05": {
+    "price_eur": 258.0,
+    "duration_h": 64.16666666666667
+  },
+  "MAD|MUC|2026-06": {
+    "price_eur": 158.0,
+    "duration_h": 21.416666666666668
+  },
+  "MAD|MUC|2026-07": {
+    "price_eur": 249.0,
+    "duration_h": 35.666666666666664
+  },
+  "MAD|MUC|2026-08": null,
+  "MAD|MUC|2026-09": null,
+  "MAD|MUC|2026-10": {
+    "price_eur": 182.0,
+    "duration_h": 28.833333333333332
+  },
+  "MAD|MUC|2026-11": null,
+  "MAD|MUC|2026-12": {
+    "price_eur": 209.0,
+    "duration_h": 5.416666666666667
+  },
+  "MAD|HAM|2026-05": {
+    "price_eur": 296.0,
+    "duration_h": 63.416666666666664
+  },
+  "MAD|HAM|2026-06": null,
+  "MAD|HAM|2026-07": null,
+  "MAD|HAM|2026-08": null,
+  "MAD|HAM|2026-09": null,
+  "MAD|HAM|2026-10": null,
+  "MAD|HAM|2026-11": null,
+  "MAD|HAM|2026-12": null,
+  "MAD|FRA|2026-05": {
+    "price_eur": 168.0,
+    "duration_h": 5.583333333333333
+  },
+  "MAD|FRA|2026-06": {
+    "price_eur": 119.0,
+    "duration_h": 18.5
+  },
+  "MAD|FRA|2026-07": null,
+  "MAD|FRA|2026-08": {
+    "price_eur": 130.0,
+    "duration_h": 23.5
+  },
+  "MAD|FRA|2026-09": null,
+  "MAD|FRA|2026-10": null,
+  "MAD|FRA|2026-11": null,
+  "MAD|FRA|2026-12": null,
+  "MAD|CGN|2026-05": {
+    "price_eur": 217.0,
+    "duration_h": 16.583333333333332
+  },
+  "MAD|CGN|2026-06": {
+    "price_eur": 214.0,
+    "duration_h": 26.333333333333332
+  },
+  "MAD|CGN|2026-07": null,
+  "MAD|CGN|2026-08": {
+    "price_eur": 176.0,
+    "duration_h": 43.416666666666664
+  },
+  "MAD|CGN|2026-09": null,
+  "MAD|CGN|2026-10": null,
+  "MAD|CGN|2026-11": null,
+  "MAD|CGN|2026-12": null,
+  "MAD|CPH|2026-05": null,
+  "MAD|CPH|2026-06": {
+    "price_eur": 133.0,
+    "duration_h": 47.333333333333336
+  },
+  "MAD|CPH|2026-07": {
+    "price_eur": 229.0,
+    "duration_h": 47.333333333333336
+  },
+  "MAD|CPH|2026-08": null,
+  "MAD|CPH|2026-09": null,
+  "MAD|CPH|2026-10": null,
+  "MAD|CPH|2026-11": null,
+  "MAD|CPH|2026-12": null,
+  "MAD|ARN|2026-05": null,
+  "MAD|ARN|2026-06": {
+    "price_eur": 167.0,
+    "duration_h": 40.333333333333336
+  },
+  "MAD|ARN|2026-07": {
+    "price_eur": 176.0,
+    "duration_h": 55.5
+  },
+  "MAD|ARN|2026-08": {
+    "price_eur": 190.0,
+    "duration_h": 39.25
+  },
+  "MAD|ARN|2026-09": null,
+  "MAD|ARN|2026-10": null,
+  "MAD|ARN|2026-11": null,
+  "MAD|ARN|2026-12": null,
+  "MAD|OSL|2026-05": {
+    "price_eur": 142.0,
+    "duration_h": 7.166666666666667
+  },
+  "MAD|OSL|2026-06": {
+    "price_eur": 176.0,
+    "duration_h": 26.583333333333332
+  },
+  "MAD|OSL|2026-07": {
+    "price_eur": 189.0,
+    "duration_h": 32.083333333333336
+  },
+  "MAD|OSL|2026-08": {
+    "price_eur": 147.0,
+    "duration_h": 24.0
+  },
+  "MAD|OSL|2026-09": {
+    "price_eur": 156.0,
+    "duration_h": 20.0
+  },
+  "MAD|OSL|2026-10": null,
+  "MAD|OSL|2026-11": null,
+  "MAD|OSL|2026-12": null,
+  "MAD|HEL|2026-05": null,
+  "MAD|HEL|2026-06": {
+    "price_eur": 196.0,
+    "duration_h": 37.25
+  },
+  "MAD|HEL|2026-07": null,
+  "MAD|HEL|2026-08": {
+    "price_eur": 205.0,
+    "duration_h": 28.75
+  },
+  "MAD|HEL|2026-09": null,
+  "MAD|HEL|2026-10": null,
+  "MAD|HEL|2026-11": null,
+  "MAD|HEL|2026-12": null,
+  "MAD|KEF|2026-05": null,
+  "MAD|KEF|2026-06": {
+    "price_eur": 267.0,
+    "duration_h": 18.333333333333332
+  },
+  "MAD|KEF|2026-07": {
+    "price_eur": 296.0,
+    "duration_h": 23.416666666666668
+  },
+  "MAD|KEF|2026-08": {
+    "price_eur": 330.0,
+    "duration_h": 56.5
+  },
+  "MAD|KEF|2026-09": {
+    "price_eur": 278.0,
+    "duration_h": 35.5
+  },
+  "MAD|KEF|2026-10": {
+    "price_eur": 245.0,
+    "duration_h": 57.333333333333336
+  },
+  "MAD|KEF|2026-11": null,
+  "MAD|KEF|2026-12": null,
+  "MAD|DUB|2026-05": {
+    "price_eur": 105.0,
+    "duration_h": 35.583333333333336
+  },
+  "MAD|DUB|2026-06": {
+    "price_eur": 84.0,
+    "duration_h": 5.416666666666667
+  },
+  "MAD|DUB|2026-07": null,
+  "MAD|DUB|2026-08": null,
+  "MAD|DUB|2026-09": null,
+  "MAD|DUB|2026-10": null,
+  "MAD|DUB|2026-11": null,
+  "MAD|DUB|2026-12": null,
+  "MAD|EDI|2026-05": null,
+  "MAD|EDI|2026-06": null,
+  "MAD|EDI|2026-07": {
+    "price_eur": 137.0,
+    "duration_h": 25.333333333333332
+  },
+  "MAD|EDI|2026-08": {
+    "price_eur": 199.0,
+    "duration_h": 26.583333333333332
+  },
+  "MAD|EDI|2026-09": null,
+  "MAD|EDI|2026-10": null,
+  "MAD|EDI|2026-11": null,
+  "MAD|EDI|2026-12": null,
+  "MAD|WAW|2026-05": {
+    "price_eur": 78.0,
+    "duration_h": 7.333333333333333
+  },
+  "MAD|WAW|2026-06": {
+    "price_eur": 73.0,
+    "duration_h": 7.333333333333333
+  },
+  "MAD|WAW|2026-07": {
+    "price_eur": 97.0,
+    "duration_h": 16.166666666666668
+  },
+  "MAD|WAW|2026-08": {
+    "price_eur": 105.0,
+    "duration_h": 34.166666666666664
+  },
+  "MAD|WAW|2026-09": null,
+  "MAD|WAW|2026-10": null,
+  "MAD|WAW|2026-11": null,
+  "MAD|WAW|2026-12": {
+    "price_eur": 118.0,
+    "duration_h": 7.416666666666667
+  },
+  "MAD|KRK|2026-05": {
+    "price_eur": 108.0,
+    "duration_h": 14.166666666666666
+  },
+  "MAD|KRK|2026-06": {
+    "price_eur": 93.0,
+    "duration_h": 50.666666666666664
+  },
+  "MAD|KRK|2026-07": {
+    "price_eur": 163.0,
+    "duration_h": 28.5
+  },
+  "MAD|KRK|2026-08": {
+    "price_eur": 138.0,
+    "duration_h": 42.583333333333336
+  },
+  "MAD|KRK|2026-09": {
+    "price_eur": 122.0,
+    "duration_h": 28.75
+  },
+  "MAD|KRK|2026-10": null,
+  "MAD|KRK|2026-11": null,
+  "MAD|KRK|2026-12": null,
+  "MAD|PRG|2026-05": {
+    "price_eur": 132.0,
+    "duration_h": 23.916666666666668
+  },
+  "MAD|PRG|2026-06": {
+    "price_eur": 134.0,
+    "duration_h": 27.25
+  },
+  "MAD|PRG|2026-07": {
+    "price_eur": 138.0,
+    "duration_h": 13.0
+  },
+  "MAD|PRG|2026-08": {
+    "price_eur": 209.0,
+    "duration_h": 21.083333333333332
+  },
+  "MAD|PRG|2026-09": {
+    "price_eur": 110.0,
+    "duration_h": 6.083333333333333
+  },
+  "MAD|PRG|2026-10": null,
+  "MAD|PRG|2026-11": null,
+  "MAD|PRG|2026-12": {
+    "price_eur": 165.0,
+    "duration_h": 11.5
+  },
+  "MAD|BUD|2026-05": {
+    "price_eur": 89.0,
+    "duration_h": 32.333333333333336
+  },
+  "MAD|BUD|2026-06": {
+    "price_eur": 91.0,
+    "duration_h": 6.416666666666667
+  },
+  "MAD|BUD|2026-07": {
+    "price_eur": 64.0,
+    "duration_h": 6.583333333333333
+  },
+  "MAD|BUD|2026-08": {
+    "price_eur": 131.0,
+    "duration_h": 25.416666666666668
+  },
+  "MAD|BUD|2026-09": null,
+  "MAD|BUD|2026-10": null,
+  "MAD|BUD|2026-11": null,
+  "MAD|BUD|2026-12": null,
+  "MAD|BTS|2026-05": null,
+  "MAD|BTS|2026-06": null,
+  "MAD|BTS|2026-07": null,
+  "MAD|BTS|2026-08": null,
+  "MAD|BTS|2026-09": null,
+  "MAD|BTS|2026-10": null,
+  "MAD|BTS|2026-11": null,
+  "MAD|BTS|2026-12": null,
+  "MAD|LJU|2026-05": null,
+  "MAD|LJU|2026-06": null,
+  "MAD|LJU|2026-07": null,
+  "MAD|LJU|2026-08": null,
+  "MAD|LJU|2026-09": null,
+  "MAD|LJU|2026-10": null,
+  "MAD|LJU|2026-11": null,
+  "MAD|LJU|2026-12": null,
+  "MAD|ZAG|2026-05": null,
+  "MAD|ZAG|2026-06": {
+    "price_eur": 176.0,
+    "duration_h": 13.5
+  },
+  "MAD|ZAG|2026-07": {
+    "price_eur": 120.0,
+    "duration_h": 5.666666666666667
+  },
+  "MAD|ZAG|2026-08": null,
+  "MAD|ZAG|2026-09": null,
+  "MAD|ZAG|2026-10": null,
+  "MAD|ZAG|2026-11": null,
+  "MAD|ZAG|2026-12": null,
+  "MAD|ATH|2026-05": {
+    "price_eur": 140.0,
+    "duration_h": 47.5
+  },
+  "MAD|ATH|2026-06": {
+    "price_eur": 113.0,
+    "duration_h": 18.166666666666668
+  },
+  "MAD|ATH|2026-07": {
+    "price_eur": 143.0,
+    "duration_h": 39.25
+  },
+  "MAD|ATH|2026-08": {
+    "price_eur": 196.0,
+    "duration_h": 44.5
+  },
+  "MAD|ATH|2026-09": null,
+  "MAD|ATH|2026-10": {
+    "price_eur": 120.0,
+    "duration_h": 34.0
+  },
+  "MAD|ATH|2026-11": null,
+  "MAD|ATH|2026-12": null,
+  "MAD|IST|2026-05": {
+    "price_eur": 193.0,
+    "duration_h": 30.0
+  },
+  "MAD|IST|2026-06": {
+    "price_eur": 168.0,
+    "duration_h": 20.666666666666668
+  },
+  "MAD|IST|2026-07": {
+    "price_eur": 201.0,
+    "duration_h": 22.583333333333332
+  },
+  "MAD|IST|2026-08": {
+    "price_eur": 211.0,
+    "duration_h": 35.166666666666664
+  },
+  "MAD|IST|2026-09": {
+    "price_eur": 212.0,
+    "duration_h": 52.083333333333336
+  },
+  "MAD|IST|2026-10": {
+    "price_eur": 201.0,
+    "duration_h": 42.583333333333336
+  },
+  "MAD|IST|2026-11": {
+    "price_eur": 193.0,
+    "duration_h": 31.916666666666668
+  },
+  "MAD|IST|2026-12": null,
+  "MAD|SOF|2026-05": {
+    "price_eur": 86.0,
+    "duration_h": 7.416666666666667
+  },
+  "MAD|SOF|2026-06": {
+    "price_eur": 76.0,
+    "duration_h": 7.166666666666667
+  },
+  "MAD|SOF|2026-07": {
+    "price_eur": 84.0,
+    "duration_h": 15.75
+  },
+  "MAD|SOF|2026-08": {
+    "price_eur": 131.0,
+    "duration_h": 28.083333333333332
+  },
+  "MAD|SOF|2026-09": null,
+  "MAD|SOF|2026-10": {
+    "price_eur": 159.0,
+    "duration_h": 34.25
+  },
+  "MAD|SOF|2026-11": null,
+  "MAD|SOF|2026-12": {
+    "price_eur": 172.0,
+    "duration_h": 29.916666666666668
+  },
+  "MAD|OTP|2026-05": {
+    "price_eur": 88.0,
+    "duration_h": 16.583333333333332
+  },
+  "MAD|OTP|2026-06": {
+    "price_eur": 97.0,
+    "duration_h": 18.416666666666668
+  },
+  "MAD|OTP|2026-07": {
+    "price_eur": 149.0,
+    "duration_h": 38.25
+  },
+  "MAD|OTP|2026-08": {
+    "price_eur": 149.0,
+    "duration_h": 27.5
+  },
+  "MAD|OTP|2026-09": null,
+  "MAD|OTP|2026-10": null,
+  "MAD|OTP|2026-11": null,
+  "MAD|OTP|2026-12": null,
+  "MAD|TLL|2026-05": {
+    "price_eur": 162.0,
+    "duration_h": 38.75
+  },
+  "MAD|TLL|2026-06": {
+    "price_eur": 150.0,
+    "duration_h": 58.583333333333336
+  },
+  "MAD|TLL|2026-07": {
+    "price_eur": 233.0,
+    "duration_h": 59.916666666666664
+  },
+  "MAD|TLL|2026-08": {
+    "price_eur": 216.0,
+    "duration_h": 37.25
+  },
+  "MAD|TLL|2026-09": null,
+  "MAD|TLL|2026-10": null,
+  "MAD|TLL|2026-11": null,
+  "MAD|TLL|2026-12": null,
+  "MAD|RIX|2026-05": {
+    "price_eur": 166.0,
+    "duration_h": 45.666666666666664
+  },
+  "MAD|RIX|2026-06": {
+    "price_eur": 202.0,
+    "duration_h": 25.833333333333332
+  },
+  "MAD|RIX|2026-07": {
+    "price_eur": 177.0,
+    "duration_h": 49.583333333333336
+  },
+  "MAD|RIX|2026-08": {
+    "price_eur": 215.0,
+    "duration_h": 43.583333333333336
+  },
+  "MAD|RIX|2026-09": {
+    "price_eur": 264.0,
+    "duration_h": 24.5
+  },
+  "MAD|RIX|2026-10": null,
+  "MAD|RIX|2026-11": null,
+  "MAD|RIX|2026-12": null
+}
