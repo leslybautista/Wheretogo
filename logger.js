@@ -13,6 +13,12 @@
   const participant = params.get("p") || "dev";     // "P01" … "P40"
   const sessionId   = `${participant}_${condition}_${Date.now()}`;
 
+  /* ── Claves de localStorage específicas por condición ── */
+  /* Usar wtg_log_A / wtg_log_B evita que dos tabs activos se sobreescriban */
+  const LOG_KEY  = `wtg_log_${condition}`;
+  const COND_KEY = `wtg_condition_${condition}`;
+  const SESS_KEY = `wtg_session_${condition}`;
+
   /* ── 2. Expone variables globales (las lee wayfinder-app.js) ── */
   window.STUDY_CONDITION   = condition;
   window.STUDY_SESSION_ID  = sessionId;
@@ -37,10 +43,10 @@
 
     /* Persiste en localStorage — accesible desde userstudy/ (mismo dominio) */
     try {
-      localStorage.setItem("wtg_log",         JSON.stringify(window.SESSION_LOG));
-      localStorage.setItem("wtg_condition",   condition);
-      localStorage.setItem("wtg_session",     sessionId);
-      localStorage.setItem("wtg_participant", participant);
+      localStorage.setItem(LOG_KEY,              JSON.stringify(window.SESSION_LOG));
+      localStorage.setItem(COND_KEY,             condition);
+      localStorage.setItem(SESS_KEY,             sessionId);
+      localStorage.setItem("wtg_participant",    participant);
     } catch (_) { /* quota exceeded — continúa sin crashear */ }
   };
 
@@ -74,7 +80,7 @@
     logEvent("SESSION_END", { n_events: window.SESSION_LOG.length });
     /* Fuerza escritura final antes de salir */
     try {
-      localStorage.setItem("wtg_log", JSON.stringify(window.SESSION_LOG));
+      localStorage.setItem(LOG_KEY, JSON.stringify(window.SESSION_LOG));
     } catch (_) {}
   });
 
