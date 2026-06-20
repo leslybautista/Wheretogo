@@ -545,22 +545,15 @@ function drawBasemap(){
   });
 }
 
-function drawMini(data){
-  if (!miniDotsEl) return;
-
+function _updateMiniDots(data){
+  if(!miniDotsEl) return;
   const O = ORIGINS[STATE.originKey];
   const focusName = STATE.active || STATE.hovered;
-
-  /* ── Dots layer: same tier/size/color logic as the radial map ── */
   const gDots = miniDotsEl;
   gDots.innerHTML = "";
-
-  // Origin dot
   const [ox, oy] = miniProject(O.lat, O.lon);
   gDots.appendChild(svgEl("circle", { cx: ox, cy: oy, r: 4.5, class: "wf-mini-origin" }));
   gDots.appendChild(svgEl("circle", { cx: ox, cy: oy, r: 7,   class: "wf-mini-origin-ring" }));
-
-  // Destination dots — same tier colour as radial (top/mid/low)
   data.forEach(d => {
     const [x, y] = miniProject(d.lat, d.lon);
     const tier = d.rank <= 5 ? "top" : d.rank <= 12 ? "mid" : "low";
@@ -569,8 +562,6 @@ function drawMini(data){
     const cls  = `wf-mini-dot wf-mini-${tier}${isFocus ? " wf-mini-is-focus" : ""}`;
     gDots.appendChild(svgEl("circle", { cx: x, cy: y, r, class: cls }));
   });
-
-  // Focus accent ring on active/hovered city
   if(focusName){
     const fd = data.find(x => x.name === focusName);
     if(fd){
@@ -578,6 +569,10 @@ function drawMini(data){
       gDots.appendChild(svgEl("circle", { cx: fx, cy: fy, r: 6.5, class: "wf-mini-focus" }));
     }
   }
+}
+
+function drawMini(data){
+  _updateMiniDots(data);
 
   /* ── Hit targets layer: transparent circles that receive clicks/hovers ── */
   if (!miniHitsEl) return;
@@ -590,7 +585,7 @@ function drawMini(data){
     hit.addEventListener("mouseenter", () => {
       STATE.hovered = d.name;
       drawOverlay(lastData);
-      drawMini(lastData);
+      _updateMiniDots(lastData);
       drawHeadline(lastData);
       _syncLabelVisibility();
       gLayer.dots.classList.add("has-focus");
@@ -605,7 +600,7 @@ function drawMini(data){
     hit.addEventListener("mouseleave", () => {
       STATE.hovered = null;
       drawOverlay(lastData);
-      drawMini(lastData);
+      _updateMiniDots(lastData);
       drawHeadline(lastData);
       _syncLabelVisibility();
       gLayer.dots.classList.toggle("has-focus", !!STATE.active);
@@ -617,31 +612,7 @@ function drawMini(data){
         el.classList.remove("is-hover");
       });
     });
-    hit.addEventListener("click", () => {
-      STATE.active = (STATE.active === d.name) ? null : d.name;
-      drawOverlay(lastData);
-      _syncLabelVisibility();
-      drawMini(lastData);
-      drawHeadline(lastData);
-      gLayer.dots.classList.toggle("has-focus", !!(STATE.active || STATE.hovered));
-      gLayer.dots.querySelectorAll(".wf-dot-g").forEach(g => {
-        const dot = g.querySelector(".wf-dot");
-        if(dot) dot.classList.toggle("is-focus", g.getAttribute("data-name") === (STATE.active || STATE.hovered));
-      });
-      if(listEl){
-        listEl.querySelectorAll(".wf-rank-card").forEach(el => {
-          el.classList.toggle("is-active", el.getAttribute("data-name") === STATE.active);
-        });
-        if(STATE.active){
-          const cardEl = listEl.querySelector(`.wf-rank-card[data-name="${CSS.escape(STATE.active)}"]`);
-          if(cardEl){
-            const top = cardEl.offsetTop - listEl.offsetTop - 12;
-            listEl.scrollTo({ top, behavior: "smooth" });
-          }
-        }
-      }
-      if(STATE.active) openDetail(STATE.active);
-    });
+    hit.addEventListener("click", () => onSelect(d.name));
     gHits.appendChild(hit);
   });
 }
@@ -2081,8 +2052,9 @@ function onSelect(name){
   if(STATE.active && listEl){
     const el = listEl.querySelector(`.wf-rank-card[data-name="${CSS.escape(STATE.active)}"]`);
     if(el){
-      const top = el.offsetTop - listEl.offsetTop - 12;
-      listEl.scrollTo({top, behavior:"smooth"});
+      const cardRect = el.getBoundingClientRect();
+      const listRect = listEl.getBoundingClientRect();
+      listEl.scrollTo({ top: listEl.scrollTop + (cardRect.top - listRect.top) - 12, behavior: "smooth" });
     }
   }
 }
