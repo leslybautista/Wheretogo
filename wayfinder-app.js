@@ -732,7 +732,7 @@ function drawDots(data){
       const hit = svgEl("circle", { class:"wf-dot-hit" });
       g.appendChild(hit);
       const name = d.name;
-      g.addEventListener("mouseenter", () => onHover(name));
+      g.addEventListener("mouseenter", () => onHover(name, "map"));
       g.addEventListener("mouseleave", () => onHover(null));
       g.addEventListener("click", (e) => {
         if(d.rank > 20){
@@ -864,7 +864,7 @@ function drawLabels(data){
       const tx = svgEl("text", { class:"wf-label" });
       el.appendChild(ln);
       el.appendChild(tx);
-      el.addEventListener("mouseenter", () => onHover(d.name));
+      el.addEventListener("mouseenter", () => onHover(d.name, "map"));
       el.addEventListener("mouseleave", () => onHover(null));
       el.addEventListener("click",      () => onSelect(d.name));
       return el;
@@ -1008,7 +1008,7 @@ function drawOverlay(data){
   }
   const t = svgEl("text",{x:lx,y:ly,class:"wf-label wf-label-focus","text-anchor":anchor,"dominant-baseline":"middle"});
   t.textContent = d.name;
-  t.addEventListener("mouseenter", () => onHover(focus));
+  t.addEventListener("mouseenter", () => onHover(focus, "map"));
   t.addEventListener("mouseleave", () => onHover(null));
   t.addEventListener("click",      () => onSelect(focus));
   g.appendChild(t);
@@ -1461,7 +1461,7 @@ function drawRanking(data){
         </div>
       </div>
     `;
-    el.addEventListener("mouseenter", ()=> onHover(d.name));
+    el.addEventListener("mouseenter", ()=> onHover(d.name, "card"));
     el.addEventListener("mouseleave", ()=> onHover(null));
     el.addEventListener("click",      ()=> openDetail(d.name));
     listEl.appendChild(el);
@@ -1942,10 +1942,10 @@ function drawHeadline(data){
 
 /* ────────── INTERACTIONS ────────── */
 let lastData = [];
-function onHover(name){
+function onHover(name, source){
   if(STATE.hovered === name) return;
   if(STATE.hovered) window.hoverEnd?.(STATE.hovered);
-  if(name)          window.hoverStart?.(name, "map_or_card");
+  if(name)          window.hoverStart?.(name, source);
   STATE.hovered = name;
   drawOverlay(lastData);
   // Hide the g-labels text for whichever city now has the overlay label,
